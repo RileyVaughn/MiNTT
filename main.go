@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	poly "github.com/RileyVaughn/MiNTT/MiNNT/polynomial"
+	poly "github.com/RileyVaughn/MiNTT/polynomial"
 )
 
 func main() {
