@@ -27,3 +27,8 @@ func (n1 Intq) Mult(n2 Intq) Intq {
 
 	return Intq{Z: (n1.Z * n2.Z) % n1.Q, Q: n1.Q}
 }
+
+// func (n1 Intq) LessThan(n2 Intq) bool {
+
+// 	return n1.Z < n2.Z
+// }

@@ -24,7 +24,7 @@ func (p Polynom) Scale(s num.Number) Polynom {
 	return p
 }
 
-// Mult is the naive multiplication of polynomials without NTT
+// PolyMult is the naive multiplication of polynomials without NTT
 func (p1 Polynom) PolyMult(p2 Polynom) Polynom {
 
 	polyLen := len(p1)
@@ -38,6 +38,21 @@ func (p1 Polynom) PolyMult(p2 Polynom) Polynom {
 	}
 
 	return p3
+}
+
+// PolyMultModXnplus1 is naive polynomial multiplication mod X^n+1
+// n is predefined as the shared length of the polynomials p1 and p2
+func (p1 Polynom) PolyMultModXnplus1(p2 Polynom) Polynom {
+
+	p3 := p1.PolyMult(p2)
+	n := len(p1)
+	p4 := make(Polynom, n)
+
+	for i := 0; i < n; i++ {
+		p4[i] = p3[i].Sub(p3[i+n])
+	}
+
+	return p4
 }
 
 func (p1 Polynom) Len() int {
