@@ -5,6 +5,5 @@ type Number interface {
 	Add(Number) Number
 	Sub(Number) Number
 	Mult(Number) Number
-	// LessThan(Number) bool
-	// IsEqual(Number) bool
+	IsEqual(Number) bool
 }

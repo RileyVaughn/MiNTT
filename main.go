@@ -1,24 +1,24 @@
 package main
 
 import (
-	"fmt"
-
-	num "github.com/RileyVaughn/MiNTT/numbers"
+	"github.com/RileyVaughn/MiNTT/numbers"
+	"github.com/RileyVaughn/MiNTT/polynom"
 )
 
 func main() {
 
-	// p1 := poly.Polynomial{1, 2, 3}
-	// p2 := poly.Polynomial{4, 5, 0, 6}
+	// nums := util.GenRandInt2d(50, 20)
+	// util.WriteIntCSV("./polynom/polynomials.csv", nums)
 
-	// p1 = p1.PolyMult(p2)
-	// fmt.Println(p1)
+	// nums := util.ReadIntCSV("test.csv")
+	// fmt.Println(nums)
 
-	z1 := num.Intq{Z: 6, Q: 9}
-	z2 := num.Intq{Z: 4, Q: 9}
+	// var polyTest []poly.Polynom = []poly.Polynom{
+	// 	[]num.Intq{Intq{Z: 0, Q: 9}, Intq{Z: 5, Q: 9}, Intq{Z: 7, Q: 9}, Intq{Z: 6, Q: 9}},
+	// 	[]Intq{Intq{Z: 9, Q: 9}, Intq{Z: 5, Q: 9}, Intq{Z: 7, Q: 9}, Intq{Z: 6, Q: 9}},
+	// 	[]Intq{Intq{Z: 0, Q: 9}, Intq{Z: 0, Q: 9}, Intq{Z: 0, Q: 9}, Intq{Z: 0, Q: 9}},
+	// }
 
-	fmt.Print(z2.Add(z1))
-	fmt.Print(z2.Sub(z1))
-	fmt.Print(z2.Mult(z1))
+	var poly polynom.Polynom = polynom.Polynom{numbers.Intq{Z: 0, Q: 9}, numbers.Intq{Z: 5, Q: 9}, numbers.Intq{Z: 7, Q: 9}, numbers.Intq{Z: 6, Q: 9}}
 
 }

@@ -1,6 +1,8 @@
 package polynom
 
-import num "github.com/RileyVaughn/MiNTT/numbers"
+import (
+	num "github.com/RileyVaughn/MiNTT/numbers"
+)
 
 // Polynom is a polynomial of length N.
 // Each index i represnts the power of x, i.e. [1,2,3,4] -> 1 + 2x + 3x^2 + 4x^3
@@ -55,6 +57,20 @@ func (p1 Polynom) PolyMultModXnplus1(p2 Polynom) Polynom {
 	return p4
 }
 
-func (p1 Polynom) Len() int {
-	return len([]num.Number(p1))
+// Checks if the smae length and contain the same elements
+func (p1 Polynom) IsEqual(p2 Polynom) bool {
+
+	isequal := true
+
+	if len(p1) == len(p2) {
+		for i := 0; i < len(p1); i++ {
+			if !p1[i].IsEqual(p2[i]) {
+				isequal = false
+			}
+		}
+	} else {
+		isequal = false
+	}
+
+	return isequal
 }
