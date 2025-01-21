@@ -1,76 +1,55 @@
 package polynom
 
-import (
-	num "github.com/RileyVaughn/MiNTT/numbers"
-)
+// Polynom is a polynomial element of the set Z_q/(X^n+1)
+// Each index i represents the power of x, i.e. [1,2,3,4] -> 1 + 2x + 3x^2 + 4x^3
+// All methods of Polynom assume both polynoms share the values q and n (in the efficient version, these values will likely be constants).
+type Polynom []int
 
-// Polynom is a polynomial of length N.
-// Each index i represnts the power of x, i.e. [1,2,3,4] -> 1 + 2x + 3x^2 + 4x^3
-// All methods of Polynom assume both polynoms are the same length.
-type Polynom []num.Number
+const POLY_Q int = 7681
+const POLY_N = 256
 
 // Add is the simple addition of two polynomials.
 func (p1 Polynom) Add(p2 Polynom) Polynom {
 
-	for i := 0; i < len(p1); i++ {
-		p1[i] = p1[i].Add(p2[i])
+	for i := 0; i < POLY_N; i++ {
+		p1[i] = ((p1[i] + p2[i]) + POLY_Q) % POLY_Q
 	}
 	return p1
 }
 
-// Scales multipliers a scalar by the Polynom
-func (p Polynom) Scale(s num.Number) Polynom {
-	for i := 0; i < len(p); i++ {
-		p[i] = p[i].Mult(s)
-	}
-	return p
-}
+// PolyMult is the naive multiplication of polynomials in Z_q/(X^n+1) without NTT
+func (p1 Polynom) Mult(p2 Polynom) Polynom {
 
-// PolyMult is the naive multiplication of polynomials without NTT
-func (p1 Polynom) PolyMult(p2 Polynom) Polynom {
+	p3 := make(Polynom, POLY_N)
 
-	polyLen := len(p1)
-	p3 := make(Polynom, 2*polyLen)
-
-	for i := 0; i < polyLen; i++ {
-		for j := 0; j < polyLen; j++ {
-			p3[i+j] = p3[i+j].Add(p1[i].Mult(p2[j]))
+	for i := 0; i < POLY_N; i++ {
+		for j := 0; j < POLY_N; j++ {
+			k := (i + j) % POLY_N
+			if k == (i + j) {
+				p3[k] = p3[k] + (p1[i] * p2[j])
+			} else {
+				p3[k] = p3[k] - (p1[i] * p2[j])
+			}
 		}
-
 	}
 
 	return p3
 }
 
-// PolyMultModXnplus1 is naive polynomial multiplication mod X^n+1
-// n is predefined as the shared length of the polynomials p1 and p2
-func (p1 Polynom) PolyMultModXnplus1(p2 Polynom) Polynom {
+// // Checks if the smae length and contain the same elements
+// func (p1 Polynom) IsEqual(p2 Polynom) bool {
 
-	p3 := p1.PolyMult(p2)
-	n := len(p1)
-	p4 := make(Polynom, n)
+// 	isequal := true
 
-	for i := 0; i < n; i++ {
-		p4[i] = p3[i].Sub(p3[i+n])
-	}
+// 	if len(p1) == len(p2) {
+// 		for i := 0; i < len(p1); i++ {
+// 			if !p1[i].IsEqual(p2[i]) {
+// 				isequal = false
+// 			}
+// 		}
+// 	} else {
+// 		isequal = false
+// 	}
 
-	return p4
-}
-
-// Checks if the smae length and contain the same elements
-func (p1 Polynom) IsEqual(p2 Polynom) bool {
-
-	isequal := true
-
-	if len(p1) == len(p2) {
-		for i := 0; i < len(p1); i++ {
-			if !p1[i].IsEqual(p2[i]) {
-				isequal = false
-			}
-		}
-	} else {
-		isequal = false
-	}
-
-	return isequal
-}
+// 	return isequal
+// }

@@ -45,14 +45,14 @@ func ReadIntCSV(filepath string) [][]int {
 }
 
 //Generated a 2d slice of random ints from 0-1000
-func GenRandInt2d(rowlen int, collen int) [][]int {
+func GenRandInt2d(rowlen int, collen int, max int) [][]int {
 
 	var records [][]int
 
 	for i := 0; i < rowlen; i++ {
 		record := []int{}
 		for j := 0; j < collen; j++ {
-			record = append(record, rand.Intn(1000))
+			record = append(record, rand.Intn(max))
 		}
 		records = append(records, record)
 	}
