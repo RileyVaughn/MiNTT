@@ -14,6 +14,6 @@ func main() {
 	// nums := util.ReadIntCSV("test.csv")
 	// fmt.Println(nums)
 
-	fmt.Println(h.TempKeyGen())
+	fmt.Println(h.IntToBits(912))
 
 }
