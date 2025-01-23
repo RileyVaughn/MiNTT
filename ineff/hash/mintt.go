@@ -5,9 +5,9 @@ import (
 	p "github.com/RileyVaughn/MiNTT/ineff/polynom"
 )
 
-func MiNTT(input string) [c.M]p.Polynom {
+func MiNTT(input string) string {
 
-	return stringToBitPoly(input)
+	return mbitPolysToHexStr(stringToBitPoly(input))
 
 	//poly_input = p.Polynom(input)
 
@@ -77,4 +77,34 @@ func byteToBits(val byte) [8]byte {
 		val = val >> 1
 	}
 	return bits
+}
+
+func mbitPolysToHexStr(polys [c.M]p.Polynom) string {
+
+	var hex string
+
+	for i := 0; i < c.M; i++ {
+		var bytes [c.N / 8]byte = bitPolyToNdiv8Bytes(polys[i])
+		for j := 0; j < c.N/8; j++ {
+			hex = hex + string(bytes[j])
+		}
+	}
+
+	return hex
+}
+
+// Turns a bit-poly into 32(N/8) bytes
+func bitPolyToNdiv8Bytes(poly p.Polynom) [c.N / 8]byte {
+
+	var bytes [c.N / 8]byte
+
+	for i := 0; i < c.N/8; i++ {
+		var sbyte byte = 0
+		for j := 7; j >= 0; j-- {
+			sbyte = (sbyte << 1) + byte(poly[i*8+j])
+		}
+		bytes[i] = sbyte
+	}
+
+	return bytes
 }
