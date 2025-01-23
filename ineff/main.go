@@ -1,11 +1,5 @@
 package main
 
-import (
-	"fmt"
-
-	h "github.com/RileyVaughn/MiNTT/ineff/hash"
-)
-
 func main() {
 
 	// nums := util.GenRandInt2d(50, 256, 10000)
@@ -14,6 +8,6 @@ func main() {
 	// nums := util.ReadIntCSV("test.csv")
 	// fmt.Println(nums)
 
-	fmt.Println(h.IntToBits(912))
+	//fmt.Println(h.IntToBits(byte('A')))
 
 }
