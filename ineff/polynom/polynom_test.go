@@ -3,6 +3,7 @@ package polynom
 import (
 	"testing"
 
+	c "github.com/RileyVaughn/MiNTT/ineff/constant"
 	"github.com/RileyVaughn/MiNTT/ineff/util"
 )
 
@@ -38,12 +39,12 @@ func TestMult(t *testing.T) {
 
 	for i := 0; i < 25; i++ {
 		pt := polyTest[i+25]
-		for j := 0; j < POLY_N; j++ {
+		for j := 0; j < c.N; j++ {
 			pt[j] = pt[j] % 2
 		}
-		result := polyTest[i].Mult(polyTest[i+25])
+		result := polyTest[i].Mult(pt)
 		if !(result.IsEqual(wantTest[i+25])) {
-			t.Fatalf("(TestMult) Bad Binary Math: %v != %v", result, wantTest[i+25])
+			t.Fatalf("(TestMult) Bad Binary Math, Test (%v): %v != %v", i, result, wantTest[i+25])
 		}
 	}
 }
@@ -66,7 +67,12 @@ func ReadPolys(filename string) []Polynom {
 	coefs := util.ReadIntCSV(filename)
 	var polyTest []Polynom
 	for i := range coefs {
-		polyTest = append(polyTest, Polynom(coefs[i]))
+		var coefs_array [c.N]int
+		for j := 0; j < c.N; j++ {
+			coefs_array[j] = coefs[i][j]
+		}
+
+		polyTest = append(polyTest, Polynom(coefs_array))
 	}
 	return polyTest
 }
