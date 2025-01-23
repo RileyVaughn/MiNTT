@@ -2,6 +2,8 @@ package polynom
 
 import (
 	"fmt"
+
+	c "github.com/RileyVaughn/MiNTT/ineff/constant"
 )
 
 // Polynom is a polynomial element of the set Z_q/(X^n+1)
@@ -12,8 +14,8 @@ type Polynom []int
 // Add is the simple addition of two polynomials.
 func (p1 Polynom) Add(p2 Polynom) Polynom {
 
-	for i := 0; i < N; i++ {
-		p1[i] = Mod((p1[i] + p2[i]), Q)
+	for i := 0; i < c.N; i++ {
+		p1[i] = Mod((p1[i] + p2[i]), c.Q)
 	}
 	return p1
 }
@@ -21,16 +23,16 @@ func (p1 Polynom) Add(p2 Polynom) Polynom {
 // PolyMult is the naive multiplication of polynomials in Z_q/(X^n+1) without NTT
 func (p1 Polynom) Mult(p2 Polynom) Polynom {
 
-	p3 := make(Polynom, N)
+	p3 := make(Polynom, c.N)
 	fmt.Println(p3)
 
-	for i := 0; i < N; i++ {
-		for j := 0; j < N; j++ {
-			k := (i + j) % N
+	for i := 0; i < c.N; i++ {
+		for j := 0; j < c.N; j++ {
+			k := (i + j) % c.N
 			if k == (i + j) {
-				p3[k] = Mod(p3[k]+(p1[i]*p2[j]), Q)
+				p3[k] = Mod(p3[k]+(p1[i]*p2[j]), c.Q)
 			} else {
-				p3[k] = Mod(p3[k]-(p1[i]*p2[j]), Q)
+				p3[k] = Mod(p3[k]-(p1[i]*p2[j]), c.Q)
 			}
 		}
 	}
@@ -43,7 +45,7 @@ func (p1 Polynom) IsEqual(p2 Polynom) bool {
 
 	isequal := true
 
-	for i := 0; i < N; i++ {
+	for i := 0; i < c.N; i++ {
 		if !(p1[i] == p2[i]) {
 			isequal = false
 		}
