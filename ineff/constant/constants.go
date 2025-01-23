@@ -1,4 +1,4 @@
-package constants
+package constant
 
 const Q int = 7681
 const N int = 256
