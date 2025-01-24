@@ -1,18 +1,29 @@
 package hash
 
 import (
+	"fmt"
+
 	c "github.com/RileyVaughn/MiNTT/ineff/constant"
 	p "github.com/RileyVaughn/MiNTT/ineff/polynom"
 )
 
 func MiNTT(input string) string {
 
-	return mbitPolysToHexStr(stringToBitPoly(input))
+	m_polys := stringToBitPoly(input)
+	key := TempKeyGen()
 
-	//poly_input = p.Polynom(input)
+	var result p.Polynom
 
-	//convert to binary
-	//convert TempKeyGen()
+	for i := 0; i < c.M; i++ {
+		for j := 0; j < c.D; j++ {
+			result = result.Add(key[i][j].Mult(m_polys[i]))
+		}
+
+	}
+
+	return polyToHexStr(result)
+
+	//convert
 
 }
 
@@ -79,18 +90,18 @@ func byteToBits(val byte) [8]byte {
 	return bits
 }
 
-func mbitPolysToHexStr(polys [c.M]p.Polynom) string {
+func mbitPolysToStr(polys [c.M]p.Polynom) string {
 
-	var hex string
+	var str string
 
 	for i := 0; i < c.M; i++ {
 		var bytes [c.N / 8]byte = bitPolyToNdiv8Bytes(polys[i])
 		for j := 0; j < c.N/8; j++ {
-			hex = hex + string(bytes[j])
+			str = str + string(bytes[j])
 		}
 	}
 
-	return hex
+	return str
 }
 
 // Turns a bit-poly into 32(N/8) bytes
@@ -107,4 +118,16 @@ func bitPolyToNdiv8Bytes(poly p.Polynom) [c.N / 8]byte {
 	}
 
 	return bytes
+}
+
+// As a result of our constant choice Q=7681, we use uint16 for this inefficient implementation
+func polyToHexStr(poly p.Polynom) string {
+
+	var hex string
+
+	for j := 0; j < c.N; j++ {
+		hex = hex + fmt.Sprintf("%x", uint16(poly[j]))
+	}
+
+	return hex
 }
