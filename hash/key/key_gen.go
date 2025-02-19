@@ -1,4 +1,4 @@
-package keygen
+package key
 
 import (
 	"encoding/csv"
