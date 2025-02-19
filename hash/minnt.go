@@ -10,28 +10,29 @@ const m int = 32
 
 //const fft_table [8][256]uint64
 
-//Inputs N*m bits as n*m/8 bytes
+//Inputs n*m bits as n*m/8 bytes. m is based on d
 //Outputs log_2(q^N)= N*17 bits
-func MinNNT(input [N * m / 8]byte) [N * 17]byte {
+func MinNNT(input [n * m / 8]byte) [N * 17]byte {
 
-	//Split input into m,d,n arrays
+	//Split input into m,n length arrays
 	//FFT each Array with A_i
 
 	return ChangeBase(SumArrays())
 }
 
-func fft(polys [d][n / 8]byte) [d][n]uint64 {
+func fft(polys [n / 8]byte) [d][n]uint64 {
 
-	var product [d][n]uint64
+	var products [d][n]uint64
 
 	for i := 0; i < d; i++ {
 		for j := 0; j < n/8; j++ {
 			//Assume fft table is just 1 and 0s
+			// Mult A_k * fft_table[j]
 			var val uint64 = fft_table[j]
 
 		}
 	}
-	return product
+	return products
 }
 
 func SumArrays(val [m][d][n]uint64) [d][n]uint64 {
