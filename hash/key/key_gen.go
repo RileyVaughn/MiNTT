@@ -14,7 +14,7 @@ const m int = 32
 
 //Seed rng with MiNNT
 //returns 2d string slice length M x (n*d)
-func TempKeyGen() [][]string {
+func tempKeyGen() [][]string {
 	seed, _ := strconv.Atoi("MiNNT")
 	rand.Seed(int64(seed))
 
@@ -32,10 +32,28 @@ func TempKeyGen() [][]string {
 
 func GenWriteKey(filepath string) {
 
-	key := TempKeyGen()
+	key := tempKeyGen()
 
 	fo, _ := os.Create(filepath)
 	w := csv.NewWriter(fo)
 	w.WriteAll([][]string(key))
 
+}
+
+//Assumes key is eactly M x (n*d)
+func ReadKey(filepath string) [m][d * n]uint64 {
+
+	var key [m][d * n]uint64
+
+	fi, _ := os.Open(filepath)
+	r := csv.NewReader(fi)
+	keystring, _ := r.ReadAll()
+
+	for i := range keystring {
+		for j := range keystring[i] {
+			num, _ := strconv.Atoi(keystring[i][j])
+			key[i][j] = uint64(num)
+		}
+	}
+	return key
 }
