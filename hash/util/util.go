@@ -1,6 +1,6 @@
 package util
 
-func bitsFromByteTable() [256][8]int {
+func BitsFromByteTable() [256][8]int {
 
 	var table [256][8]int
 
@@ -18,7 +18,7 @@ func bitsFromByteTable() [256][8]int {
 	return table
 }
 
-func intPow(b int, x int) int {
+func IntPow(b int, x int) int {
 
 	var result int = 1
 
