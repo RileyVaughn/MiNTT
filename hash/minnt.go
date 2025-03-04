@@ -1,7 +1,11 @@
 package main
 
+import (
+	keygen "github.com/RileyVaughn/MiNTT/hash/key"
+)
+
 const d int = 1
-const n int = 256
+const n int = 128
 const N int = n * d
 const q int = 65537
 const m int = 32
@@ -20,20 +24,27 @@ const m int = 32
 // 	return ChangeBase(SumArrays())
 // }
 
-// func fft(polys [n / 8]byte) [d][n]uint64 {
+// Y_i = Sum256(x_k*omega^k(2i+1))
+func fft(input [n / 8]byte) [n]uint64 {
 
-// 	var products [d][n]uint64
+	var x [n]uint64
+	//var out [n]uint64
+	fft_table := keygen.TableGen()
+	omegas := keygen.OmegaGen()
+	var partial_sums [n / 8][2][8]uint64
 
-// 	for i := 0; i < d; i++ {
-// 		for j := 0; j < n/8; j++ {
-// 			//Assume fft table is just 1 and 0s
-// 			// Mult A_k * fft_table[j]
-// 			var val uint64 = fft_table[j]
+	for i0 := 0; i0 < n/8; i0++ {
+		for i1 := 0; i1 < 2; i1++ {
+			for k0 := 0; k0 < n/8; k0++ {
+				partial_sums[][][] := fft_table[input[k0]][i1][i0] * omegas[k0*(2*i0+1)]
+			}
 
-// 		}
-// 	}
-// 	return products
-// }
+		}
+
+	}
+
+	return same
+}
 
 // func SumArrays(val [m][d][n]uint64) [d][n]uint64 {
 
@@ -55,3 +66,15 @@ const m int = 32
 // 	// seperate last bit to end
 
 // }
+
+// 4080 64th root
+// 4938 128th root
+// 59963 256th root
+// 44120 512th root
+// 10423 1024th root
+// 57968 2048th root
+// 43265 4096th root
+// 56153 8192th root
+// 7348 16384th root
+// 927 32768th root
+// 40264 65536th root
