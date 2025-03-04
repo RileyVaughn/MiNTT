@@ -1,6 +1,7 @@
 package MiNNT16
 
 const d int = 1
+
 const n int = 16
 const N int = n * d
 const q int = 65537
