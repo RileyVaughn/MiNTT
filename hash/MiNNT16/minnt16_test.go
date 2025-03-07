@@ -8,7 +8,8 @@ import (
 
 func TestFFT(t *testing.T) {
 
-	input := [2]byte{1, 2}
+	input := [2]byte{25, 34}
+	// input := [2]byte{5, 2}
 
 	want := NCCVecMult(2, input)
 	result := fft(input)
@@ -19,30 +20,12 @@ func TestFFT(t *testing.T) {
 
 }
 
-// func TestIsEqual(t *testing.T) {
-
-// 	polyTest := ReadPolys("polynomials.csv")
-
-// 	var wantTest []bool = []bool{true, false}
-
-// 	result := polyTest[0].IsEqual(polyTest[0])
-// 	if result != wantTest[0] {
-// 		t.Fatalf("(TestIsEqual) Bad Equiv: %v != %v", result, wantTest[0])
-// 	}
-
-// 	result = polyTest[0].IsEqual(polyTest[1])
-// 	if result != wantTest[1] {
-// 		t.Fatalf("(TestIsEqual) Bad Equiv: %v != %v", result, wantTest[1])
-// 	}
-
-// }
-
 func NCCVecMult(omega int, input [n / 8]byte) [n]int {
 
 	var product [n]int
 	var vec [n]int
 	mat := genNCCMat(omega)
-	btb_table := bitsFromByteTable()
+	btb_table := util.BitsFromByteTable()
 
 	for i := 0; i < n/8; i++ {
 		temp := btb_table[input[i]]
@@ -57,9 +40,15 @@ func NCCVecMult(omega int, input [n / 8]byte) [n]int {
 		}
 	}
 
+	for i := 0; i < n; i++ {
+		product[i] = util.Mod(product[i], q)
+	}
+
 	return product
 }
 
+//Returns NCC matrix for bitreversed output
+//quick and dirty, assume n = 16
 func genNCCMat(omega int) [n][n]int {
 
 	var ncc_mat [n][n]int
@@ -77,5 +66,14 @@ func genNCCMat(omega int) [n][n]int {
 
 	}
 
-	return ncc_mat
+	var br_ncc_mat [n][n]int
+	var br_arr [n]int = [n]int{0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15} //dirty
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			br_ncc_mat[j][br_arr[i]] = ncc_mat[j][i]
+		}
+
+	}
+
+	return br_ncc_mat
 }

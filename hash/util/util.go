@@ -18,6 +18,7 @@ func BitsFromByteTable() [256][8]int {
 	return table
 }
 
+//Integer a to the power of postive Integer b
 func IntPow(b int, x int) int {
 
 	var result int = 1
@@ -26,4 +27,9 @@ func IntPow(b int, x int) int {
 		result = result * b
 	}
 	return result
+}
+
+//Golang mod of a negative returns a negative, this returns the positive
+func Mod(a int, b int) int {
+	return ((a % b) + b) % b
 }

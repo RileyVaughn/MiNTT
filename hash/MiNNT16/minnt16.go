@@ -1,5 +1,9 @@
 package MiNNT16
 
+import (
+	util "github.com/RileyVaughn/MiNTT/hash/util"
+)
+
 const d int = 1
 
 const n int = 16
@@ -13,13 +17,18 @@ const m int = 32
 
 // //Inputs n*m bits as n*m/8 bytes. m is based on d
 // //Outputs log_2(q^N)= N*17 bits
-// func MinNNT(input [n * m / 8]byte) [N * 17]byte {
+func MinNNT16(input [n * m / 8]byte) [N * 17]byte {
 
-// 	//Split input into m,n length arrays
-// 	//FFT each Array with A_i
+	//Split input into m,n length arrays
+	for i := 0; i < m; i++ {
+		var x [n / 8]byte
+		x[0] = input[2*i]
+		x[1] = input[2*i+1]
+	}
+	// 	//FFT each Array with A_i
 
-// 	return ChangeBase(SumArrays())
-// }
+	// 	return ChangeBase(SumArrays())
+}
 
 // Y_i = Sum256(x_k*omega^k(2i+1))
 func fft(input [n / 8]byte) [n]int {
@@ -27,20 +36,35 @@ func fft(input [n / 8]byte) [n]int {
 	var out [n]int
 	var intermed [n]int
 
-	bit2ByteTable := bitsFromByteTable()
+	bit2ByteTable := util.BitsFromByteTable()
 
 	//n=16 varibles set
-	//input can be applied arbitraily (assume input has previously been bit reversed)
-	//can use xor instead of plus
+	//Assume input has previously been bit reversed
 
 	for i := 0; i < 2; i++ {
 		x := bit2ByteTable[input[i]]
-		for j := 0; j < 4; j = j + 2 {
-			intermed[8*i+2*j] = x[j]
-			intermed[8*i+2*j+1] = x[j] << 8
-			AddSub(&intermed[8*i+2*j], &intermed[8*i+2*j+1])
+
+		for j := 0; j < 8; j++ {
+			intermed[8*i+j] = x[j]
 		}
 	}
+	intermed[1] = intermed[1] << 8
+	intermed[3] = intermed[3] << 8
+	intermed[5] = intermed[5] << 8
+	intermed[7] = intermed[7] << 8
+	intermed[9] = intermed[9] << 8
+	intermed[11] = intermed[11] << 8
+	intermed[13] = intermed[13] << 8
+	intermed[15] = intermed[15] << 8
+
+	AddSub(&intermed[0], &intermed[1])
+	AddSub(&intermed[2], &intermed[3])
+	AddSub(&intermed[4], &intermed[5])
+	AddSub(&intermed[6], &intermed[7])
+	AddSub(&intermed[8], &intermed[9])
+	AddSub(&intermed[10], &intermed[11])
+	AddSub(&intermed[12], &intermed[13])
+	AddSub(&intermed[14], &intermed[15])
 
 	intermed[2] = intermed[2] << 4
 	intermed[3] = intermed[3] << 12
@@ -61,13 +85,13 @@ func fft(input [n / 8]byte) [n]int {
 	AddSub(&intermed[13], &intermed[15])
 
 	intermed[4] = intermed[4] << 2
-	intermed[5] = intermed[4] << 10
-	intermed[6] = intermed[4] << 6
-	intermed[7] = intermed[4] << 14
-	intermed[12] = intermed[4] << 2
-	intermed[13] = intermed[4] << 10
-	intermed[14] = intermed[4] << 6
-	intermed[15] = intermed[4] << 14
+	intermed[5] = intermed[5] << 6
+	intermed[6] = intermed[6] << 10
+	intermed[7] = intermed[7] << 14
+	intermed[12] = intermed[12] << 2
+	intermed[13] = intermed[13] << 6
+	intermed[14] = intermed[14] << 10
+	intermed[15] = intermed[15] << 14
 
 	AddSub(&intermed[0], &intermed[4])
 	AddSub(&intermed[1], &intermed[5])
@@ -79,30 +103,30 @@ func fft(input [n / 8]byte) [n]int {
 	AddSub(&intermed[11], &intermed[15])
 
 	intermed[8] = intermed[8] << 1
-	intermed[9] = intermed[9] << 9
+	intermed[9] = intermed[9] << 3
 	intermed[10] = intermed[10] << 5
-	intermed[11] = intermed[11] << 13
-	intermed[12] = intermed[12] << 3
+	intermed[11] = intermed[11] << 7
+	intermed[12] = intermed[12] << 9
 	intermed[13] = intermed[13] << 11
-	intermed[14] = intermed[14] << 7
+	intermed[14] = intermed[14] << 13
 	intermed[15] = intermed[15] << 15
 
-	out[0] = intermed[0] + intermed[8]
-	out[1] = intermed[0] - intermed[8]
-	out[2] = intermed[1] + intermed[9]
-	out[3] = intermed[1] - intermed[9]
-	out[4] = intermed[2] + intermed[10]
-	out[5] = intermed[2] - intermed[10]
-	out[6] = intermed[3] + intermed[11]
-	out[7] = intermed[3] - intermed[11]
-	out[8] = intermed[4] + intermed[12]
-	out[9] = intermed[4] - intermed[12]
-	out[10] = intermed[5] + intermed[13]
-	out[11] = intermed[5] - intermed[13]
-	out[12] = intermed[6] + intermed[14]
-	out[13] = intermed[6] - intermed[14]
-	out[14] = intermed[7] + intermed[15]
-	out[15] = intermed[7] - intermed[15]
+	out[0] = util.Mod(intermed[0]+intermed[8], q)
+	out[8] = util.Mod(intermed[0]-intermed[8], q)
+	out[1] = util.Mod(intermed[1]+intermed[9], q)
+	out[9] = util.Mod(intermed[1]-intermed[9], q)
+	out[2] = util.Mod(intermed[2]+intermed[10], q)
+	out[10] = util.Mod(intermed[2]-intermed[10], q)
+	out[3] = util.Mod(intermed[3]+intermed[11], q)
+	out[11] = util.Mod(intermed[3]-intermed[11], q)
+	out[4] = util.Mod(intermed[4]+intermed[12], q)
+	out[12] = util.Mod(intermed[4]-intermed[12], q)
+	out[5] = util.Mod(intermed[5]+intermed[13], q)
+	out[13] = util.Mod(intermed[5]-intermed[13], q)
+	out[6] = util.Mod(intermed[6]+intermed[14], q)
+	out[14] = util.Mod(intermed[6]-intermed[14], q)
+	out[7] = util.Mod(intermed[7]+intermed[15], q)
+	out[15] = util.Mod(intermed[7]-intermed[15], q)
 
 	return out
 }
@@ -132,21 +156,3 @@ func AddSub(a *int, b *int) {
 
 // 	// mod 65537
 // 	// seperate last bit to end
-
-func bitsFromByteTable() [256][8]int {
-
-	var table [256][8]int
-
-	for i := int(0); i < 256; i++ {
-		table[i][0] = i % 2
-		table[i][1] = (i >> 1) % 2
-		table[i][2] = (i >> 2) % 2
-		table[i][3] = (i >> 3) % 2
-		table[i][4] = (i >> 4) % 2
-		table[i][5] = (i >> 5) % 2
-		table[i][6] = (i >> 6) % 2
-		table[i][7] = (i >> 7) % 2
-	}
-
-	return table
-}
