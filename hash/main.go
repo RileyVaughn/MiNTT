@@ -1,5 +1,7 @@
 package main
 
+import minnt "github.com/RileyVaughn/MiNTT/hash/MiNNT16"
+
 func main() {
 
 	// keygen.GenWriteKey("./key/key.csv")
@@ -17,5 +19,5 @@ func main() {
 	// // 	fmt.Println(mat[i])
 	// // }
 	// fmt.Println(product)
-
+	minnt.GenWriteKey("./MiNNT16/key.csv")
 }

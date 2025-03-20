@@ -4,12 +4,14 @@ import (
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
-const d int = 1
+const d int = 48
 
 const n int = 16
 const N int = n * d
 const q int = 65537
-const m int = 32
+
+// m must be greater than d*log_2(q)
+const m int = 1632
 
 // //const A[m][d][n] uint64
 
@@ -17,21 +19,14 @@ const m int = 32
 
 // //Inputs n*m bits as n*m/8 bytes. m is based on d
 // //Outputs log_2(q^N)= N*17 bits
-func MinNNT16(input [n * m / 8]byte) [N * 17]byte {
+func MinNNT16(input [n * m / 8]byte) [1632]byte {
 
-	//Split input into m,n length arrays
-	for i := 0; i < m; i++ {
-		var x [n / 8]byte
-		x[0] = input[2*i]
-		x[1] = input[2*i+1]
-	}
-	// 	//FFT each Array with A_i
+	return ChangeBase(ntt_sum(input))
 
-	// 	return ChangeBase(SumArrays())
 }
 
 // Y_i = Sum256(x_k*omega^k(2i+1))
-func fft(input [n / 8]byte) [n]int {
+func ntt_part(input [n / 8]byte) [n]int {
 
 	var out [n]int
 	var intermed [n]int
@@ -131,6 +126,30 @@ func fft(input [n / 8]byte) [n]int {
 	return out
 }
 
+func ntt_sum(input [n * m / 8]byte) [N]int {
+
+	A := ReadKey("key.csv")
+
+	var solution [N]int
+
+	for i := 0; i < m; i++ {
+		t_array := [2]byte{input[i*(n/8)], input[i*(n/8)+1]}
+		x := ntt_part(t_array)
+		for j := 0; j < d; j++ {
+			for k := 0; k < n; k++ {
+				solution[n*j+k] = solution[n*j+k] + x[k]*A[i][n*j+k]
+			}
+
+		}
+	}
+
+	for i := 0; i < n*d; i++ {
+		solution[i] = util.Mod(solution[i], q)
+	}
+
+	return solution
+}
+
 //Takes two int ptrs a and b, replaces *a with *a+*b *b with *a-*b
 func AddSub(a *int, b *int) {
 	temp := *b
@@ -138,21 +157,26 @@ func AddSub(a *int, b *int) {
 	*a = *a + temp
 }
 
-// func SumArrays(val [m][d][n]uint64) [d][n]uint64 {
+//Assume vaules haveaady been ModQ'd
+func ChangeBase(val [N]int) [1632]byte {
 
-// 	var sum [d][n]uint64
-// 	for i := 0; i < m; i++ {
-// 		for j := 0; j < d; j++ {
-// 			for k := 0; k < n; k++ {
-// 				sum[j][k] = sum[j][k] + val[i][j][k]
-// 			}
-// 		}
-// 	}
+	//n = 16
+	//d = 48
+	//ceil[log_2(q=65537)] = 17
+	//=1632
+	var output [1632]byte
 
-// 	return sum
-// }
+	for i := 0; i < N; i++ {
+		output[2*i] = byte(val[i])
+		output[2*i+1] = byte(val[i] >> 8)
+		val[i] = val[i] >> 16
+	}
 
-// func ChangeBase(val [d][n]uint64) [N * 17]byte {
+	for i := 0; i < N/8; i++ {
+		for k := 0; k < 8; k++ {
+			output[N+i] = output[i] | byte(val[8*i+k]>>k)
+		}
+	}
 
-// 	// mod 65537
-// 	// seperate last bit to end
+	return output
+}

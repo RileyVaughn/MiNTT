@@ -6,13 +6,13 @@ import (
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
-func TestFFT(t *testing.T) {
+func TestNTT_part(t *testing.T) {
 
 	input := [2]byte{25, 34}
 	// input := [2]byte{5, 2}
 
 	want := NCCVecMult(2, input)
-	result := fft(input)
+	result := ntt_part(input)
 
 	if result != want {
 		t.Fatalf("(Test fft) Bad FFT: %v != %v", result, want)
