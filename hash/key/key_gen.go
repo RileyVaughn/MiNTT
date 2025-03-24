@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+
+	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
 const d uint64 = 1
@@ -78,13 +80,13 @@ func TableGen() [256][2][8]uint64 {
 	//Table is indexed first by 8 bit inout x, then i1 mod 2, then i0
 	var table [256][2][8]uint64
 	var inter_table [2][8][8]int
-	bfb_table := bitsFromByteTable()
+	bfb_table := util.BitsFromByteTable()
 
 	for i1 := 0; i1 < 2; i1++ {
 		for i0 := 0; i0 < 8; i0++ {
 			for k1 := 0; k1 < 8; k1++ {
 				pow := uint64Powq(OMEGA, (8*uint64(k1)*(2*uint64(i0)+1))%(2*n))
-				neg := intPow(-1, (i1*k1)%2)
+				neg := util.IntPow(-1, (i1*k1)%2)
 				inter_table[i1][i0][k1] = int(pow) * neg
 			}
 		}
@@ -96,7 +98,7 @@ func TableGen() [256][2][8]uint64 {
 		for i1 := 0; i1 < 2; i1++ {
 			for i0 := 0; i0 < 8; i0++ {
 				for k1 := 0; k1 < 8; k1++ {
-					table[x][i1][i0] = table[x][i1][i0] + uint64(Mod(inter_table[i1][i0][k1]*bfb_table[x][k1], int(q)))
+					table[x][i1][i0] = table[x][i1][i0] + uint64(util.Mod(inter_table[i1][i0][k1]*bfb_table[x][k1], int(q)))
 				}
 			}
 		}
@@ -114,9 +116,4 @@ func uint64Powq(b uint64, x uint64) uint64 {
 		result = (result * b) % q
 	}
 	return result
-}
-
-//Golang mod of a negative returns a negative, this returns the positive
-func Mod(a int, b int) int {
-	return ((a % b) + b) % b
 }

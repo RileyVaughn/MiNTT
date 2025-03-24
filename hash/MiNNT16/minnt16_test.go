@@ -1,23 +1,79 @@
 package MiNNT16
 
 import (
+	"math/rand"
+	"strconv"
 	"testing"
 
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
+const TEST_SIZE = 1000
+
 func TestNTT_part(t *testing.T) {
 
-	input := [2]byte{25, 34}
-	// input := [2]byte{5, 2}
+	seed, _ := strconv.Atoi("MiNNT")
+	rand.Seed(int64(seed))
 
-	want := NCCVecMult(2, input)
-	result := ntt_part(input)
+	for i := 0; i < TEST_SIZE; i++ {
 
-	if result != want {
-		t.Fatalf("(Test fft) Bad FFT: %v != %v", result, want)
+		input := [2]byte{byte(rand.Intn(256)), byte(rand.Intn(256))}
+		// input := [2]byte{5, 2}
+
+		want := NCCVecMult(2, input)
+		result := ntt_part(input)
+
+		if result != want {
+			t.Fatalf("(Test ntt_part) Bad FFT: %v != %v", result, want)
+		}
+	}
+}
+
+//Test NTT sum
+
+func TestNTT_sum(t *testing.T) {
+	seed, _ := strconv.Atoi("MiNNT")
+	rand.Seed(int64(seed))
+
+	for i := 0; i < TEST_SIZE; i++ {
+		var input [n * m / 8]byte
+		for j := 0; j < n*m/8; j++ {
+			input[j] = byte(rand.Intn(256))
+		}
+		result := ntt_sum(input)
+		want := VecMultSum(input)
+
+		if result != want {
+			t.Fatalf("(Test ntt_sum) Bad SUM: %v != %v", result, want)
+		}
 	}
 
+}
+
+//Test Change Base
+
+//Test Full function
+
+//Assumes n=16
+func VecMultSum(input [n * m / 8]byte) [N]int {
+
+	A := ReadKey("key.csv")
+	var output [N]int
+
+	for i := 0; i < m; i++ {
+		part_input := [2]byte{input[2*i], input[2*i+1]}
+		part_want := NCCVecMult(2, part_input)
+		for j := 0; j < d; j++ {
+			for k := 0; k < n; k++ {
+				output[j*n+k] = output[j*n+k] + part_want[k]*A[i][j*n+k]
+			}
+
+		}
+	}
+	for i := 0; i < N; i++ {
+		output[i] = util.Mod(output[i], q)
+	}
+	return output
 }
 
 func NCCVecMult(omega int, input [n / 8]byte) [n]int {
