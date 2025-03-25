@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"strconv"
 
-	m16 "github.com/RileyVaughn/MiNTT/hash/MiNTT16"
+	m16 "github.com/RileyVaughn/MiNTT/hash/MiNNT16"
 )
 
 func main() {
@@ -16,7 +17,8 @@ func main() {
 	for i := 0; i < 3264; i++ {
 		m16_input[i] = byte(rand.Intn(256))
 	}
+	//fmt.Println(m16_input)
 
-	m16.MinNNT16(m16_input)
-
+	out := m16.MinNNT16(m16_input)
+	fmt.Println(out)
 }

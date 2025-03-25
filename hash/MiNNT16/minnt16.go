@@ -1,6 +1,8 @@
 package MiNNT16
 
 import (
+	"fmt"
+
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
@@ -129,7 +131,7 @@ func ntt_part(input [n / 8]byte) [n]int {
 func ntt_sum(input [n * m / 8]byte) [N]int {
 
 	A := ReadKey("key.csv")
-
+	fmt.Println(A)
 	var solution [N]int
 
 	for i := 0; i < m; i++ {
