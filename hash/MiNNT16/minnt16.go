@@ -17,8 +17,8 @@ const m int = 1632
 
 // //const fft_table [8][256]uint64
 
-// //Inputs n*m bits as n*m/8 bytes. m is based on d
-// //Outputs log_2(q^N)= N*17 bits
+//Inputs n*m bits as n*m/8 bytes. m is based on d
+//Outputs log_2(q^N)=N*17 bits = 1632 bytes
 func MinNNT16(input [n * m / 8]byte) [1632]byte {
 
 	return ChangeBase(ntt_sum(input))

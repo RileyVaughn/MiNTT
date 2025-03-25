@@ -29,8 +29,6 @@ func TestNTT_part(t *testing.T) {
 	}
 }
 
-//Test NTT sum
-
 func TestNTT_sum(t *testing.T) {
 	seed, _ := strconv.Atoi("MiNNT")
 	rand.Seed(int64(seed))
@@ -47,34 +45,14 @@ func TestNTT_sum(t *testing.T) {
 			t.Fatalf("(Test ntt_sum) Bad SUM: %v != %v", result, want)
 		}
 	}
-
 }
 
 //Test Change Base
+// func TestChangeBase(t *testing.T) {
+
+// }
 
 //Test Full function
-
-//Assumes n=16
-func VecMultSum(input [n * m / 8]byte) [N]int {
-
-	A := ReadKey("key.csv")
-	var output [N]int
-
-	for i := 0; i < m; i++ {
-		part_input := [2]byte{input[2*i], input[2*i+1]}
-		part_want := NCCVecMult(2, part_input)
-		for j := 0; j < d; j++ {
-			for k := 0; k < n; k++ {
-				output[j*n+k] = output[j*n+k] + part_want[k]*A[i][j*n+k]
-			}
-
-		}
-	}
-	for i := 0; i < N; i++ {
-		output[i] = util.Mod(output[i], q)
-	}
-	return output
-}
 
 func NCCVecMult(omega int, input [n / 8]byte) [n]int {
 
@@ -132,4 +110,26 @@ func genNCCMat(omega int) [n][n]int {
 	}
 
 	return br_ncc_mat
+}
+
+//Assumes n=16
+func VecMultSum(input [n * m / 8]byte) [N]int {
+
+	A := ReadKey("key.csv")
+	var output [N]int
+
+	for i := 0; i < m; i++ {
+		part_input := [2]byte{input[2*i], input[2*i+1]}
+		part_want := NCCVecMult(2, part_input)
+		for j := 0; j < d; j++ {
+			for k := 0; k < n; k++ {
+				output[j*n+k] = output[j*n+k] + part_want[k]*A[i][j*n+k]
+			}
+
+		}
+	}
+	for i := 0; i < N; i++ {
+		output[i] = util.Mod(output[i], q)
+	}
+	return output
 }
