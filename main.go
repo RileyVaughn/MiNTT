@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"strconv"
 
-	m16 "github.com/RileyVaughn/MiNTT/hash/MiNNT16"
+	m16 "github.com/RileyVaughn/MiNTT/hash/MiNTT16"
 )
 
 func main() {
@@ -26,8 +26,4 @@ func RunM16() {
 	out := m16.MinNNT16(m16_input)
 	fmt.Println(out)
 
-}
-
-func RunM16Setup() {
-	m16.GenWriteKey("./MiNNT16/key.csv")
 }
