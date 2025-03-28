@@ -1,17 +1,8 @@
-package MiNNT16
+package MiNTT16
 
 import (
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
-
-const d int = 48
-
-const n int = 16
-const N int = n * d
-const q int = 65537
-
-// m must be greater than d*log_2(q)
-const m int = 1632
 
 // //const A[m][d][n] uint64
 
@@ -19,14 +10,14 @@ const m int = 1632
 
 //Inputs n*m bits as n*m/8 bytes. m is based on d
 //Outputs log_2(q^N)=N*17 bits = 1632 bytes
-func MinNNT16(input [n * m / 8]byte) [1632]byte {
+func MinNNT16_B(input [n * m / 8]byte) [1632]byte {
 
-	return ChangeBase(ntt_sum(input))
+	return ChangeBase(ntt_sum_B(input))
 
 }
 
 // Y_i = Sum256(x_k*omega^k(2i+1))
-func ntt_part(input [n / 8]byte) [n]int {
+func ntt_part_B(input [n / 8]byte) [n]int {
 
 	var out [n]int
 	var intermed [n]int
@@ -125,14 +116,14 @@ func ntt_part(input [n / 8]byte) [n]int {
 	return out
 }
 
-func ntt_sum(input [n * m / 8]byte) [N]int {
+func ntt_sum_B(input [n * m / 8]byte) [N]int {
 
 	A := ReadKey("./MiNNT16/key.csv")
 	var solution [N]int
 
 	for i := 0; i < m; i++ {
 		t_array := [2]byte{input[i*(n/8)], input[i*(n/8)+1]}
-		x := ntt_part(t_array)
+		x := ntt_part_B(t_array)
 		for j := 0; j < d; j++ {
 			for k := 0; k < n; k++ {
 				solution[n*j+k] = solution[n*j+k] + x[k]*A[i][n*j+k]
@@ -146,35 +137,4 @@ func ntt_sum(input [n * m / 8]byte) [N]int {
 	}
 
 	return solution
-}
-
-//Takes two int ptrs a and b, replaces *a with *a+*b *b with *a-*b
-func AddSub(a *int, b *int) {
-	temp := *b
-	*b = *a - *b
-	*a = *a + temp
-}
-
-//Assume vaules haveaady been ModQ'd
-func ChangeBase(val [N]int) [1632]byte {
-
-	//n = 16
-	//d = 48
-	//ceil[log_2(q=65537)] = 17
-	//=1632
-	var output [1632]byte
-
-	for i := 0; i < N; i++ {
-		output[2*i] = byte(val[i])
-		output[2*i+1] = byte(val[i] >> 8)
-		val[i] = val[i] >> 16
-	}
-
-	for i := 0; i < N/8; i++ {
-		for k := 0; k < 8; k++ {
-			output[N+i] = output[i] | byte(val[8*i+k]>>k)
-		}
-	}
-
-	return output
 }

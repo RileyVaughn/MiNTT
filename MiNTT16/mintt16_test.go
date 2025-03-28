@@ -1,4 +1,4 @@
-package MiNNT16
+package MiNTT16
 
 import (
 	"math/rand"
