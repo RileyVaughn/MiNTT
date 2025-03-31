@@ -16,7 +16,7 @@ var A [m][d * n]int
 var bit2ByteTable [256][8]int
 var NTT8_TABLE [256][8]int
 
-func MinNTT8(input [n * m / 8]byte) [864]byte {
+func MinNTT8(input [ndiv8 * m]byte) [864]byte {
 
 	return ChangeBase(ntt_sum(input))
 
@@ -25,7 +25,6 @@ func MinNTT8(input [n * m / 8]byte) [864]byte {
 func ntt_sum(input [ndiv8 * m]byte) [N]int {
 
 	var solution [N]int
-
 	for i := 0; i < m; i++ {
 		x := NTT8_TABLE[input[i]]
 		for j := 0; j < d; j++ {
@@ -35,7 +34,6 @@ func ntt_sum(input [ndiv8 * m]byte) [N]int {
 
 		}
 	}
-
 	for i := 0; i < N; i++ {
 		solution[i] = util.Mod(solution[i], q)
 	}
