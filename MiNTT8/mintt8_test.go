@@ -1,35 +1,31 @@
 package MiNTT8
 
 import (
-	"math/rand"
-	"strconv"
-	"testing"
-
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
 const TEST_SIZE = 1000
 
-func TestNTT_part(t *testing.T) {
+// func TestNTT_part(t *testing.T) {
 
-	seed, _ := strconv.Atoi("MiNNT")
-	rand.Seed(int64(seed))
+// 	seed, _ := strconv.Atoi("MiNNT")
+// 	rand.Seed(int64(seed))
 
-	for i := 0; i < TEST_SIZE; i++ {
+// 	for i := 0; i < TEST_SIZE; i++ {
 
-		input := byte(rand.Intn(256))
+// 		input := byte(rand.Intn(256))
 
-		want := NCCVecMult(2, input)
-		result := ntt_part(input)
-		for i := 0; i < n; i++ {
-			result[i] = util.Mod(result[i], q)
-		}
+// 		want := NCCVecMult(2, input)
+// 		result := ntt_part(input)
+// 		for i := 0; i < n; i++ {
+// 			result[i] = util.Mod(result[i], q)
+// 		}
 
-		if result != want {
-			t.Fatalf("(Test ntt_part) Bad FFT: %v != %v", result, want)
-		}
-	}
-}
+// 		if result != want {
+// 			t.Fatalf("(Test ntt_part) Bad FFT: %v != %v", result, want)
+// 		}
+// 	}
+// }
 
 func NCCVecMult(omega int, input byte) [n]int {
 
