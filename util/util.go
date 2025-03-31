@@ -33,3 +33,9 @@ func IntPow(b int, x int) int {
 func Mod(a int, b int) int {
 	return ((a % b) + b) % b
 }
+
+func AddSub(a *int, b *int) {
+	temp := *b
+	*b = *a - *b
+	*a = *a + temp
+}

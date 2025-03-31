@@ -23,7 +23,8 @@ func RunM8() {
 
 	m8.SetupM8()
 
-	out := m8.MinNNT8(input)
+	out := m8.MinNTT8(input)
 	fmt.Println(out)
-
+	out = m8.MinNTT8_B(input)
+	fmt.Println(out)
 }

@@ -3,6 +3,7 @@ package MiNTT8
 import (
 	"encoding/csv"
 	"errors"
+	"fmt"
 	"math/rand"
 	"os"
 	"strconv"
@@ -58,6 +59,48 @@ func ReadKey(filepath string) [m][d * n]int {
 	return key
 }
 
+func NTT8Table() [256][8]int {
+
+	var table [256][8]int
+	var ncc8Mat = gen8NCCMat(2)
+	for i := 0; i < 256; i++ {
+		var product [8]int
+		vec := bit2ByteTable[i]
+		for j := 0; j < 8; j++ {
+			for k := 0; k < 8; k++ {
+				product[j] = util.Mod(product[j]+ncc8Mat[j][k]*vec[k], q)
+			}
+		}
+		table[i] = product
+	}
+
+	return table
+}
+
+func gen8NCCMat(omega int) [8][8]int {
+
+	var ncc_mat [8][8]int
+	for i := 0; i < 8; i++ {
+		for k := 0; k < 8; k++ {
+			if (k*(2*i+1))%(2*8) <= 8 {
+				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%8)
+			} else {
+				ncc_mat[i][k] = -1 * util.IntPow(omega, ((k*(2*i+1))%8))
+			}
+		}
+
+	}
+	var br_ncc_mat [8][8]int
+	var br_arr [8]int = [8]int{0, 4, 2, 6, 1, 5, 3, 7}
+	for i := 0; i < 8; i++ {
+		for j := 0; j < 8; j++ {
+			br_ncc_mat[j][br_arr[i]] = ncc_mat[j][i]
+		}
+
+	}
+	return br_ncc_mat
+}
+
 func SetupM8() {
 
 	if _, err := os.Stat(KEY_PATH); errors.Is(err, os.ErrNotExist) {
@@ -65,6 +108,10 @@ func SetupM8() {
 	}
 
 	A = ReadKey(KEY_PATH)
+
 	bit2ByteTable = util.BitsFromByteTable()
 
+	NTT8_TABLE = NTT8Table()
+
+	fmt.Println("Setup Finished")
 }
