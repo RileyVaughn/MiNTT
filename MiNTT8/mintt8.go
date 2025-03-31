@@ -16,7 +16,7 @@ var A [m][d * n]int
 var bit2ByteTable [256][8]int
 
 // m must be greater than d*log_2(q)
-const m int = 864
+const m int = 1728
 
 func MinNNT8(input [n * m / 8]byte) [864]byte {
 

@@ -5,25 +5,25 @@ import (
 	"math/rand"
 	"strconv"
 
-	m16 "github.com/RileyVaughn/MiNTT/hash/MiNTT16"
+	m8 "github.com/RileyVaughn/MiNTT/hash/MiNTT8"
 )
 
 func main() {
-	RunM16()
+	RunM8()
 }
 
-func RunM16() {
+func RunM8() {
 
-	seed, _ := strconv.Atoi("MiNNT")
+	seed, _ := strconv.Atoi("MiNTT")
 	rand.Seed(int64(seed))
-
-	var m16_input [3264]byte
-	for i := 0; i < 3264; i++ {
-		m16_input[i] = byte(rand.Intn(256))
+	var input [1728]byte
+	for i := 0; i < 1728; i++ {
+		input[i] = byte(rand.Intn(256))
 	}
-	//fmt.Println(m16_input)
 
-	out := m16.MinNNT16(m16_input)
+	m8.SetupM8()
+
+	out := m8.MinNNT8(input)
 	fmt.Println(out)
 
 }

@@ -10,7 +10,7 @@ import (
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
-const KEY_PATH string = "/MiNTT8/key.csv"
+const KEY_PATH string = "./MiNTT8/key.csv"
 
 //Seed rng with MiNNT
 //returns 2d string slice length M x (n*d)
