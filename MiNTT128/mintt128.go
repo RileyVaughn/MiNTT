@@ -23,7 +23,7 @@ func MinNTT8(input [ndiv8 * m]byte) [864]byte {
 
 }
 
-func ncc(input [ndiv8]byte) [ndiv8][8]int {
+func ncc(input [ndiv8]byte) [n]int {
 
 	var intermed [ndiv8][8]int
 
@@ -103,14 +103,22 @@ func ncc(input [ndiv8]byte) [ndiv8][8]int {
 	SIMD_AddSub(&intermed[6], &intermed[14])
 	SIMD_AddSub(&intermed[7], &intermed[15])
 
-	return intermed
+	var out [n]int
+
+	for i := 0; i < ndiv8; i++ {
+		for j := 0; j < 8; j++ {
+			out[8*i+j] = util.Mod(intermed[i][j], q)
+		}
+	}
+
+	return out
 }
 
 func ntt_sum(input [ndiv8 * m]byte) [N]int {
 
 	var solution [N]int
 	for i := 0; i < m; i++ {
-		x := NTT8_TABLE[input[i]]
+		x := ncc(sepInput(input, i))
 		for j := 0; j < d; j++ {
 			for k := 0; k < n; k++ {
 				solution[n*j+k] = solution[n*j+k] + x[k]*A[i][n*j+k]
@@ -125,7 +133,7 @@ func ntt_sum(input [ndiv8 * m]byte) [N]int {
 	return solution
 }
 
-//Assume vaules haveaady been ModQ'd
+//Assume values have already been ModQ'd
 func ChangeBase(val [N]int) [864]byte {
 
 	var output [864]byte
@@ -142,6 +150,18 @@ func ChangeBase(val [N]int) [864]byte {
 	}
 
 	return output
+}
+
+// Seperates out an ndiv8 length byte array from input
+func sepInput(input [ndiv8 * m]byte, i int) [ndiv8]byte {
+
+	var sec [ndiv8]byte
+
+	for j := 0; j < 8; j++ {
+		sec[j] = input[8*i+j]
+	}
+
+	return sec
 }
 
 //Fake for now
