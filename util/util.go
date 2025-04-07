@@ -19,12 +19,12 @@ func BitsFromByteTable() [256][8]int {
 }
 
 //Integer a to the power of postive Integer b
-func IntPow(b int, x int) int {
+func IntPow(b int, x int, q int) int {
 
 	var result int = 1
 
 	for i := 0; i < x; i++ {
-		result = result * b
+		result = result * b % q
 	}
 	return result
 }
@@ -38,4 +38,12 @@ func AddSub(a *int, b *int) {
 	temp := *b
 	*b = *a - *b
 	*a = *a + temp
+}
+
+func Bit_Rev(i int, bound int) int {
+	var irev int = 0
+	for i = i | bound; i > 1; i = i >> 1 {
+		irev = (irev << 1) | (i & 1)
+	}
+	return irev
 }

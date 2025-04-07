@@ -2,20 +2,20 @@
 (* ::Package:: *)
 
 
-(* n = 8
+n = 256
 q= 257
 
-(* coprimeq = ResourceFunction["CoprimeIntegerList"][q]
+ coprimeq = ResourceFunction["CoprimeIntegerList"][q]
 f[x_] := If[Mod[x^n,q] == 1,x,0]
 allroots = DeleteCases[Map[f,coprimeq],0]
 n = n/2
 prevroots =  DeleteCases[Map[f,coprimeq],0]
-roots = DeleteCases[allroots, Alternatives @@ prevroots] *)
+roots = DeleteCases[allroots, Alternatives @@ prevroots]
 
 a = 3
 g[i_] := Mod[3^i,q]
 roots = FirstPosition[Array[g,q],2]
-Print[roots] *)
+Print[roots] 
 
 
 (* q = 17
@@ -72,7 +72,7 @@ ninv = 5761
 g= {1,2,3,4}
 h = {5,6,7,8} *)
 
-n=8
+(* n=8
 q = 257
 omega = 2
 invOmega = 129
@@ -109,7 +109,7 @@ NCC[g_,h_] := Module[{p},
 ]
 
 Print[NCC[g,h]]
-Print[NegayCylicConvolutionNTT[g,h]]
+Print[NegayCylicConvolutionNTT[g,h]] *)
 
 (* NegayCylicConvolutionNTT[g,h] *)
 
