@@ -29,32 +29,40 @@ func ncc(input [ndiv8]byte) [n]int {
 
 	for i := 0; i < ndiv8; i++ {
 		intermed[i] = SIMD_Mult(NTT8_TABLE[input[i]], MULT_TABLE[i])
+
 	}
 
-	SIMD_Shift(&intermed[1], 4)
-	SIMD_Shift(&intermed[3], 4)
-	SIMD_Shift(&intermed[5], 4)
-	SIMD_Shift(&intermed[7], 4)
+	// SIMD_Shift(&intermed[1], 8)
+	// SIMD_Shift(&intermed[3], 8)
+	// SIMD_Shift(&intermed[5], 8)
+	// SIMD_Shift(&intermed[7], 8)
 
 	SIMD_AddSub(&intermed[0], &intermed[1])
 	SIMD_AddSub(&intermed[2], &intermed[3])
 	SIMD_AddSub(&intermed[4], &intermed[5])
 	SIMD_AddSub(&intermed[6], &intermed[7])
 
-	SIMD_Shift(&intermed[2], 2)
-	SIMD_Shift(&intermed[3], 6)
-	SIMD_Shift(&intermed[6], 2)
-	SIMD_Shift(&intermed[7], 6)
+	// SIMD_Shift(&intermed[2], 2)
+	// SIMD_Shift(&intermed[3], 6)
+	// SIMD_Shift(&intermed[6], 2)
+	// SIMD_Shift(&intermed[7], 6)
+
+	SIMD_Shift(&intermed[3], 4)
+	SIMD_Shift(&intermed[7], 4)
 
 	SIMD_AddSub(&intermed[0], &intermed[2])
 	SIMD_AddSub(&intermed[1], &intermed[3])
 	SIMD_AddSub(&intermed[4], &intermed[6])
 	SIMD_AddSub(&intermed[5], &intermed[7])
 
-	SIMD_Shift(&intermed[4], 1)
-	SIMD_Shift(&intermed[5], 3)
-	SIMD_Shift(&intermed[6], 5)
-	SIMD_Shift(&intermed[7], 7)
+	// SIMD_Shift(&intermed[4], 1)
+	// SIMD_Shift(&intermed[5], 3)
+	// SIMD_Shift(&intermed[6], 5)
+	// SIMD_Shift(&intermed[7], 7)
+
+	SIMD_Shift(&intermed[5], 2)
+	SIMD_Shift(&intermed[6], 4)
+	SIMD_Shift(&intermed[7], 6)
 
 	SIMD_AddSub(&intermed[0], &intermed[4])
 	SIMD_AddSub(&intermed[1], &intermed[5])

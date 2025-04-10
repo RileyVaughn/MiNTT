@@ -1,7 +1,6 @@
 package MiNTT64
 
 import (
-	"fmt"
 	"math/rand"
 	"strconv"
 	"testing"
@@ -35,7 +34,7 @@ func TestNCC(t *testing.T) {
 		}
 
 		if result != want {
-			t.Fatalf("(Test ntt_part) Bad FFT: %v != %v. Input: %08b", result, want, input)
+			t.Fatalf("(Test ntt_part) Bad FFT: %v != %v", result, want)
 		}
 	}
 }
@@ -45,9 +44,10 @@ func NCCVecMult(omega int, input [ndiv8]byte) [n]int {
 	var product [n]int
 	var vec [n]int
 	mat := genNCCMat(omega)
-	fmt.Println(mat[0])
+
 	for i := 0; i < ndiv8; i++ {
 		t_vec := bit2ByteTable[input[i]]
+
 		for j := 0; j < 8; j++ {
 			vec[8*i+j] = t_vec[j]
 		}

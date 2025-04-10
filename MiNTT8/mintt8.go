@@ -15,6 +15,7 @@ const Ndiv8 int = N / 8
 var A [m][d * n]int
 var bit2ByteTable [256][8]int
 var NTT8_TABLE [256][8]int
+var NTT8_TABLE_B [256][8]int
 
 func MinNTT8(input [ndiv8 * m]byte) [864]byte {
 

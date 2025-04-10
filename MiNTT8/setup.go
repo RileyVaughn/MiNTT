@@ -77,15 +77,69 @@ func NTT8Table() [256][8]int {
 	return table
 }
 
+func NTT8Table_B() [256][8]int {
+
+	var table [256][8]int
+
+	for i := 0; i < 256; i++ {
+		intermed := bit2ByteTable[i]
+
+		// intermed[1] = intermed[1] << 4
+		// intermed[3] = intermed[3] << 4
+		// intermed[5] = intermed[5] << 4
+		// intermed[7] = intermed[7] << 4
+
+		AddSub(&intermed[0], &intermed[1])
+		AddSub(&intermed[2], &intermed[3])
+		AddSub(&intermed[4], &intermed[5])
+		AddSub(&intermed[6], &intermed[7])
+
+		intermed[2] = intermed[2] << 2
+		intermed[3] = intermed[3] << 6
+		intermed[6] = intermed[6] << 2
+		intermed[7] = intermed[7] << 6
+
+		// intermed[3] = intermed[3] << 6
+		// intermed[7] = intermed[7] << 6
+
+		AddSub(&intermed[0], &intermed[2])
+		AddSub(&intermed[1], &intermed[3])
+		AddSub(&intermed[4], &intermed[6])
+		AddSub(&intermed[5], &intermed[7])
+
+		intermed[4] = intermed[4] << 1
+		intermed[5] = intermed[5] << 3
+		intermed[6] = intermed[6] << 5
+		intermed[7] = intermed[7] << 7
+
+		// intermed[5] = intermed[5] << 3
+		// intermed[6] = intermed[6] << 5
+		// intermed[7] = intermed[7] << 7
+
+		AddSub(&intermed[0], &intermed[4])
+		AddSub(&intermed[1], &intermed[5])
+		AddSub(&intermed[2], &intermed[6])
+		AddSub(&intermed[3], &intermed[7])
+
+		for j := 0; j < 8; j++ {
+			intermed[j] = util.Mod(intermed[j], q)
+		}
+
+		table[i] = intermed
+	}
+
+	return table
+}
+
 func gen8NCCMat(omega int) [8][8]int {
 
 	var ncc_mat [8][8]int
 	for i := 0; i < 8; i++ {
 		for k := 0; k < 8; k++ {
 			if (k*(2*i+1))%(2*8) <= 8 {
-				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%8)
+				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%8, q)
 			} else {
-				ncc_mat[i][k] = -1 * util.IntPow(omega, ((k*(2*i+1))%8))
+				ncc_mat[i][k] = -1 * util.IntPow(omega, ((k*(2*i+1))%8), q)
 			}
 		}
 
@@ -112,6 +166,7 @@ func SetupM8() {
 	bit2ByteTable = util.BitsFromByteTable()
 
 	NTT8_TABLE = NTT8Table()
+	NTT8_TABLE_B = NTT8Table_B()
 
 	fmt.Println("Setup Finished")
 }
