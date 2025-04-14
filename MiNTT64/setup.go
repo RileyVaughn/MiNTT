@@ -97,9 +97,9 @@ func gen8NCCMat(omega int) [8][8]int {
 	for i := 0; i < 8; i++ {
 		for k := 0; k < 8; k++ {
 			if (k*(2*i+1))%(2*8) <= 8 {
-				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%n, q)
+				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%8, q)
 			} else {
-				ncc_mat[i][k] = -1 * util.IntPow(omega, ((k*(2*i+1))%n), q)
+				ncc_mat[i][k] = -1 * util.IntPow(omega, ((k*(2*i+1))%8), q)
 			}
 		}
 

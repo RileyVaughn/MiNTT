@@ -36,6 +36,7 @@ func TestNCC(t *testing.T) {
 		if result != want {
 			t.Fatalf("(Test ntt_part) Bad FFT: %v != %v", result, want)
 		}
+
 	}
 }
 

@@ -11,13 +11,9 @@ import (
 
 func main() {
 	//RunM64()
-	m8.SetupM8()
-	if m8.NTT8_TABLE != m8.NTT8_TABLE_B {
-		fmt.Println(m8.NTT8_TABLE[64])
-		fmt.Println(m8.NTT8_TABLE_B[64])
-	} else {
-		fmt.Println("All good")
-	}
+	m64.SetupM64()
+
+	fmt.Println(m64.NTT8_TABLE)
 
 }
 

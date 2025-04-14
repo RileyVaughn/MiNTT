@@ -32,20 +32,10 @@ func ncc(input [ndiv8]byte) [n]int {
 
 	}
 
-	// SIMD_Shift(&intermed[1], 8)
-	// SIMD_Shift(&intermed[3], 8)
-	// SIMD_Shift(&intermed[5], 8)
-	// SIMD_Shift(&intermed[7], 8)
-
 	SIMD_AddSub(&intermed[0], &intermed[1])
 	SIMD_AddSub(&intermed[2], &intermed[3])
 	SIMD_AddSub(&intermed[4], &intermed[5])
 	SIMD_AddSub(&intermed[6], &intermed[7])
-
-	// SIMD_Shift(&intermed[2], 2)
-	// SIMD_Shift(&intermed[3], 6)
-	// SIMD_Shift(&intermed[6], 2)
-	// SIMD_Shift(&intermed[7], 6)
 
 	SIMD_Shift(&intermed[3], 4)
 	SIMD_Shift(&intermed[7], 4)
@@ -54,11 +44,6 @@ func ncc(input [ndiv8]byte) [n]int {
 	SIMD_AddSub(&intermed[1], &intermed[3])
 	SIMD_AddSub(&intermed[4], &intermed[6])
 	SIMD_AddSub(&intermed[5], &intermed[7])
-
-	// SIMD_Shift(&intermed[4], 1)
-	// SIMD_Shift(&intermed[5], 3)
-	// SIMD_Shift(&intermed[6], 5)
-	// SIMD_Shift(&intermed[7], 7)
 
 	SIMD_Shift(&intermed[5], 2)
 	SIMD_Shift(&intermed[6], 4)
