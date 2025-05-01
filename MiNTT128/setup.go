@@ -11,7 +11,7 @@ import (
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
-const KEY_PATH string = "./MiNTT8/key.csv"
+const KEY_PATH string = "./MiNTT128/key.csv"
 
 //Seed rng with MiNNT
 //returns 2d string slice length M x (n*d)
@@ -59,36 +59,47 @@ func ReadKey(filepath string) [m][d * n]int {
 	return key
 }
 
-func NTT8Table() [256][8]int {
+func NTT8Table(omega int) [256][8]int {
 
 	var table [256][8]int
-	var ncc8Mat = gen8NCCMat(2)
+	var ncc8Mat = gen8NCCMat(omega)
+
 	bit2ByteTable := util.BitsFromByteTable()
-	for i := 0; i < 256; i++ {
+	for j := 0; j < 256; j++ {
 		var product [8]int
-		vec := bit2ByteTable[i]
-		for j := 0; j < 8; j++ {
+		vec := bit2ByteTable[j]
+
+		for i := 0; i < 8; i++ {
 			for k := 0; k < 8; k++ {
-				product[j] = util.Mod(product[j]+ncc8Mat[j][k]*vec[k], q)
+				product[i] = util.Mod(product[i]+ncc8Mat[i][k]*vec[k], q)
+
 			}
 		}
-		table[i] = product
+		table[j] = product
 	}
 
 	return table
 }
 
-func MultTable(omega int) [256]int {
+func MultTable(omega int) [16][8]int {
 
-	var table [256]int
+	var table [16][8]int
 
-	for i := 0; i < 16; i++ {
+	for i := 0; i < 8; i++ {
 		for k := 0; k < 16; k++ {
-			table[16*i+k] = util.IntPow(omega, util.Mod(k*(2*i+1), 2*n))
+			table[k][i] = util.IntPow(omega, k*(2*i+1), q)
 		}
 	}
 
-	return table
+	//Bit reverse the k index
+	var br_table [16][8]int
+	for k := 0; k < 16; k++ {
+		for i := 0; i < 8; i++ {
+			br_table[util.Bit_Rev(k, 16)][i] = table[k][i]
+		}
+	}
+
+	return br_table
 }
 
 func gen8NCCMat(omega int) [8][8]int {
@@ -96,19 +107,19 @@ func gen8NCCMat(omega int) [8][8]int {
 	var ncc_mat [8][8]int
 	for i := 0; i < 8; i++ {
 		for k := 0; k < 8; k++ {
-			if (k*(2*i+1))%(2*8) <= 8 {
-				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%n)
+			pow := k * (2*i + 1)
+			if (pow)%(2*8) < 8 {
+				ncc_mat[i][k] = util.IntPow(omega, pow%8, q)
 			} else {
-				ncc_mat[i][k] = -1 * util.IntPow(omega, ((k*(2*i+1))%n))
+				ncc_mat[i][k] = -1 * util.IntPow(omega, (pow%8), q)
 			}
 		}
 
 	}
 	var br_ncc_mat [8][8]int
-	var br_arr [8]int = [8]int{0, 4, 2, 6, 1, 5, 3, 7}
 	for i := 0; i < 8; i++ {
 		for j := 0; j < 8; j++ {
-			br_ncc_mat[j][br_arr[i]] = ncc_mat[j][i]
+			br_ncc_mat[j][util.Bit_Rev(i, 8)] = ncc_mat[j][i]
 		}
 
 	}
@@ -123,14 +134,9 @@ func SetupM128() {
 
 	A = ReadKey(KEY_PATH)
 
-	NTT8_TABLE = NTT8Table()
+	NTT8_TABLE = NTT8Table(2)
+
+	MULT_TABLE = MultTable(27)
 
 	fmt.Println("Setup Finished")
 }
-
-// int rev(int i, int bound) { // bit reversal permutation
-// 	int irev=0;
-// 	for(i |= bound; i>1; i>>=1)
-// 	  irev = (irev<<1) | (i&1);
-// 	return irev;
-//   }

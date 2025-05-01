@@ -112,7 +112,6 @@ func SetupM8() {
 	bit2ByteTable = util.BitsFromByteTable()
 
 	NTT8_TABLE = NTT8Table()
-	NTT8_TABLE_B = NTT8Table_B()
 
 	fmt.Println("Setup Finished")
 }

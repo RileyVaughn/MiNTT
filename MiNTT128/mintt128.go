@@ -14,9 +14,11 @@ const ndiv8 int = n / 8
 const Ndiv8 int = N / 8
 
 var A [m][d * n]int
-var NTT8_TABLE [256][8]int
 
-func MinNTT8(input [ndiv8 * m]byte) [864]byte {
+var NTT8_TABLE [256][8]int
+var MULT_TABLE [16][8]int
+
+func MinNTT128(input [ndiv8 * m]byte) [864]byte {
 
 	return ChangeBase(ntt_sum(input))
 
@@ -25,19 +27,10 @@ func MinNTT8(input [ndiv8 * m]byte) [864]byte {
 func ncc(input [ndiv8]byte) [n]int {
 
 	var intermed [ndiv8][8]int
+	for k := 0; k < ndiv8; k++ {
+		intermed[k] = SIMD_Mult(NTT8_TABLE[input[k]], MULT_TABLE[k])
 
-	for i := 0; i < ndiv8; i++ {
-		intermed[i] = NTT8_TABLE[input[i]]
 	}
-
-	SIMD_Shift(&intermed[1], 8)
-	SIMD_Shift(&intermed[3], 8)
-	SIMD_Shift(&intermed[5], 8)
-	SIMD_Shift(&intermed[7], 8)
-	SIMD_Shift(&intermed[9], 8)
-	SIMD_Shift(&intermed[11], 8)
-	SIMD_Shift(&intermed[13], 8)
-	SIMD_Shift(&intermed[15], 8)
 
 	SIMD_AddSub(&intermed[0], &intermed[1])
 	SIMD_AddSub(&intermed[2], &intermed[3])
@@ -48,14 +41,10 @@ func ncc(input [ndiv8]byte) [n]int {
 	SIMD_AddSub(&intermed[12], &intermed[13])
 	SIMD_AddSub(&intermed[14], &intermed[15])
 
-	SIMD_Shift(&intermed[2], 4)
-	SIMD_Shift(&intermed[3], 12)
-	SIMD_Shift(&intermed[6], 4)
-	SIMD_Shift(&intermed[7], 12)
-	SIMD_Shift(&intermed[10], 4)
-	SIMD_Shift(&intermed[11], 12)
-	SIMD_Shift(&intermed[14], 4)
-	SIMD_Shift(&intermed[15], 12)
+	SIMD_Shift(&intermed[3], 4)
+	SIMD_Shift(&intermed[7], 4)
+	SIMD_Shift(&intermed[11], 4)
+	SIMD_Shift(&intermed[15], 4)
 
 	SIMD_AddSub(&intermed[0], &intermed[2])
 	SIMD_AddSub(&intermed[1], &intermed[3])
@@ -66,14 +55,12 @@ func ncc(input [ndiv8]byte) [n]int {
 	SIMD_AddSub(&intermed[12], &intermed[14])
 	SIMD_AddSub(&intermed[13], &intermed[15])
 
-	SIMD_Shift(&intermed[4], 2)
-	SIMD_Shift(&intermed[5], 6)
-	SIMD_Shift(&intermed[6], 10)
-	SIMD_Shift(&intermed[7], 14)
-	SIMD_Shift(&intermed[12], 2)
-	SIMD_Shift(&intermed[13], 6)
-	SIMD_Shift(&intermed[14], 10)
-	SIMD_Shift(&intermed[15], 14)
+	SIMD_Shift(&intermed[5], 2)
+	SIMD_Shift(&intermed[6], 4)
+	SIMD_Shift(&intermed[7], 6)
+	SIMD_Shift(&intermed[13], 2)
+	SIMD_Shift(&intermed[14], 4)
+	SIMD_Shift(&intermed[15], 6)
 
 	SIMD_AddSub(&intermed[0], &intermed[4])
 	SIMD_AddSub(&intermed[1], &intermed[5])
@@ -84,14 +71,13 @@ func ncc(input [ndiv8]byte) [n]int {
 	SIMD_AddSub(&intermed[10], &intermed[14])
 	SIMD_AddSub(&intermed[11], &intermed[15])
 
-	SIMD_Shift(&intermed[8], 1)
-	SIMD_Shift(&intermed[9], 3)
-	SIMD_Shift(&intermed[10], 5)
-	SIMD_Shift(&intermed[11], 7)
-	SIMD_Shift(&intermed[12], 9)
-	SIMD_Shift(&intermed[13], 11)
-	SIMD_Shift(&intermed[14], 13)
-	SIMD_Shift(&intermed[15], 15)
+	SIMD_Shift(&intermed[9], 1)
+	SIMD_Shift(&intermed[10], 2)
+	SIMD_Shift(&intermed[11], 3)
+	SIMD_Shift(&intermed[12], 4)
+	SIMD_Shift(&intermed[13], 5)
+	SIMD_Shift(&intermed[14], 6)
+	SIMD_Shift(&intermed[15], 7)
 
 	SIMD_AddSub(&intermed[0], &intermed[8])
 	SIMD_AddSub(&intermed[1], &intermed[9])
@@ -156,8 +142,8 @@ func sepInput(input [ndiv8 * m]byte, i int) [ndiv8]byte {
 
 	var sec [ndiv8]byte
 
-	for j := 0; j < 8; j++ {
-		sec[j] = input[8*i+j]
+	for j := 0; j < ndiv8; j++ {
+		sec[j] = input[ndiv8*i+j]
 	}
 
 	return sec
@@ -166,7 +152,7 @@ func sepInput(input [ndiv8 * m]byte, i int) [ndiv8]byte {
 //Fake for now
 func SIMD_AddSub(vec1 *[8]int, vec2 *[8]int) {
 	for i := 0; i < 8; i++ {
-		addSub(&vec1[i], &vec2[i])
+		util.AddSub(&vec1[i], &vec2[i])
 	}
 }
 
@@ -179,9 +165,15 @@ func SIMD_Shift(vec *[8]int, shift int) {
 
 }
 
-//Takes two int ptrs a and b, replaces *a with *a+*b *b with *a-*b
-func addSub(a *int, b *int) {
-	temp := *b
-	*b = *a - *b
-	*a = *a + temp
+//Fake for now
+func SIMD_Mult(vec1 [8]int, vec2 [8]int) [8]int {
+
+	var product [8]int
+	for i := 0; i < 8; i++ {
+		product[i] = vec1[i] * vec2[i]
+
+		//temp
+		product[i] = util.Mod(product[i], q)
+	}
+	return product
 }

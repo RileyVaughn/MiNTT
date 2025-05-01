@@ -18,7 +18,7 @@ func BitsFromByteTable() [256][8]int {
 	return table
 }
 
-//Integer a to the power of postive Integer b
+//Integer b to the power of postive Integer x
 func IntPow(b int, x int, q int) int {
 
 	var result int = 1
