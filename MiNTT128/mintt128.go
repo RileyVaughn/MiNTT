@@ -4,20 +4,6 @@ import (
 	util "github.com/RileyVaughn/MiNTT/hash/util"
 )
 
-//C GO
-const d int = 6
-const n int = 128
-const N int = n * d
-const m int = 108
-const q int = 257
-const ndiv8 int = n / 8
-const Ndiv8 int = N / 8
-
-var A [m][d * n]int
-
-var NTT8_TABLE [256][8]int
-var MULT_TABLE [16][8]int
-
 func MinNTT128(input [ndiv8 * m]byte) [864]byte {
 
 	return ChangeBase(ntt_sum(input))
@@ -28,65 +14,65 @@ func ncc(input [ndiv8]byte) [n]int {
 
 	var intermed [ndiv8][8]int
 	for k := 0; k < ndiv8; k++ {
-		intermed[k] = SIMD_Mult(NTT8_TABLE[input[k]], MULT_TABLE[k])
+		intermed[k] = util.SIMD_Mult(NTT8_TABLE[input[k]], MULT_TABLE[k])
 
 	}
 
-	SIMD_AddSub(&intermed[0], &intermed[1])
-	SIMD_AddSub(&intermed[2], &intermed[3])
-	SIMD_AddSub(&intermed[4], &intermed[5])
-	SIMD_AddSub(&intermed[6], &intermed[7])
-	SIMD_AddSub(&intermed[8], &intermed[9])
-	SIMD_AddSub(&intermed[10], &intermed[11])
-	SIMD_AddSub(&intermed[12], &intermed[13])
-	SIMD_AddSub(&intermed[14], &intermed[15])
+	util.SIMD_AddSub(&intermed[0], &intermed[1])
+	util.SIMD_AddSub(&intermed[2], &intermed[3])
+	util.SIMD_AddSub(&intermed[4], &intermed[5])
+	util.SIMD_AddSub(&intermed[6], &intermed[7])
+	util.SIMD_AddSub(&intermed[8], &intermed[9])
+	util.SIMD_AddSub(&intermed[10], &intermed[11])
+	util.SIMD_AddSub(&intermed[12], &intermed[13])
+	util.SIMD_AddSub(&intermed[14], &intermed[15])
 
-	SIMD_Shift(&intermed[3], 4)
-	SIMD_Shift(&intermed[7], 4)
-	SIMD_Shift(&intermed[11], 4)
-	SIMD_Shift(&intermed[15], 4)
+	util.SIMD_Shift(&intermed[3], 4)
+	util.SIMD_Shift(&intermed[7], 4)
+	util.SIMD_Shift(&intermed[11], 4)
+	util.SIMD_Shift(&intermed[15], 4)
 
-	SIMD_AddSub(&intermed[0], &intermed[2])
-	SIMD_AddSub(&intermed[1], &intermed[3])
-	SIMD_AddSub(&intermed[4], &intermed[6])
-	SIMD_AddSub(&intermed[5], &intermed[7])
-	SIMD_AddSub(&intermed[8], &intermed[10])
-	SIMD_AddSub(&intermed[9], &intermed[11])
-	SIMD_AddSub(&intermed[12], &intermed[14])
-	SIMD_AddSub(&intermed[13], &intermed[15])
+	util.SIMD_AddSub(&intermed[0], &intermed[2])
+	util.SIMD_AddSub(&intermed[1], &intermed[3])
+	util.SIMD_AddSub(&intermed[4], &intermed[6])
+	util.SIMD_AddSub(&intermed[5], &intermed[7])
+	util.SIMD_AddSub(&intermed[8], &intermed[10])
+	util.SIMD_AddSub(&intermed[9], &intermed[11])
+	util.SIMD_AddSub(&intermed[12], &intermed[14])
+	util.SIMD_AddSub(&intermed[13], &intermed[15])
 
-	SIMD_Shift(&intermed[5], 2)
-	SIMD_Shift(&intermed[6], 4)
-	SIMD_Shift(&intermed[7], 6)
-	SIMD_Shift(&intermed[13], 2)
-	SIMD_Shift(&intermed[14], 4)
-	SIMD_Shift(&intermed[15], 6)
+	util.SIMD_Shift(&intermed[5], 2)
+	util.SIMD_Shift(&intermed[6], 4)
+	util.SIMD_Shift(&intermed[7], 6)
+	util.SIMD_Shift(&intermed[13], 2)
+	util.SIMD_Shift(&intermed[14], 4)
+	util.SIMD_Shift(&intermed[15], 6)
 
-	SIMD_AddSub(&intermed[0], &intermed[4])
-	SIMD_AddSub(&intermed[1], &intermed[5])
-	SIMD_AddSub(&intermed[2], &intermed[6])
-	SIMD_AddSub(&intermed[3], &intermed[7])
-	SIMD_AddSub(&intermed[8], &intermed[12])
-	SIMD_AddSub(&intermed[9], &intermed[13])
-	SIMD_AddSub(&intermed[10], &intermed[14])
-	SIMD_AddSub(&intermed[11], &intermed[15])
+	util.SIMD_AddSub(&intermed[0], &intermed[4])
+	util.SIMD_AddSub(&intermed[1], &intermed[5])
+	util.SIMD_AddSub(&intermed[2], &intermed[6])
+	util.SIMD_AddSub(&intermed[3], &intermed[7])
+	util.SIMD_AddSub(&intermed[8], &intermed[12])
+	util.SIMD_AddSub(&intermed[9], &intermed[13])
+	util.SIMD_AddSub(&intermed[10], &intermed[14])
+	util.SIMD_AddSub(&intermed[11], &intermed[15])
 
-	SIMD_Shift(&intermed[9], 1)
-	SIMD_Shift(&intermed[10], 2)
-	SIMD_Shift(&intermed[11], 3)
-	SIMD_Shift(&intermed[12], 4)
-	SIMD_Shift(&intermed[13], 5)
-	SIMD_Shift(&intermed[14], 6)
-	SIMD_Shift(&intermed[15], 7)
+	util.SIMD_Shift(&intermed[9], 1)
+	util.SIMD_Shift(&intermed[10], 2)
+	util.SIMD_Shift(&intermed[11], 3)
+	util.SIMD_Shift(&intermed[12], 4)
+	util.SIMD_Shift(&intermed[13], 5)
+	util.SIMD_Shift(&intermed[14], 6)
+	util.SIMD_Shift(&intermed[15], 7)
 
-	SIMD_AddSub(&intermed[0], &intermed[8])
-	SIMD_AddSub(&intermed[1], &intermed[9])
-	SIMD_AddSub(&intermed[2], &intermed[10])
-	SIMD_AddSub(&intermed[3], &intermed[11])
-	SIMD_AddSub(&intermed[4], &intermed[12])
-	SIMD_AddSub(&intermed[5], &intermed[13])
-	SIMD_AddSub(&intermed[6], &intermed[14])
-	SIMD_AddSub(&intermed[7], &intermed[15])
+	util.SIMD_AddSub(&intermed[0], &intermed[8])
+	util.SIMD_AddSub(&intermed[1], &intermed[9])
+	util.SIMD_AddSub(&intermed[2], &intermed[10])
+	util.SIMD_AddSub(&intermed[3], &intermed[11])
+	util.SIMD_AddSub(&intermed[4], &intermed[12])
+	util.SIMD_AddSub(&intermed[5], &intermed[13])
+	util.SIMD_AddSub(&intermed[6], &intermed[14])
+	util.SIMD_AddSub(&intermed[7], &intermed[15])
 
 	var out [n]int
 
@@ -147,33 +133,4 @@ func sepInput(input [ndiv8 * m]byte, i int) [ndiv8]byte {
 	}
 
 	return sec
-}
-
-//Fake for now
-func SIMD_AddSub(vec1 *[8]int, vec2 *[8]int) {
-	for i := 0; i < 8; i++ {
-		util.AddSub(&vec1[i], &vec2[i])
-	}
-}
-
-//Fake for now
-func SIMD_Shift(vec *[8]int, shift int) {
-
-	for i := 0; i < 8; i++ {
-		vec[i] = vec[i] << shift
-	}
-
-}
-
-//Fake for now
-func SIMD_Mult(vec1 [8]int, vec2 [8]int) [8]int {
-
-	var product [8]int
-	for i := 0; i < 8; i++ {
-		product[i] = vec1[i] * vec2[i]
-
-		//temp
-		product[i] = util.Mod(product[i], q)
-	}
-	return product
 }

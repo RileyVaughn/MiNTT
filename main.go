@@ -8,14 +8,13 @@ import (
 	m128 "github.com/RileyVaughn/MiNTT/hash/MiNTT128"
 	m64 "github.com/RileyVaughn/MiNTT/hash/MiNTT64"
 	m8 "github.com/RileyVaughn/MiNTT/hash/MiNTT8"
-	"github.com/RileyVaughn/MiNTT/hash/util"
 )
 
 func main() {
-	//RunM128()
-	for i := 0; i < 16; i++ {
-		fmt.Println(util.Bit_Rev(i, 16))
-	}
+	RunM128()
+	RunM64()
+	RunM8()
+
 }
 
 func RunM8() {
@@ -58,9 +57,7 @@ func RunM128() {
 	}
 
 	m128.SetupM128()
-	fmt.Println(m128.MULT_TABLE)
-
-	// out := m128.MinNTT128(input)
-	// fmt.Println(out)
+	out := m128.MinNTT128(input)
+	fmt.Println(out)
 
 }

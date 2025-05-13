@@ -4,7 +4,6 @@ import (
 	"encoding/csv"
 	"errors"
 	"fmt"
-	"math/rand"
 	"os"
 	"strconv"
 
@@ -12,34 +11,6 @@ import (
 )
 
 const KEY_PATH string = "./MiNTT8/key.csv"
-
-//Seed rng with MiNNT
-//returns 2d string slice length M x (n*d)
-func tempKeyGen() [][]string {
-	seed, _ := strconv.Atoi("MiNNT")
-	rand.Seed(int64(seed))
-
-	key := make([][]string, m)
-	for i := range key {
-		keyrow := make([]string, n*d)
-		for j := range keyrow {
-			keyrow[j] = strconv.Itoa(rand.Intn(int(q)))
-		}
-		key[i] = keyrow
-	}
-
-	return key
-}
-
-func GenWriteKey(filepath string) {
-
-	key := tempKeyGen()
-
-	fo, _ := os.Create(filepath)
-	w := csv.NewWriter(fo)
-	w.WriteAll([][]string(key))
-
-}
 
 //Assumes key is eactly M x (n*d)
 func ReadKey(filepath string) [m][d * n]int {
@@ -104,7 +75,7 @@ func gen8NCCMat(omega int) [8][8]int {
 func SetupM8() {
 
 	if _, err := os.Stat(KEY_PATH); errors.Is(err, os.ErrNotExist) {
-		GenWriteKey(KEY_PATH)
+		util.GenWriteKey(m, n, d, q, KEY_PATH)
 	}
 
 	A = ReadKey(KEY_PATH)

@@ -18,7 +18,6 @@ func TestNTT_part(t *testing.T) {
 	for i := 0; i < TEST_SIZE; i++ {
 
 		input := [2]byte{byte(rand.Intn(256)), byte(rand.Intn(256))}
-		// input := [2]byte{5, 2}
 
 		want := NCCVecMult(2, input)
 		result := ntt_part(input)
