@@ -10,7 +10,7 @@ import (
 
 const TEST_SIZE = 1000
 
-var bit2ByteTable [256][8]int
+var bit2ByteTable [256][8]int64
 
 func TestNCC(t *testing.T) {
 
@@ -20,16 +20,16 @@ func TestNCC(t *testing.T) {
 	SetupM128()
 	bit2ByteTable = util.BitsFromByteTable()
 
-	for i := 0; i < TEST_SIZE; i++ {
+	for i := int64(0); i < TEST_SIZE; i++ {
 
 		var input [ndiv8]byte
-		for j := 0; j < ndiv8; j++ {
+		for j := int64(0); j < ndiv8; j++ {
 			input[j] = byte(rand.Intn(256))
 		}
 
 		want := NCCVecMult(27, input)
 		result := ncc(input)
-		for i := 0; i < n; i++ {
+		for i := int64(0); i < n; i++ {
 			result[i] = util.Mod(result[i], q)
 		}
 
@@ -40,41 +40,41 @@ func TestNCC(t *testing.T) {
 	}
 }
 
-func NCCVecMult(omega int, input [ndiv8]byte) [n]int {
+func NCCVecMult(omega int64, input [ndiv8]byte) [n]int64 {
 
-	var product [n]int
-	var vec [n]int
+	var product [n]int64
+	var vec [n]int64
 	mat := genNCCMat(omega)
 
-	for i := 0; i < ndiv8; i++ {
+	for i := int64(0); i < ndiv8; i++ {
 		t_vec := bit2ByteTable[input[i]]
 
-		for j := 0; j < 8; j++ {
+		for j := int64(0); j < 8; j++ {
 			vec[8*i+j] = t_vec[j]
 		}
 	}
 
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
+	for i := int64(0); i < n; i++ {
+		for j := int64(0); j < n; j++ {
 			product[i] = product[i] + mat[i][j]*vec[j]
 		}
 	}
 
-	for i := 0; i < n; i++ {
+	for i := int64(0); i < n; i++ {
 		product[i] = util.Mod(product[i], q)
 	}
 
 	return product
 }
 
-//Returns NCC matrix for bitreversed output
-func genNCCMat(omega int) [n][n]int {
+// Returns NCC matrix for bitreversed output
+func genNCCMat(omega int64) [n][n]int64 {
 
-	var ncc_mat [n][n]int
+	var ncc_mat [n][n]int64
 
-	for i := 0; i < n; i++ {
-		for k := 0; k < n; k++ {
-			if (k*(2*i+1))%(2*n) <= n {
+	for i := int64(0); i < n; i++ {
+		for k := int64(0); k < n; k++ {
+			if int64(k*(2*i+1))%(2*n) <= n {
 				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%n, q)
 
 			} else {
@@ -85,9 +85,9 @@ func genNCCMat(omega int) [n][n]int {
 
 	}
 
-	var br_ncc_mat [n][n]int
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
+	var br_ncc_mat [n][n]int64
+	for i := int64(0); i < n; i++ {
+		for j := int64(0); j < n; j++ {
 			br_ncc_mat[j][util.Bit_Rev(i, n)] = ncc_mat[j][i]
 		}
 	}

@@ -31,7 +31,7 @@ import "C"
 import "unsafe"
 
 //Adds and subtracts vec1 and vec2 using SIMD, and returns the sum/difference in place resp.
-func C_SIMD_AddSub(vec1 *[8]int64, vec2 *[8]int64) {
+func SIMD_AddSub(vec1 *[8]int64, vec2 *[8]int64) {
 
 	C.add_sub_simd((*C.int64_t)(unsafe.Pointer(&vec1[0])), (*C.int64_t)(unsafe.Pointer(&vec2[0])))
 }

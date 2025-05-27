@@ -12,10 +12,10 @@ import (
 
 const KEY_PATH string = "./MiNTT8/key.csv"
 
-//Assumes key is eactly M x (n*d)
-func ReadKey(filepath string) [m][d * n]int {
+// Assumes key is eactly M x (n*d)
+func ReadKey(filepath string) [m][d * n]int64 {
 
-	var key [m][d * n]int
+	var key [m][d * n]int64
 
 	fi, _ := os.Open(filepath)
 	r := csv.NewReader(fi)
@@ -24,18 +24,18 @@ func ReadKey(filepath string) [m][d * n]int {
 	for i := range keystring {
 		for j := range keystring[i] {
 			num, _ := strconv.Atoi(keystring[i][j])
-			key[i][j] = int(num)
+			key[i][j] = int64(num)
 		}
 	}
 	return key
 }
 
-func NTT8Table() [256][8]int {
+func NTT8Table() [256][8]int64 {
 
-	var table [256][8]int
+	var table [256][8]int64
 	var ncc8Mat = gen8NCCMat(2)
 	for i := 0; i < 256; i++ {
-		var product [8]int
+		var product [8]int64
 		vec := bit2ByteTable[i]
 		for j := 0; j < 8; j++ {
 			for k := 0; k < 8; k++ {
@@ -48,11 +48,11 @@ func NTT8Table() [256][8]int {
 	return table
 }
 
-func gen8NCCMat(omega int) [8][8]int {
+func gen8NCCMat(omega int64) [8][8]int64 {
 
-	var ncc_mat [8][8]int
-	for i := 0; i < 8; i++ {
-		for k := 0; k < 8; k++ {
+	var ncc_mat [8][8]int64
+	for i := int64(0); i < 8; i++ {
+		for k := int64(0); k < 8; k++ {
 			if (k*(2*i+1))%(2*8) <= 8 {
 				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%8, q)
 			} else {
@@ -61,10 +61,10 @@ func gen8NCCMat(omega int) [8][8]int {
 		}
 
 	}
-	var br_ncc_mat [8][8]int
-	var br_arr [8]int = [8]int{0, 4, 2, 6, 1, 5, 3, 7}
-	for i := 0; i < 8; i++ {
-		for j := 0; j < 8; j++ {
+	var br_ncc_mat [8][8]int64
+	var br_arr [8]int64 = [8]int64{0, 4, 2, 6, 1, 5, 3, 7}
+	for i := int64(0); i < 8; i++ {
+		for j := int64(0); j < 8; j++ {
 			br_ncc_mat[j][br_arr[i]] = ncc_mat[j][i]
 		}
 

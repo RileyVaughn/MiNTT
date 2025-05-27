@@ -9,11 +9,11 @@ import (
 
 // Creates a table which is indexed by a byte and returns a vector of 8 "bits":
 // BitsFromByteTable()[5]->[0][0][0][0][0][1][0][1]
-func BitsFromByteTable() [256][8]int {
+func BitsFromByteTable() [256][8]int64 {
 
-	var table [256][8]int
+	var table [256][8]int64
 
-	for i := int(0); i < 256; i++ {
+	for i := int64(0); i < 256; i++ {
 		table[i][0] = i % 2
 		table[i][1] = (i >> 1) % 2
 		table[i][2] = (i >> 2) % 2
@@ -28,32 +28,32 @@ func BitsFromByteTable() [256][8]int {
 }
 
 // Integer b to the power of postive Integer x, mod q
-func IntPow(b int, x int, q int) int {
+func IntPow(b int64, x int64, q int64) int64 {
 
-	var result int = 1
+	var result int64 = 1
 
-	for i := 0; i < x; i++ {
+	for i := int64(0); i < x; i++ {
 		result = result * b % q
 	}
 	return result
 }
 
 // Golang mod of a negative returns a negative, this returns the positive
-func Mod(a int, b int) int {
+func Mod(a int64, b int64) int64 {
 	return ((a % b) + b) % b
 }
 
 // Adds and subtracts inputs in place:
 // a+b -> a, a-b -> b
-func AddSub(a *int, b *int) {
+func AddSub(a *int64, b *int64) {
 	temp := *b
 	*b = *a - *b
 	*a = *a + temp
 }
 
 // Reverse the bits of an int up to a bound
-func Bit_Rev(i int, bound int) int {
-	var irev int = 0
+func Bit_Rev(i int64, bound int64) int64 {
+	var irev int64 = 0
 	for i = i | bound; i > 1; i = i >> 1 {
 		irev = (irev << 1) | (i & 1)
 	}
@@ -62,7 +62,7 @@ func Bit_Rev(i int, bound int) int {
 
 // A quick and dirty keygen using GO's math randomness library
 // returns 2d string slice length M x (n*d)
-func tempKeyGen(m int, n int, d int, q int) [][]string {
+func tempKeyGen(m int64, n int64, d int64, q int64) [][]string {
 	seed, _ := strconv.Atoi("MiNNT")
 	rand.Seed(int64(seed))
 
@@ -79,7 +79,7 @@ func tempKeyGen(m int, n int, d int, q int) [][]string {
 }
 
 // Writes a key gnerated by tempKeyGen() to a file
-func GenWriteKey(m int, n int, d int, q int, filepath string) {
+func GenWriteKey(m int64, n int64, d int64, q int64, filepath string) {
 
 	key := tempKeyGen(m, n, d, q)
 
@@ -90,14 +90,14 @@ func GenWriteKey(m int, n int, d int, q int, filepath string) {
 }
 
 // Fake for now
-func SIMD_AddSub(vec1 *[8]int, vec2 *[8]int) {
-	for i := 0; i < 8; i++ {
-		AddSub(&vec1[i], &vec2[i])
-	}
-}
+// func SIMD_AddSub(vec1 *[8]int64, vec2 *[8]int64) {
+// 	for i := 0; i < 8; i++ {
+// 		AddSub(&vec1[i], &vec2[i])
+// 	}
+// }
 
 // Fake for now
-func SIMD_Shift(vec *[8]int, shift int) {
+func SIMD_Shift(vec *[8]int64, shift int64) {
 
 	for i := 0; i < 8; i++ {
 		vec[i] = vec[i] << shift
@@ -106,9 +106,9 @@ func SIMD_Shift(vec *[8]int, shift int) {
 }
 
 // Fake for now
-func SIMD_Mult(vec1 [8]int, vec2 [8]int) [8]int {
+func SIMD_Mult(vec1 [8]int64, vec2 [8]int64) [8]int64 {
 
-	var product [8]int
+	var product [8]int64
 	for i := 0; i < 8; i++ {
 		product[i] = vec1[i] * vec2[i]
 

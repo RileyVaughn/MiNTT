@@ -10,10 +10,10 @@ func MinNTT128(input [ndiv8 * m]byte) [864]byte {
 
 }
 
-func ncc(input [ndiv8]byte) [n]int {
+func ncc(input [ndiv8]byte) [n]int64 {
 
-	var intermed [ndiv8][8]int
-	for k := 0; k < ndiv8; k++ {
+	var intermed [ndiv8][8]int64
+	for k := int64(0); k < ndiv8; k++ {
 		intermed[k] = util.SIMD_Mult(NTT8_TABLE[input[k]], MULT_TABLE[k])
 
 	}
@@ -74,10 +74,10 @@ func ncc(input [ndiv8]byte) [n]int {
 	util.SIMD_AddSub(&intermed[6], &intermed[14])
 	util.SIMD_AddSub(&intermed[7], &intermed[15])
 
-	var out [n]int
+	var out [n]int64
 
-	for i := 0; i < ndiv8; i++ {
-		for j := 0; j < 8; j++ {
+	for i := int64(0); i < ndiv8; i++ {
+		for j := int64(0); j < 8; j++ {
 			out[8*i+j] = util.Mod(intermed[i][j], q)
 		}
 	}
@@ -85,37 +85,37 @@ func ncc(input [ndiv8]byte) [n]int {
 	return out
 }
 
-func ntt_sum(input [ndiv8 * m]byte) [N]int {
+func ntt_sum(input [ndiv8 * m]byte) [N]int64 {
 
-	var solution [N]int
-	for i := 0; i < m; i++ {
+	var solution [N]int64
+	for i := int64(0); i < m; i++ {
 		x := ncc(sepInput(input, i))
-		for j := 0; j < d; j++ {
-			for k := 0; k < n; k++ {
+		for j := int64(0); j < d; j++ {
+			for k := int64(0); k < n; k++ {
 				solution[n*j+k] = solution[n*j+k] + x[k]*A[i][n*j+k]
 			}
 
 		}
 	}
-	for i := 0; i < N; i++ {
+	for i := int64(0); i < N; i++ {
 		solution[i] = util.Mod(solution[i], q)
 	}
 
 	return solution
 }
 
-//Assume values have already been ModQ'd
-func ChangeBase(val [N]int) [864]byte {
+// Assume values have already been ModQ'd
+func ChangeBase(val [N]int64) [864]byte {
 
 	var output [864]byte
 
-	for i := 0; i < N; i++ {
+	for i := int64(0); i < N; i++ {
 		output[i] = byte(val[i])
 		val[i] = val[i] >> 8
 	}
 
-	for i := 0; i < Ndiv8; i++ {
-		for k := 0; k < 8; k++ {
+	for i := int64(0); i < Ndiv8; i++ {
+		for k := int64(0); k < 8; k++ {
 			output[N+i] = output[N+i] | byte(val[8*i+k]>>k)
 		}
 	}
@@ -124,11 +124,11 @@ func ChangeBase(val [N]int) [864]byte {
 }
 
 // Seperates out an ndiv8 length byte array from input
-func sepInput(input [ndiv8 * m]byte, i int) [ndiv8]byte {
+func sepInput(input [ndiv8 * m]byte, i int64) [ndiv8]byte {
 
 	var sec [ndiv8]byte
 
-	for j := 0; j < ndiv8; j++ {
+	for j := int64(0); j < ndiv8; j++ {
 		sec[j] = input[ndiv8*i+j]
 	}
 
