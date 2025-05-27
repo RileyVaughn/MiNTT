@@ -5,15 +5,15 @@ import (
 	"math/rand"
 	"strconv"
 
-	m128 "github.com/RileyVaughn/MiNTT/hash/MiNTT128"
-	m64 "github.com/RileyVaughn/MiNTT/hash/MiNTT64"
-	m8 "github.com/RileyVaughn/MiNTT/hash/MiNTT8"
+	m128 "github.com/RileyVaughn/MiNTT/hash/int64/MiNTT128"
+	m64 "github.com/RileyVaughn/MiNTT/hash/int64/MiNTT64"
+	m8 "github.com/RileyVaughn/MiNTT/hash/int64/MiNTT8"
 )
 
 func main() {
-	RunM128()
+	// RunM128()
 	// RunM64()
-	// RunM8()
+	RunM8()
 
 }
 

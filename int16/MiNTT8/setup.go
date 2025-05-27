@@ -1,0 +1,88 @@
+package MiNTT8
+
+import (
+	"encoding/csv"
+	"errors"
+	"fmt"
+	"os"
+	"strconv"
+
+	util "github.com/RileyVaughn/MiNTT/hash/util"
+)
+
+const KEY_PATH string = "./MiNTT8/key.csv"
+
+// Assumes key is eactly M x (n*d)
+func ReadKey(filepath string) [m][d * n]int64 {
+
+	var key [m][d * n]int64
+
+	fi, _ := os.Open(filepath)
+	r := csv.NewReader(fi)
+	keystring, _ := r.ReadAll()
+
+	for i := range keystring {
+		for j := range keystring[i] {
+			num, _ := strconv.Atoi(keystring[i][j])
+			key[i][j] = int64(num)
+		}
+	}
+	return key
+}
+
+func NTT8Table() [256][8]int64 {
+
+	var table [256][8]int64
+	var ncc8Mat = gen8NCCMat(2)
+	for i := 0; i < 256; i++ {
+		var product [8]int64
+		vec := bit2ByteTable[i]
+		for j := 0; j < 8; j++ {
+			for k := 0; k < 8; k++ {
+				product[j] = util.Mod(product[j]+ncc8Mat[j][k]*vec[k], q)
+			}
+		}
+		table[i] = product
+	}
+
+	return table
+}
+
+func gen8NCCMat(omega int64) [8][8]int64 {
+
+	var ncc_mat [8][8]int64
+	for i := int64(0); i < 8; i++ {
+		for k := int64(0); k < 8; k++ {
+			if (k*(2*i+1))%(2*8) <= 8 {
+				ncc_mat[i][k] = util.IntPow(omega, (k*(2*i+1))%8, q)
+			} else {
+				ncc_mat[i][k] = -1 * util.IntPow(omega, ((k*(2*i+1))%8), q)
+			}
+		}
+
+	}
+	var br_ncc_mat [8][8]int64
+	var br_arr [8]int64 = [8]int64{0, 4, 2, 6, 1, 5, 3, 7}
+	for i := int64(0); i < 8; i++ {
+		for j := int64(0); j < 8; j++ {
+			br_ncc_mat[j][br_arr[i]] = ncc_mat[j][i]
+		}
+
+	}
+	return br_ncc_mat
+}
+
+func SetupM8() {
+
+	if _, err := os.Stat(KEY_PATH); errors.Is(err, os.ErrNotExist) {
+		util.GenWriteKey(m, n, d, q, KEY_PATH)
+	}
+
+	A = ReadKey(KEY_PATH)
+
+	bit2ByteTable = util.BitsFromByteTable()
+
+	NTT8_TABLE = NTT8Table()
+
+	fmt.Println("Setup Finished")
+}
