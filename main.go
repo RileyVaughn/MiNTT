@@ -15,7 +15,10 @@ func main() {
 	// RunM128()
 	// RunM64()
 	// RunM8()
-	util.C_SIMD_AddSub()
+	var vec1 [8]int64 = [8]int64{1, 2, 3, 4, 5, 6, 7, 8}
+	var vec2 [8]int64 = [8]int64{9, 10, 11, 12, 13, 14, 15, 16}
+	util.C_SIMD_AddSub(&vec1, &vec2)
+	fmt.Println(vec1, vec2)
 }
 
 func RunM8() {
