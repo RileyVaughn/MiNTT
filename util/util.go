@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-//Creates a table which is indexed by a byte and returns a vector of 8 "bits":
+// Creates a table which is indexed by a byte and returns a vector of 8 "bits":
 // BitsFromByteTable()[5]->[0][0][0][0][0][1][0][1]
 func BitsFromByteTable() [256][8]int {
 
@@ -27,7 +27,7 @@ func BitsFromByteTable() [256][8]int {
 	return table
 }
 
-//Integer b to the power of postive Integer x, mod q
+// Integer b to the power of postive Integer x, mod q
 func IntPow(b int, x int, q int) int {
 
 	var result int = 1
@@ -38,12 +38,12 @@ func IntPow(b int, x int, q int) int {
 	return result
 }
 
-//Golang mod of a negative returns a negative, this returns the positive
+// Golang mod of a negative returns a negative, this returns the positive
 func Mod(a int, b int) int {
 	return ((a % b) + b) % b
 }
 
-//Adds and subtracts inputs in place:
+// Adds and subtracts inputs in place:
 // a+b -> a, a-b -> b
 func AddSub(a *int, b *int) {
 	temp := *b
@@ -51,7 +51,7 @@ func AddSub(a *int, b *int) {
 	*a = *a + temp
 }
 
-//Reverse the bits of an int up to a bound
+// Reverse the bits of an int up to a bound
 func Bit_Rev(i int, bound int) int {
 	var irev int = 0
 	for i = i | bound; i > 1; i = i >> 1 {
@@ -60,8 +60,8 @@ func Bit_Rev(i int, bound int) int {
 	return irev
 }
 
-//A quick and dirty keygen using GO's math randomness library
-//returns 2d string slice length M x (n*d)
+// A quick and dirty keygen using GO's math randomness library
+// returns 2d string slice length M x (n*d)
 func tempKeyGen(m int, n int, d int, q int) [][]string {
 	seed, _ := strconv.Atoi("MiNNT")
 	rand.Seed(int64(seed))
@@ -78,7 +78,7 @@ func tempKeyGen(m int, n int, d int, q int) [][]string {
 	return key
 }
 
-//Writes a key gnerated by tempKeyGen() to a file
+// Writes a key gnerated by tempKeyGen() to a file
 func GenWriteKey(m int, n int, d int, q int, filepath string) {
 
 	key := tempKeyGen(m, n, d, q)
@@ -89,14 +89,14 @@ func GenWriteKey(m int, n int, d int, q int, filepath string) {
 
 }
 
-//Fake for now
+// Fake for now
 func SIMD_AddSub(vec1 *[8]int, vec2 *[8]int) {
 	for i := 0; i < 8; i++ {
 		AddSub(&vec1[i], &vec2[i])
 	}
 }
 
-//Fake for now
+// Fake for now
 func SIMD_Shift(vec *[8]int, shift int) {
 
 	for i := 0; i < 8; i++ {
@@ -105,7 +105,7 @@ func SIMD_Shift(vec *[8]int, shift int) {
 
 }
 
-//Fake for now
+// Fake for now
 func SIMD_Mult(vec1 [8]int, vec2 [8]int) [8]int {
 
 	var product [8]int

@@ -8,13 +8,14 @@ import (
 	m128 "github.com/RileyVaughn/MiNTT/hash/MiNTT128"
 	m64 "github.com/RileyVaughn/MiNTT/hash/MiNTT64"
 	m8 "github.com/RileyVaughn/MiNTT/hash/MiNTT8"
+	"github.com/RileyVaughn/MiNTT/hash/util"
 )
 
 func main() {
-	RunM128()
-	RunM64()
-	RunM8()
-
+	// RunM128()
+	// RunM64()
+	// RunM8()
+	util.C_SIMD_AddSub()
 }
 
 func RunM8() {
