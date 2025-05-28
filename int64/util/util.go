@@ -81,6 +81,7 @@ func GenWriteKey(m int64, n int64, d int64, q int64, filepath string) {
 
 }
 
+// A fake version of simd add/sub that does the addsub function on each element one at a time.
 func Fake_SIMD_AddSub(vec1 *[8]int64, vec2 *[8]int64) {
 	for i := 0; i < 8; i++ {
 		AddSub(&vec1[i], &vec2[i])
@@ -95,7 +96,7 @@ func AddSub(a *int64, b *int64) {
 	*a = *a + temp
 }
 
-// Fake for now
+// A fake version of a SIMD shift that just shifts each element one at a time
 func Fake_SIMD_Shift(vec *[8]int64, shift int64) {
 
 	for i := 0; i < 8; i++ {
@@ -104,7 +105,8 @@ func Fake_SIMD_Shift(vec *[8]int64, shift int64) {
 
 }
 
-// Fake for now
+// A fake version of SIMD mult that jsut multiplies each element one at a time.
+// Normal AVX2 instruction set ddoesnt support multiplying vectors of 64 bit nums.
 func Fake_SIMD_Mult(vec1 [8]int64, vec2 [8]int64) [8]int64 {
 
 	var product [8]int64
