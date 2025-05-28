@@ -24,17 +24,17 @@ func ncc(input [ndiv8]byte) [n]int64 {
 	util.SIMD_AddSub(&intermed[4], &intermed[5])
 	util.SIMD_AddSub(&intermed[6], &intermed[7])
 
-	util.Fake_SIMD_Shift(&intermed[3], 4)
-	util.Fake_SIMD_Shift(&intermed[7], 4)
+	util.SIMD_Shift(&intermed[3], 4)
+	util.SIMD_Shift(&intermed[7], 4)
 
 	util.SIMD_AddSub(&intermed[0], &intermed[2])
 	util.SIMD_AddSub(&intermed[1], &intermed[3])
 	util.SIMD_AddSub(&intermed[4], &intermed[6])
 	util.SIMD_AddSub(&intermed[5], &intermed[7])
 
-	util.Fake_SIMD_Shift(&intermed[5], 2)
-	util.Fake_SIMD_Shift(&intermed[6], 4)
-	util.Fake_SIMD_Shift(&intermed[7], 6)
+	util.SIMD_Shift(&intermed[5], 2)
+	util.SIMD_Shift(&intermed[6], 4)
+	util.SIMD_Shift(&intermed[7], 6)
 
 	util.SIMD_AddSub(&intermed[0], &intermed[4])
 	util.SIMD_AddSub(&intermed[1], &intermed[5])
