@@ -5,7 +5,7 @@ package util
 #include <stdint.h>
 #include <immintrin.h>
 
-void add_sub_simd(int64_t* vec1, int64_t* vec2){
+void add_sub_simd(int16_t* vec1, int16_t* vec2){
 
 	__m256i reg1 = _mm256_loadu_si256((__m256i *)vec1);
 	__m256i reg2 = _mm256_loadu_si256((__m256i *)vec2);
@@ -31,7 +31,7 @@ import "C"
 import "unsafe"
 
 //Adds and subtracts vec1 and vec2 using SIMD, and returns the sum/difference in place resp.
-func SIMD_AddSub(vec1 *[8]int64, vec2 *[8]int64) {
+func SIMD_AddSub(vec1 *[8]int16, vec2 *[8]int16) {
 
-	C.add_sub_simd((*C.int64_t)(unsafe.Pointer(&vec1[0])), (*C.int64_t)(unsafe.Pointer(&vec2[0])))
+	C.add_sub_simd((*C.int16_t)(unsafe.Pointer(&vec1[0])), (*C.int16_t)(unsafe.Pointer(&vec2[0])))
 }

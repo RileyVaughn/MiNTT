@@ -1,14 +1,14 @@
 package MiNTT128
 
-const d int64 = 6
-const n int64 = 128
-const N int64 = n * d
-const m int64 = 108
-const q int64 = 257
-const ndiv8 int64 = n / 8
-const Ndiv8 int64 = N / 8
+const d int16 = 6
+const n int16 = 128
+const N int16 = n * d
+const m int16 = 108
+const q int16 = 257
+const ndiv8 int16 = n / 8
+const Ndiv8 int16 = N / 8
 
-var A [m][d * n]int64
+var A [m][d * n]int16
 
-var NTT8_TABLE [256][8]int64
-var MULT_TABLE [16][8]int64
+var NTT8_TABLE [256][8]int16
+var MULT_TABLE [16][8]int16

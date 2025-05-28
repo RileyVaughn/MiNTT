@@ -9,11 +9,11 @@ import (
 
 // Creates a table which is indexed by a byte and returns a vector of 8 "bits":
 // BitsFromByteTable()[5]->[0][0][0][0][0][1][0][1]
-func BitsFromByteTable() [256][8]int64 {
+func BitsFromByteTable() [256][8]int16 {
 
-	var table [256][8]int64
+	var table [256][8]int16
 
-	for i := int64(0); i < 256; i++ {
+	for i := int16(0); i < 256; i++ {
 		table[i][0] = i % 2
 		table[i][1] = (i >> 1) % 2
 		table[i][2] = (i >> 2) % 2
@@ -28,24 +28,24 @@ func BitsFromByteTable() [256][8]int64 {
 }
 
 // Integer b to the power of postive Integer x, mod q
-func IntPow(b int64, x int64, q int64) int64 {
+func IntPow(b int16, x int16, q int16) int16 {
 
-	var result int64 = 1
+	var result int16 = 1
 
-	for i := int64(0); i < x; i++ {
+	for i := int16(0); i < x; i++ {
 		result = result * b % q
 	}
 	return result
 }
 
 // Golang mod of a negative returns a negative, this returns the positive
-func Mod(a int64, b int64) int64 {
+func Mod(a int16, b int16) int16 {
 	return ((a % b) + b) % b
 }
 
 // Reverse the bits of an int up to a bound
-func Bit_Rev(i int64, bound int64) int64 {
-	var irev int64 = 0
+func Bit_Rev(i int16, bound int16) int16 {
+	var irev int16 = 0
 	for i = i | bound; i > 1; i = i >> 1 {
 		irev = (irev << 1) | (i & 1)
 	}
@@ -54,7 +54,7 @@ func Bit_Rev(i int64, bound int64) int64 {
 
 // A quick and dirty keygen using GO's math randomness library
 // returns 2d string slice length M x (n*d)
-func tempKeyGen(m int64, n int64, d int64, q int64) [][]string {
+func tempKeyGen(m int16, n int16, d int16, q int16) [][]string {
 	seed, _ := strconv.Atoi("MiNNT")
 	rand.Seed(int64(seed))
 
@@ -71,7 +71,7 @@ func tempKeyGen(m int64, n int64, d int64, q int64) [][]string {
 }
 
 // Writes a key gnerated by tempKeyGen() to a file
-func GenWriteKey(m int64, n int64, d int64, q int64, filepath string) {
+func GenWriteKey(m int16, n int16, d int16, q int16, filepath string) {
 
 	key := tempKeyGen(m, n, d, q)
 
@@ -81,7 +81,7 @@ func GenWriteKey(m int64, n int64, d int64, q int64, filepath string) {
 
 }
 
-func Fake_SIMD_AddSub(vec1 *[8]int64, vec2 *[8]int64) {
+func Fake_SIMD_AddSub(vec1 *[8]int16, vec2 *[8]int16) {
 	for i := 0; i < 8; i++ {
 		AddSub(&vec1[i], &vec2[i])
 	}
@@ -89,14 +89,14 @@ func Fake_SIMD_AddSub(vec1 *[8]int64, vec2 *[8]int64) {
 
 // Adds and subtracts inputs in place:
 // a+b -> a, a-b -> b
-func AddSub(a *int64, b *int64) {
+func AddSub(a *int16, b *int16) {
 	temp := *b
 	*b = *a - *b
 	*a = *a + temp
 }
 
 // Fake for now
-func Fake_SIMD_Shift(vec *[8]int64, shift int64) {
+func Fake_SIMD_Shift(vec *[8]int16, shift int16) {
 
 	for i := 0; i < 8; i++ {
 		vec[i] = vec[i] << shift
@@ -105,9 +105,9 @@ func Fake_SIMD_Shift(vec *[8]int64, shift int64) {
 }
 
 // Fake for now
-func Fake_SIMD_Mult(vec1 [8]int64, vec2 [8]int64) [8]int64 {
+func Fake_SIMD_Mult(vec1 [8]int16, vec2 [8]int16) [8]int16 {
 
-	var product [8]int64
+	var product [8]int16
 	for i := 0; i < 8; i++ {
 		product[i] = vec1[i] * vec2[i]
 

@@ -10,6 +10,7 @@ func MinNTT128(input [ndiv8 * m]byte) [864]byte {
 
 }
 
+// The Negacylic Convolution computed efficiently
 func ncc(input [ndiv8]byte) [n]int64 {
 
 	var intermed [ndiv8][8]int64
@@ -85,6 +86,8 @@ func ncc(input [ndiv8]byte) [n]int64 {
 	return out
 }
 
+// The Number Theortic Transofrm. (Does not include inversion back "time" domain)
+// Cannot effectivley utilize simd for this die to AVx2 not having instrucitons for multiplying 64 int bit nums
 func ntt_sum(input [ndiv8 * m]byte) [N]int64 {
 
 	var solution [N]int64
