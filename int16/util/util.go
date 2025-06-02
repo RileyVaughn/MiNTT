@@ -2,6 +2,7 @@ package util
 
 import (
 	"encoding/csv"
+	"math"
 	"math/rand"
 	"os"
 	"strconv"
@@ -81,21 +82,22 @@ func GenWriteKey(m int16, n int16, d int16, q int16, filepath string) {
 
 }
 
+// A fake version of simd add/sub that does the addsub function on each element one at a time.
 func Fake_SIMD_AddSub(vec1 *[8]int16, vec2 *[8]int16) {
 	for i := 0; i < 8; i++ {
-		AddSub(&vec1[i], &vec2[i])
+		addSub(&vec1[i], &vec2[i])
 	}
 }
 
 // Adds and subtracts inputs in place:
 // a+b -> a, a-b -> b
-func AddSub(a *int16, b *int16) {
+func addSub(a *int16, b *int16) {
 	temp := *b
 	*b = *a - *b
 	*a = *a + temp
 }
 
-// Fake for now
+// A fake version of a SIMD shift that just shifts each element one at a time
 func Fake_SIMD_Shift(vec *[8]int16, shift int16) {
 
 	for i := 0; i < 8; i++ {
@@ -104,7 +106,7 @@ func Fake_SIMD_Shift(vec *[8]int16, shift int16) {
 
 }
 
-// Fake for now
+// A fake version of SIMD mult that jsut multiplies each element one at a time.
 func Fake_SIMD_Mult(vec1 [8]int16, vec2 [8]int16) [8]int16 {
 
 	var product [8]int16
@@ -113,4 +115,26 @@ func Fake_SIMD_Mult(vec1 [8]int16, vec2 [8]int16) [8]int16 {
 
 	}
 	return product
+}
+
+// A fake version of SIMD mod. Computes the modulo q one by one.
+func Fake_SIMD_Mod(vec *[8]int16, mod int16) {
+
+	for i := 0; i < 8; i++ {
+		vec[i] = Mod(vec[i], mod)
+	}
+
+}
+
+// Centers val such that |val| < q/2
+func Center(val int16, q int16) int16 {
+
+	val = Mod(val, q)
+	floor := int16(math.Floor(float64(q) / 2))
+	if val > floor {
+		val = val - q
+	}
+
+	return val
+
 }
