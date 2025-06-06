@@ -44,8 +44,6 @@ void add_mult_simd_16(int16_t* vec1, int16_t* vec2, int16_t* vec3){
 
 }
 
-
-
 void q_reduce_16(int16_t* val){
 	 *val = (*val & 255) - (*val >> 8);
 }
@@ -55,7 +53,6 @@ void mod_257_16(int16_t* val) {
 	q_reduce_16(val);
   	*val = *val ^ (((*val == -1)*-1) & (-257));
 }
-
 
 void simd_q_reduce_16(int16_t* vec1){
 	const __m128i TFF = _mm_set1_epi16(255);
