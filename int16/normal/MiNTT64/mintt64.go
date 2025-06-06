@@ -10,13 +10,13 @@ func MinNTT64(input [ndiv8 * m]byte) [864]byte {
 
 }
 
-func ncc(input [ndiv8]byte) [n]int16 {
+func ncc(input [ndiv8]byte) [ndiv8][8]int16 {
 
 	var intermed [ndiv8][8]int16
 
 	for i := int16(0); i < ndiv8; i++ {
 		intermed[i] = util.Fake_SIMD_Mult(NTT8_TABLE[input[i]], MULT_TABLE[i])
-		util.Fake_SIMD_Mod(&intermed[i], q)
+		util.Fake_SIMD_Mod(&intermed[i])
 	}
 
 	util.Fake_SIMD_AddSub(&intermed[0], &intermed[1])
@@ -27,8 +27,8 @@ func ncc(input [ndiv8]byte) [n]int16 {
 	util.Fake_SIMD_Shift(&intermed[3], 4)
 	util.Fake_SIMD_Shift(&intermed[7], 4)
 
-	util.Fake_SIMD_Mod(&intermed[3], q)
-	util.Fake_SIMD_Mod(&intermed[7], q)
+	util.Fake_SIMD_Mod(&intermed[3])
+	util.Fake_SIMD_Mod(&intermed[7])
 
 	util.Fake_SIMD_AddSub(&intermed[0], &intermed[2])
 	util.Fake_SIMD_AddSub(&intermed[1], &intermed[3])
@@ -39,58 +39,48 @@ func ncc(input [ndiv8]byte) [n]int16 {
 	util.Fake_SIMD_Shift(&intermed[6], 4)
 	util.Fake_SIMD_Shift(&intermed[7], 6)
 
-	util.Fake_SIMD_Mod(&intermed[5], q)
-	util.Fake_SIMD_Mod(&intermed[6], q)
-	util.Fake_SIMD_Mod(&intermed[7], q)
+	util.Fake_SIMD_Mod(&intermed[5])
+	util.Fake_SIMD_Mod(&intermed[6])
+	util.Fake_SIMD_Mod(&intermed[7])
 
 	util.Fake_SIMD_AddSub(&intermed[0], &intermed[4])
 	util.Fake_SIMD_AddSub(&intermed[1], &intermed[5])
 	util.Fake_SIMD_AddSub(&intermed[2], &intermed[6])
 	util.Fake_SIMD_AddSub(&intermed[3], &intermed[7])
 
-	var out [n]int16
-
-	for i := int16(0); i < ndiv8; i++ {
-		for j := int16(0); j < 8; j++ {
-			out[8*i+j] = intermed[i][j]
-		}
-	}
-
-	return out
+	return intermed
 }
 
-func ntt_sum(input [ndiv8 * m]byte) [N]int16 {
+func ntt_sum(input [ndiv8 * m]byte) [d][ndiv8][8]int16 {
 
-	var solution [N]int16
+	var solution [d][ndiv8][8]int16
 	for i := int16(0); i < m; i++ {
 		x := ncc(sepInput(input, i))
 		for j := int16(0); j < d; j++ {
-			for k := int16(0); k < n; k++ {
-				solution[n*j+k] = solution[n*j+k] + x[k]*A[i][n*j+k]
+			for k := int16(0); k < ndiv8; k++ {
+				util.Fake_SIMD_Add_Mult(&solution[j][k], &x[k], &A[i][j][k])
 			}
 
 		}
-	}
-	for i := int16(0); i < N; i++ {
-		solution[i] = util.Mod(solution[i], q)
 	}
 
 	return solution
 }
 
-// Assume values have already been ModQ'd
-func ChangeBase(val [N]int16) [864]byte {
+// Assumes MOD has not yet occured
+// Changes base from  257 to 256, moves the extra bits to the end (<first N*8 256 bits>N + <N end bits> ndiv8*d)
+func ChangeBase(val [d][ndiv8][8]int16) [OUT_SIZE]byte {
 
-	var output [864]byte
+	var output [OUT_SIZE]byte
 
-	for i := int16(0); i < N; i++ {
-		output[i] = byte(val[i])
-		val[i] = val[i] >> 8
-	}
-
-	for i := int16(0); i < Ndiv8; i++ {
-		for k := int16(0); k < 8; k++ {
-			output[N+i] = output[N+i] | byte(val[8*i+k]>>k)
+	for i := int16(0); i < d; i++ {
+		for j := int16(0); j < ndiv8; j++ {
+			util.Fake_SIMD_Mod(&val[i][j])
+			for k := int16(0); k < 8; k++ {
+				output[i*n+j*8+k] = byte(val[i][j][k])
+				val[i][j][k] = val[i][j][k] >> 8
+				output[N+i*ndiv8+j] = output[N+i*ndiv8+j] | byte(val[i][j][k]>>k)
+			}
 		}
 	}
 

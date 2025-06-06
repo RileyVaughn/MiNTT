@@ -10,39 +10,34 @@ func MinNTT8(input [ndiv8 * m]byte) [864]byte {
 
 }
 
-func ntt_sum(input [ndiv8 * m]byte) [N]int16 {
+func ntt_sum(input [ndiv8 * m]byte) [d][8]int16 {
 
-	var solution [N]int16
+	var solution [d][8]int16
 	for i := int16(0); i < m; i++ {
 		x := NTT8_TABLE[input[i]]
 		for j := int16(0); j < d; j++ {
-			for k := int16(0); k < n; k++ {
-				solution[n*j+k] = solution[n*j+k] + x[k]*A[i][n*j+k]
-			}
-
+			util.Fake_SIMD_Add_Mult(&solution[j], &x, &A[i][j][0])
 		}
-	}
-	for i := int16(0); i < N; i++ {
-		solution[i] = util.Mod(solution[i], q)
+
 	}
 
 	return solution
 }
 
-// Assume vaules haveaady been ModQ'd
-func ChangeBase(val [N]int16) [864]byte {
+// Assumes MOD has not yet occured
+// Changes base from  257 to 256, moves the extra bits to the end (<first N*8 256 bits>N + <N end bits> ndiv8*d)
+func ChangeBase(val [d][8]int16) [OUT_SIZE]byte {
 
-	var output [864]byte
+	var output [OUT_SIZE]byte
 
-	for i := int16(0); i < N; i++ {
-		output[i] = byte(val[i])
-		val[i] = val[i] >> 8
-	}
-
-	for i := int16(0); i < Ndiv8; i++ {
+	for i := int16(0); i < d; i++ {
+		util.Fake_SIMD_Mod(&val[i])
 		for k := int16(0); k < 8; k++ {
-			output[N+i] = output[N+i] | byte(val[8*i+k]>>k)
+			output[i*n+k] = byte(val[i][k])
+			val[i][k] = val[i][k] >> 8
+			output[N+i] = output[N+i] | byte(val[i][k]>>k)
 		}
+
 	}
 
 	return output

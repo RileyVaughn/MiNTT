@@ -13,7 +13,7 @@ import (
 const KEY_PATH string = "./MiNTT8/key.csv"
 
 // Assumes key is eactly M x (n*d)
-func ReadKey(filepath string) [m][d * n]int16 {
+func ReadKey(filepath string) [m][d][ndiv8][8]int16 {
 
 	var key [m][d * n]int16
 
@@ -27,7 +27,20 @@ func ReadKey(filepath string) [m][d * n]int16 {
 			key[i][j] = int16(num)
 		}
 	}
-	return key
+
+	// converts format
+	var simd_key [m][d][ndiv8][8]int16
+	for i := int16(0); i < m; i++ {
+		for j := int16(0); j < d; j++ {
+			for k := int16(0); k < ndiv8; k++ {
+				for l := int16(0); l < 8; l++ {
+					simd_key[i][j][k][l] = key[i][(n*j)+(8*k)+l]
+				}
+			}
+		}
+	}
+
+	return simd_key
 }
 
 func NTT8Table() [256][8]int16 {

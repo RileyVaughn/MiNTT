@@ -39,6 +39,7 @@ func IntPow(b int16, x int16, q int16) int16 {
 	return result
 }
 
+// Slow version
 // Golang mod of a negative returns a negative, this returns the positive
 func Mod(a int16, b int16) int16 {
 	return ((a % b) + b) % b
@@ -89,6 +90,15 @@ func Fake_SIMD_AddSub(vec1 *[8]int16, vec2 *[8]int16) {
 	}
 }
 
+// A fake version of Add mult. The sum is returned in position vec1
+func Fake_SIMD_Add_Mult(vec1 *[8]int16, vec2 *[8]int16, vec3 *[8]int16) {
+
+	for i := 0; i < 8; i++ {
+		vec1[i] = vec1[i] + (vec2[i] * vec3[i])
+	}
+
+}
+
 // Adds and subtracts inputs in place:
 // a+b -> a, a-b -> b
 func addSub(a *int16, b *int16) {
@@ -117,13 +127,17 @@ func Fake_SIMD_Mult(vec1 [8]int16, vec2 [8]int16) [8]int16 {
 	return product
 }
 
-// A fake version of SIMD mod. Computes the modulo q one by one.
-func Fake_SIMD_Mod(vec *[8]int16, mod int16) {
-
+// A fake version of SIMD mod. Computes the modulo 257 one by one.
+func Fake_SIMD_Mod(vec *[8]int16) {
 	for i := 0; i < 8; i++ {
-		vec[i] = Mod(vec[i], mod)
+		Mod_257(&vec[i])
 	}
+}
 
+func Fake_SIMD_Q_reduce(vec *[8]int16) {
+	for i := 0; i < 8; i++ {
+		Q_reduce(&vec[i])
+	}
 }
 
 // Centers val such that |val| < q/2

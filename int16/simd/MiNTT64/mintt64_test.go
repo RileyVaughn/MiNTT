@@ -37,7 +37,7 @@ func TestNCC(t *testing.T) {
 		}
 
 		for i := int16(0); i < n; i++ {
-			result[i] = util.Mod(result[i], q)
+			util.Mod_257(&result[i])
 		}
 
 		if result != want {
@@ -68,7 +68,7 @@ func NCCVecMult(omega int16, input [ndiv8]byte) [n]int16 {
 	}
 
 	for i := int16(0); i < n; i++ {
-		product[i] = util.Mod(product[i], q)
+		util.Mod_257(&product[i])
 	}
 
 	return product
