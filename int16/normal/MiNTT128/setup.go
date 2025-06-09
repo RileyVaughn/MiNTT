@@ -10,7 +10,7 @@ import (
 	util "github.com/RileyVaughn/MiNTT/hash/int16/util"
 )
 
-const KEY_PATH string = "./int16/simd/MiNTT128/key.csv"
+const KEY_PATH string = "./int16/normal/MiNTT128/key.csv"
 
 // Assumes key is eactly M x (n*d)
 func ReadKey(filepath string) [m][d][ndiv8][8]int16 {
