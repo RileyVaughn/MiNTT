@@ -7,7 +7,8 @@ const m int64 = 216
 const q int64 = 257
 const ndiv8 int64 = n / 8
 const Ndiv8 int64 = N / 8
+const OUT_SIZE int64 = N / 8 * 9 // assumes q=257
 
-var A [m][d * n]int64
+var A [m][d][ndiv8][8]int64
 var NTT8_TABLE [256][8]int64
 var MULT_TABLE [8][8]int64

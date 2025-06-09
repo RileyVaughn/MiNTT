@@ -28,9 +28,17 @@ func TestNCC(t *testing.T) {
 		}
 
 		want := NCCVecMult(27, input)
-		result := ncc(input)
+		out := ncc(input)
+
+		var result [n]int64
+		for i := 0; i < int(ndiv8); i++ {
+			for j := 0; j < 8; j++ {
+				result[8*i+j] = out[i][j]
+			}
+		}
+
 		for i := int64(0); i < n; i++ {
-			result[i] = util.Mod(result[i], q)
+			util.Mod_257(&result[i])
 		}
 
 		if result != want {

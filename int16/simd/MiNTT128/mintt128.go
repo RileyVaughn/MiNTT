@@ -101,14 +101,6 @@ func ncc(input [ndiv8]byte) [ndiv8][8]int16 {
 	util.SIMD_AddSub(&intermed[6], &intermed[14])
 	util.SIMD_AddSub(&intermed[7], &intermed[15])
 
-	// var out [n]int16
-
-	// for i := int16(0); i < ndiv8; i++ {
-	// 	for j := int16(0); j < 8; j++ {
-	// 		out[8*i+j] = intermed[i][j]
-	// 	}
-	// }
-
 	return intermed
 }
 

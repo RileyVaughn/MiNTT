@@ -116,3 +116,16 @@ func Fake_SIMD_Mult(vec1 [8]int64, vec2 [8]int64) [8]int64 {
 	}
 	return product
 }
+
+// A fake version of SIMD mod. Computes the modulo 257 one by one.
+func Fake_SIMD_Mod(vec *[8]int64) {
+	for i := 0; i < 8; i++ {
+		Mod_257(&vec[i])
+	}
+}
+
+func Fake_SIMD_Q_reduce(vec *[8]int64) {
+	for i := 0; i < 8; i++ {
+		Q_reduce(&vec[i])
+	}
+}

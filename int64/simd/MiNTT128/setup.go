@@ -13,7 +13,7 @@ import (
 const KEY_PATH string = "./int64/simd/MiNTT128/key.csv"
 
 // Assumes key is eactly M x (n*d)
-func ReadKey(filepath string) [m][d * n]int64 {
+func ReadKey(filepath string) [m][d][ndiv8][8]int64 {
 
 	var key [m][d * n]int64
 
@@ -27,7 +27,20 @@ func ReadKey(filepath string) [m][d * n]int64 {
 			key[i][j] = int64(num)
 		}
 	}
-	return key
+
+	// converts format
+	var simd_key [m][d][ndiv8][8]int64
+	for i := int64(0); i < m; i++ {
+		for j := int64(0); j < d; j++ {
+			for k := int64(0); k < ndiv8; k++ {
+				for l := int64(0); l < 8; l++ {
+					simd_key[i][j][k][l] = key[i][(n*j)+(8*k)+l]
+				}
+			}
+		}
+	}
+
+	return simd_key
 }
 
 func NTT8Table(omega int64) [256][8]int64 {

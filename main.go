@@ -19,20 +19,21 @@ func main() {
 	for i := 0; i < N; i++ {
 		var init [8]int16
 		var init2 [8]int16
-		var init3 [8]int16
+		var save [8]int16
+
 		for j := 0; j < 8; j++ {
-			init[j] = int16(rand.Intn(65536) - 32768)
-			init2[j] = init[j]
-			init3[j] = util.Mod(init[j], 257)
+			init[j] = int16(rand.Int63())
+			save[j] = init[j]
+			init2[j] = util.Mod(init[j], 257)
+
 			util.Mod_257(&init[j])
 
 		}
-		util.SIMD_Mod_257(&init2)
 
-		if init != init2 || init2 != init3 {
-			fmt.Println(init, init2, init3)
+		if init != init2 {
+			fmt.Println(init, init2)
 		}
-		fmt.Println(init, init2, init3)
+		fmt.Println(save, init, init2)
 	}
 
 }
