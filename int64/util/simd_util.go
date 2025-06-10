@@ -1,7 +1,7 @@
 package util
 
 /*
-#cgo CFLAGS: -mavx2 -mavx512f --mavx512bw -mavx512dq -mavx512vl
+#cgo CFLAGS: -mavx2 -mavx512f  -mavx512dq -mavx512vl
 #include <stdint.h>
 #include <immintrin.h>
 
@@ -58,6 +58,13 @@ void q_reduce_64(int64_t* val){
 void mod_257_64(int64_t* val) {
 	q_reduce_64(val);
 	q_reduce_64(val);
+	q_reduce_64(val);
+	q_reduce_64(val);
+	q_reduce_64(val);
+	q_reduce_64(val);
+	q_reduce_64(val);
+	q_reduce_64(val);
+
   	*val = *val ^ (((*val == -1)*-1) & (-257));
 }
 
@@ -78,6 +85,12 @@ void simd_mod_257_64(int64_t* vec1){
 	const __m512i NEG_ONE = _mm512_set1_epi64(-1);
 	const __m512i NEG_TFS = _mm512_set1_epi64(-257);
 
+	simd_q_reduce_64(vec1);
+	simd_q_reduce_64(vec1);
+	simd_q_reduce_64(vec1);
+	simd_q_reduce_64(vec1);
+	simd_q_reduce_64(vec1);
+	simd_q_reduce_64(vec1);
 	simd_q_reduce_64(vec1);
 	simd_q_reduce_64(vec1);
 
