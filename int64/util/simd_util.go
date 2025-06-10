@@ -1,7 +1,7 @@
 package util
 
 /*
-#cgo CFLAGS: -mavx2
+#cgo CFLAGS: -mavx2 -mavx512f -mavx512bw
 #include <stdint.h>
 #include <immintrin.h>
 

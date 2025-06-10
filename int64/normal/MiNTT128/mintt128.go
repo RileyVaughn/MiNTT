@@ -84,7 +84,7 @@ func ntt_sum(input [ndiv8 * m]byte) [d][ndiv8][8]int64 {
 		x := ncc(sepInput(input, i))
 		for j := int64(0); j < d; j++ {
 			for k := int64(0); k < ndiv8; k++ {
-				util.SIMD_Add_Mult(&solution[j][k], &x[k], &A[i][j][k])
+				util.Fake_SIMD_Add_Mult(&solution[j][k], &x[k], &A[i][j][k])
 			}
 
 		}
@@ -101,7 +101,7 @@ func ChangeBase(val [d][ndiv8][8]int64) [OUT_SIZE]byte {
 
 	for i := int64(0); i < d; i++ {
 		for j := int64(0); j < ndiv8; j++ {
-			util.SIMD_Mod_257(&val[i][j])
+			util.Fake_SIMD_Mod(&val[i][j])
 			for k := int64(0); k < 8; k++ {
 				output[i*n+j*8+k] = byte(val[i][j][k])
 				val[i][j][k] = val[i][j][k] >> 8

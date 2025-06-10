@@ -96,6 +96,15 @@ func addSub(a *int64, b *int64) {
 	*a = *a + temp
 }
 
+// A fake version of Add mult. The sum is returned in position vec1
+func Fake_SIMD_Add_Mult(vec1 *[8]int64, vec2 *[8]int64, vec3 *[8]int64) {
+
+	for i := 0; i < 8; i++ {
+		vec1[i] = vec1[i] + (vec2[i] * vec3[i])
+	}
+
+}
+
 // A fake version of a SIMD shift that just shifts each element one at a time
 func Fake_SIMD_Shift(vec *[8]int64, shift int64) {
 
