@@ -29,8 +29,8 @@ func main() {
 
 	Setup()
 
-	TestAll()
-	//MeanRuntimeAll()
+	//TestAll()
+	MeanRuntimeAll()
 
 	
 }
@@ -87,7 +87,12 @@ func MeanRuntime(f func([IN_SIZE]byte)[OUT_SIZE]byte) int64{
 
 func MeanRuntimeAll(){
 
-	mean := MeanRuntime(m64_norm_int64.MiNTT64)
+	mean := MeanRuntime(m8_norm_int16.MiNTT8)
+	fmt.Println(mean, "m8_norm_int16")
+	mean = MeanRuntime(m8_simd_int16.MiNTT8)
+	fmt.Println(mean, "m8_simd_int16")
+
+	mean = MeanRuntime(m64_norm_int64.MiNTT64)
 	fmt.Println(mean, "m64_norm_int64")
 	mean = MeanRuntime(m64_simd_int64.MiNTT64)
 	fmt.Println(mean, "m64_simd_int64")
@@ -95,6 +100,15 @@ func MeanRuntimeAll(){
 	fmt.Println(mean, "m64_norm_int16")
 	mean = MeanRuntime(m64_simd_int16.MiNTT64)
 	fmt.Println(mean, "m64_simd_int16")
+
+	mean = MeanRuntime(m128_norm_int64.MiNTT128)
+	fmt.Println(mean, "m128_norm_int64")
+	mean = MeanRuntime(m128_simd_int64.MiNTT128)
+	fmt.Println(mean, "m128_simd_int64")
+	mean = MeanRuntime(m128_norm_int16.MiNTT128)
+	fmt.Println(mean, "m128_norm_int16")
+	mean = MeanRuntime(m128_simd_int16.MiNTT128)
+	fmt.Println(mean, "m128_simd_int16")
 
 
 }
@@ -108,8 +122,18 @@ func TestOut(f func([IN_SIZE]byte)[OUT_SIZE]byte){
 
 func TestAll(){
 
+	TestOut(m8_norm_int16.MiNTT8)
+	TestOut(m8_simd_int16.MiNTT8)
+
 	TestOut(m64_norm_int64.MiNTT64)
 	TestOut(m64_simd_int64.MiNTT64)
 	TestOut(m64_norm_int16.MiNTT64)
 	TestOut(m64_simd_int16.MiNTT64)
+
+	TestOut(m128_norm_int64.MiNTT128)
+	TestOut(m128_simd_int64.MiNTT128)
+	TestOut(m128_norm_int16.MiNTT128)
+	TestOut(m128_simd_int16.MiNTT128)
+
+	
 }
