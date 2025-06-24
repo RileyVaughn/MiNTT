@@ -27,7 +27,7 @@ func TestNCC(t *testing.T) {
 			input[j] = byte(rand.Intn(256))
 		}
 
-		want := NCCVecMult(27, input)
+		want := NCCVecMult(42, input)
 		out := ncc(input)
 
 		var result [n]int64
