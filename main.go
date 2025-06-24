@@ -8,7 +8,6 @@ import (
 	m128_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT128"
 	m64_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT64"
 
-
 	m128_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT128"
 	m64_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT64"
 
@@ -23,15 +22,16 @@ import (
 
 const IN_SIZE = 1728
 const OUT_SIZE = IN_SIZE/2
-const TEST_SIZE = 100
+const TEST_SIZE = 10000
 
 
 func main() {
 
 	Setup()
 
-	mean := MeanRuntime(m64_norm_int64.MinNTT64)
-	fmt.Println(mean)
+	TestAll()
+	//MeanRuntimeAll()
+
 	
 }
 
@@ -83,4 +83,33 @@ func MeanRuntime(f func([IN_SIZE]byte)[OUT_SIZE]byte) int64{
 
 	}
 	return mean/TEST_SIZE
+}
+
+func MeanRuntimeAll(){
+
+	mean := MeanRuntime(m64_norm_int64.MiNTT64)
+	fmt.Println(mean, "m64_norm_int64")
+	mean = MeanRuntime(m64_simd_int64.MiNTT64)
+	fmt.Println(mean, "m64_simd_int64")
+	mean = MeanRuntime(m64_norm_int16.MiNTT64)
+	fmt.Println(mean, "m64_norm_int16")
+	mean = MeanRuntime(m64_simd_int16.MiNTT64)
+	fmt.Println(mean, "m64_simd_int16")
+
+
+}
+
+
+func TestOut(f func([IN_SIZE]byte)[OUT_SIZE]byte){
+
+	fmt.Println(f(GenInput()))
+
+}
+
+func TestAll(){
+
+	TestOut(m64_norm_int64.MiNTT64)
+	TestOut(m64_simd_int64.MiNTT64)
+	TestOut(m64_norm_int16.MiNTT64)
+	TestOut(m64_simd_int16.MiNTT64)
 }
