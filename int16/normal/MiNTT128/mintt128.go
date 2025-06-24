@@ -4,7 +4,7 @@ import (
 	util "github.com/RileyVaughn/MiNTT/hash/int16/util"
 )
 
-func MinNTT128(input [ndiv8 * m]byte) [OUT_SIZE]byte {
+func MiNTT128(input [ndiv8 * m]byte) [OUT_SIZE]byte {
 
 	return ChangeBase(ntt_sum(input))
 

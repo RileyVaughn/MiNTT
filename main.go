@@ -30,8 +30,8 @@ func main() {
 
 	Setup()
 
-	elapsed := CheckRuntime(m64_norm_int64.MinNTT64)
-	fmt.Println(elapsed)
+	mean := MeanRuntime(m64_norm_int64.MinNTT64)
+	fmt.Println(mean)
 	
 }
 
@@ -63,13 +63,24 @@ func GenInput()[IN_SIZE]byte{
 	return input
 }
 
-func CheckRuntime(f func([IN_SIZE]byte)[OUT_SIZE]byte) time.Duration{
+//outputs are in nano-seconds
+func CheckRuntime(f func([IN_SIZE]byte)[OUT_SIZE]byte) int64{
 
 	start := time.Now()
 
 	f(GenInput())
 	
 	end := time.Now()
-	return end.Sub(start)
+	return end.Sub(start).Nanoseconds()
 
+}
+
+func MeanRuntime(f func([IN_SIZE]byte)[OUT_SIZE]byte) int64{
+
+	var mean int64 = 0
+	for i := 0; i < TEST_SIZE; i++ {
+		mean = mean + CheckRuntime(f)
+
+	}
+	return mean/TEST_SIZE
 }
