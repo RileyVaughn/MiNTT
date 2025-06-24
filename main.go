@@ -1,53 +1,75 @@
 package main
 
 import (
-	// m128_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT128"
 	"fmt"
 	"math/rand"
+	"time"
 
+	m128_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT128"
 	m64_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT64"
+
+
+	m128_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT128"
+	m64_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT64"
+
+	m128_simd_int16 "github.com/RileyVaughn/MiNTT/hash/int16/simd/MiNTT128"
+	m64_simd_int16 "github.com/RileyVaughn/MiNTT/hash/int16/simd/MiNTT64"
+	m8_simd_int16 "github.com/RileyVaughn/MiNTT/hash/int16/simd/MiNTT8"
+
+	m128_norm_int16 "github.com/RileyVaughn/MiNTT/hash/int16/normal/MiNTT128"
+	m64_norm_int16 "github.com/RileyVaughn/MiNTT/hash/int16/normal/MiNTT64"
+	m8_norm_int16 "github.com/RileyVaughn/MiNTT/hash/int16/normal/MiNTT8"
 )
 
-// m128_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT128"
-// m64_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT64"
+const IN_SIZE = 1728
+const OUT_SIZE = IN_SIZE/2
+const TEST_SIZE = 100
 
-// m128_simd_int16 "github.com/RileyVaughn/MiNTT/hash/int16/simd/MiNTT128"
-// m64_simd_int16 "github.com/RileyVaughn/MiNTT/hash/int16/simd/MiNTT64"
-// m8_simd_int16 "github.com/RileyVaughn/MiNTT/hash/int16/simd/MiNTT8"
-
-// m128_norm_int16 "github.com/RileyVaughn/MiNTT/hash/int16/normal/MiNTT128"
-// m64_norm_int16 "github.com/RileyVaughn/MiNTT/hash/int16/normal/MiNTT64"
-// m8_norm_int16 "github.com/RileyVaughn/MiNTT/hash/int16/normal/MiNTT8"
 
 func main() {
 
 	Setup()
 
-	var input [1728]byte
-
-	for i := 0; i < 1728; i++ {
-		input[i] = byte(rand.Intn(256))
-	}
-
-	out := m64_norm_int64.MinNTT64(input)
-	fmt.Println(out)
+	elapsed := CheckRuntime(m64_norm_int64.MinNTT64)
+	fmt.Println(elapsed)
+	
 }
 
 // // Sets up all hash variants
 func Setup() {
 
-	// 	m8_norm_int16.SetupM8()
-	// 	m64_norm_int16.SetupM64()
-	// 	m128_norm_int16.SetupM128()
+	m8_norm_int16.SetupM8()
+	m64_norm_int16.SetupM64()
+	m128_norm_int16.SetupM128()
 
-	// 	m8_simd_int16.SetupM8()
-	// 	m64_simd_int16.SetupM64()
-	// 	m128_simd_int16.SetupM128()
+	m8_simd_int16.SetupM8()
+	m64_simd_int16.SetupM64()
+	m128_simd_int16.SetupM128()
 
-	// 	m128_norm_int64.SetupM128()
+	m128_norm_int64.SetupM128()
 	m64_norm_int64.SetupM64()
 
-	// 	m128_simd_int64.SetupM128()
-	// 	m64_simd_int64.SetupM64()
+	m128_simd_int64.SetupM128()
+	m64_simd_int64.SetupM64()
+
+}
+
+func GenInput()[IN_SIZE]byte{
+	var input [IN_SIZE]byte
+
+	for i := 0; i < 1728; i++ {
+		input[i] = byte(rand.Intn(256))
+	}
+	return input
+}
+
+func CheckRuntime(f func([IN_SIZE]byte)[OUT_SIZE]byte) time.Duration{
+
+	start := time.Now()
+
+	f(GenInput())
+	
+	end := time.Now()
+	return end.Sub(start)
 
 }
