@@ -21,7 +21,6 @@ void MiNTT64_norm_int64::genKey(){
             } 
         } 
     }
-
 }
 
 void MiNTT64_norm_int64::genNTT8Table(int64_t omega){
@@ -30,16 +29,25 @@ void MiNTT64_norm_int64::genNTT8Table(int64_t omega){
 }
 
 
-void MiNTT64_norm_int64::gen8NCCMat(int64_t omega){
+int64_t * MiNTT64_norm_int64::gen8NCCMat(int64_t omega){
 
+    int64_t ncc_mat[8][8];
     for (size_t i = 0; i < 8; i++){
-        for (size_t k = 0; i < 8; i++){
-            
+        for (size_t k = 0; k < 8; k++){
+            if ((k*(2*i+1))%(2*8) <= 8) {
+                ncc_mat[i][k] = Util64::IntPow(omega,(k*(2*i+1))%8, q);
+            } else {
+                ncc_mat[i][k] = -1 * Util64::IntPow(omega, ((k*(2*i+1))%8), q);
+            }
         }
-        
     }
     
-
+    int64_t br_ncc_mat[8][8];
+    for (size_t i = 0; i < 8; i++){
+        for (size_t j = 0; j < 8; j++){
+        br_ncc_mat[j][Util64::Bit_Rev(i, 8)] = ncc_mat[j][i];
+        }
+    }
 
 
 }
