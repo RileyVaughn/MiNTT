@@ -21,7 +21,11 @@ int64_t Bit_Rev(int64_t i, int64_t bound);
 int64_t addSub(int64_t * a, int64_t * b);
 // Returns the bit representation of the the byte input
 
-int64_t * BitsFromByte(int64_t byte);
+// Extracts the bits from a byte and returns a length 8 array
+void BitsFromByte(int64_t byte, int64_t bits[8]);
+
+//Takes an omega, a q, and a matrix to return values
+void Gen8NCCMat(int64_t omega, int64_t q, int64_t mat[8][8]);
 
 // Simulates the SIMD AddSub function manually
 void Norm_AddSub(int64_t * vec1, int64_t * vec2);
