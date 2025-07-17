@@ -23,3 +23,40 @@ void MiNTT64_norm_int64::Setup(){
     delete[] key;
 
 }
+
+// [OUTPUT_SIZE]uint8_t MiNTT64_norm_int64::Hash(){
+
+
+// }
+
+
+
+void MiNTT64_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
+
+    for (size_t i = 0; i < ndiv8; i++){
+        Util64::Norm_Mult(NTT8_TABLE[input[i]],MULT_TABLE[i], intermed[i]);
+    }
+    
+    Util64::Norm_AddSub(intermed[0], intermed[1]);
+    Util64::Norm_AddSub(intermed[2], intermed[3]);
+    Util64::Norm_AddSub(intermed[4], intermed[5]);
+    Util64::Norm_AddSub(intermed[6], intermed[7]);
+
+    Util64::Norm_LShift(intermed[3],4);
+    Util64::Norm_LShift(intermed[3],7);
+
+    Util64::Norm_AddSub(intermed[0], intermed[2]);
+    Util64::Norm_AddSub(intermed[1], intermed[3]);
+    Util64::Norm_AddSub(intermed[4], intermed[6]);
+    Util64::Norm_AddSub(intermed[5], intermed[7]);
+
+    Util64::Norm_LShift(intermed[3],2);
+    Util64::Norm_LShift(intermed[3],4);
+    Util64::Norm_LShift(intermed[3],6);
+
+    Util64::Norm_AddSub(intermed[0], intermed[4]);
+    Util64::Norm_AddSub(intermed[1], intermed[5]);
+    Util64::Norm_AddSub(intermed[2], intermed[6]);
+    Util64::Norm_AddSub(intermed[3], intermed[7]);
+
+}

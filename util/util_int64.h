@@ -45,8 +45,8 @@ void Norm_AddMult(int64_t * vec1, int64_t * vec2, int64_t * vec3);
 // Simulates the SIMD Left Shift function manually
 void Norm_LShift(int64_t * vec, int64_t shift);
 
-// Simulates the SIMD Mult function manually. Prodcut is returned in postion of vec1.
-void Norm_Mult(int64_t * vec1, int64_t * vec2);
+// Simulates the SIMD Mult function manually. Prodcut is returned in postion of prod.
+void Norm_Mult(int64_t * vec1, int64_t * vec2, int64_t * prod);
 
 // Simulates the SIMD Mod257 function manually.
 void Norm_Mod257(int64_t * vec);

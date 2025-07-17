@@ -6,7 +6,7 @@ class MiNTT64_norm_int64 {
 
     public:
 
-    [OUTPUT_SIZE]std::byte Hash();
+    [OUTPUT_SIZE]uint8_t Hash();
 
     void Setup();
 
@@ -23,6 +23,8 @@ class MiNTT64_norm_int64 {
     int64_t A[m][d][ndiv8][8] = {0};
     int64_t NTT8_TABLE[256][8] = {0};
     int64_t MULT_TABLE[8][8] = {0};
+    
+    void ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]);
 
 
 };

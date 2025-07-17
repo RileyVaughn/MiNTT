@@ -153,9 +153,9 @@ void Util64::Norm_LShift(int64_t * vec, int64_t shift){
 }
 
 
-void Util64::Norm_Mult(int64_t * vec1, int64_t * vec2){
+void Util64::Norm_Mult(int64_t * vec1, int64_t * vec2, int64_t * prod){
     for (size_t i = 0; i < 8; i++){
-        vec1[i] = vec1[i] * vec2[i];
+        prod[i] = vec1[i] * vec2[i];
     }
 }
 
