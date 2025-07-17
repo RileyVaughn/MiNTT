@@ -1,5 +1,5 @@
 #include <util_int64.h>
-
+#include <stdlib.h>
 
 
 
@@ -77,6 +77,59 @@ void Util64::Gen8NCCMat(int64_t omega, int64_t q, int64_t mat[8][8]){
 
 }
 
+
+void Util64::GenNTT8Table(int64_t omega, int64_t q, int64_t table[256][8]){
+
+    int64_t ncc_mat[8][8];
+    Util64::Gen8NCCMat(omega,q,ncc_mat);
+
+    for (size_t i = 0; i < 256; i++){
+        for (size_t j = 0; j < 8; j++){
+            int64_t vec[8];
+            Util64::BitsFromByte(i, vec);
+            for (size_t k = 0; k < 8; k++){
+                table[i][j] = Util64::Mod_257(table[i][j] + ncc_mat[j][k]*vec[k]);
+            }
+        }
+    }
+
+}
+
+
+void Util64::GenMultTable(int64_t omega, int64_t n, int64_t q, int64_t table[8][8]){
+
+    for (size_t i = 0; i < 8; i++){
+        for (size_t k = 0; k < 8; k++){
+            table[i][k] = Util64::IntPow(omega,Util64::Bit_Rev(k,8)*(2*i+1)%(2*n),q);
+        }
+    }
+
+}
+
+
+int64_t * Util64::GenKey(int64_t m, int64_t n, int64_t d, int64_t q){
+
+    int64_t * key;
+    key = new int64_t[m*d*n];
+
+    //just for the sake of reproducibility srand(1)
+    // A better implementation would usea  a "trusted randomoness" such as digits of pi
+    srand(1);
+
+    
+
+    for (size_t i = 0; i < m; i++){
+        for (size_t j = 0; j < d; j++){
+            for (size_t k = 0; k < n/8; k++){
+                for (size_t l = 0; l < 8; l++){
+                    key[i*(d*n)+j*n+k*8+l] = (int64_t)(rand() % q);
+                }
+            } 
+        } 
+    }
+
+    return key;
+}
 
 
 void Util64::Norm_AddSub(int64_t * vec1, int64_t * vec2){

@@ -27,6 +27,15 @@ void BitsFromByte(int64_t byte, int64_t bits[8]);
 //Takes an omega, a q, and a matrix to return values
 void Gen8NCCMat(int64_t omega, int64_t q, int64_t mat[8][8]);
 
+//This generates the table of possible interim 8-sum NTT values
+void GenNTT8Table(int64_t omega, int64_t q, int64_t table[256][8]);
+
+//This generates the possible Mult values table
+void GenMultTable(int64_t omega, int64_t n, int64_t q, int64_t table[8][8]);
+
+//Generates a random key, and stores it in class variable A
+int64_t * GenKey(int64_t m, int64_t n, int64_t d, int64_t q);
+
 // Simulates the SIMD AddSub function manually
 void Norm_AddSub(int64_t * vec1, int64_t * vec2);
 
