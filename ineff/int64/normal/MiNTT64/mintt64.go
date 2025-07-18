@@ -10,6 +10,11 @@ func MiNTT64(input [ndiv8 * m]byte) [864]byte {
 
 }
 
+func NCC(input [ndiv8]byte) [ndiv8][8]int64 {
+
+	return ncc(input)
+}
+
 func ncc(input [ndiv8]byte) [ndiv8][8]int64 {
 
 	var intermed [ndiv8][8]int64

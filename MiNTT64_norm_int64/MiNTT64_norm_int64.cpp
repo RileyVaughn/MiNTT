@@ -1,8 +1,12 @@
 
 #include <cstddef>
-#include <MiNTT64_norm_int64.h>
+#include "MiNTT64_norm_int64.h"
 #include <cstdint>
 
+
+MiNTT64_norm_int64::MiNTT64_norm_int64(){
+    Setup();
+}
 
 void MiNTT64_norm_int64::Setup(){
 
@@ -23,12 +27,6 @@ void MiNTT64_norm_int64::Setup(){
     delete[] key;
 
 }
-
-// [OUTPUT_SIZE]uint8_t MiNTT64_norm_int64::Hash(){
-
-
-// }
-
 
 
 void MiNTT64_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
