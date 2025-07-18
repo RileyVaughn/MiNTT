@@ -20,12 +20,12 @@ class MiNTT64_norm_int64 {
     static const int64_t q = 257;
 
     static const int64_t ndiv8 = n/8;
-
+    public:
     int64_t A[m][d][ndiv8][8];
     int64_t NTT8_TABLE[256][8];
     int64_t MULT_TABLE[8][8];
     
-    public:
+    
 
     void ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]);
 

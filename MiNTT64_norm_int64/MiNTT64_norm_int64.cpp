@@ -13,6 +13,8 @@ void MiNTT64_norm_int64::Setup(){
     Util64::GenNTT8Table(2,q,NTT8_TABLE);
     Util64::GenMultTable(42,n,q,MULT_TABLE);
 
+
+
     int64_t * key = Util64::GenKey(m,n,d,q);
 
     for (size_t i = 0; i < m; i++){

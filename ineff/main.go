@@ -31,9 +31,10 @@ func main() {
 	//TestAll()
 	//MeanRuntimeAll()
 
-	input := [8]byte{1, 2, 3, 4, 5, 6, 7, 8}
+	//input := [8]byte{1, 2, 3, 4, 5, 6, 7, 8}
 
-	fmt.Println(m64_norm_int64.NCC(input))
+	//fmt.Println(m64_norm_int64.NCC(input))
+	fmt.Println(m64_norm_int64.MULT_TABLE)
 
 }
 

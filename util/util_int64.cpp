@@ -1,5 +1,6 @@
 #include <util_int64.h>
 #include <stdlib.h>
+#include <iostream>
 
 
 
@@ -33,14 +34,14 @@ int64_t Util64::IntPow(int64_t b, int64_t x, int64_t q) {
 
 int64_t Util64::Bit_Rev(int64_t i, int64_t bound){
     int64_t irev = 0;
-    for (size_t i = i | bound; i > 1; i = i >> 1){
+    for (i = i | bound; i > 1; i = i >> 1){
         irev = (irev << 1) | (i & 1);
     }
     return irev;
 }
 
 
-int64_t Util64::addSub(int64_t * a, int64_t * b) {
+void Util64::addSub(int64_t * a, int64_t * b) {
     int64_t temp = *b;
     *b = *a - *b;
     *a = *a + temp;
@@ -88,7 +89,7 @@ void Util64::GenNTT8Table(int64_t omega, int64_t q, int64_t table[256][8]){
             int64_t vec[8];
             Util64::BitsFromByte(i, vec);
             for (size_t k = 0; k < 8; k++){
-                table[i][j] = Util64::Mod_257(table[i][j] + ncc_mat[j][k]*vec[k]);
+                table[i][j] = Mod_257(table[i][j] + ncc_mat[j][k]*vec[k]);
             }
         }
     }
@@ -100,12 +101,10 @@ void Util64::GenMultTable(int64_t omega, int64_t n, int64_t q, int64_t table[8][
 
     for (size_t i = 0; i < 8; i++){
         for (size_t k = 0; k < 8; k++){
-            table[i][k] = Util64::IntPow(omega,Util64::Bit_Rev(k,8)*(2*i+1)%(2*n),q);
+            table[k][i] = IntPow(omega,(Bit_Rev(k,8)*(2*i+1))%(2*n),q);
         }
     }
-
 }
-
 
 int64_t * Util64::GenKey(int64_t m, int64_t n, int64_t d, int64_t q){
 

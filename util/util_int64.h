@@ -18,7 +18,7 @@ int64_t IntPow(int64_t b, int64_t x, int64_t q);
 int64_t Bit_Rev(int64_t i, int64_t bound);
 
 // Takes integers a and b as input, returns a+b and a-b in place respectively
-int64_t addSub(int64_t * a, int64_t * b);
+void addSub(int64_t * a, int64_t * b);
 // Returns the bit representation of the the byte input
 
 // Extracts the bits from a byte and returns a length 8 array
