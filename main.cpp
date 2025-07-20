@@ -1,9 +1,10 @@
 #include <iostream>
 #include "MiNTT64_norm_int64/MiNTT64_norm_int64.h"
+#include "util/util_int64.h"
 
 using namespace std;
 
-void print_2darray(int64_t arr[8][8], int row, int col);
+void print_2darray(int64_t arr[8][8]);
 
 int main() {
     
@@ -14,23 +15,20 @@ int main() {
     MiNTT64_norm_int64 hash = MiNTT64_norm_int64();
 
 
-    // hash.ncc(in,out);
+    hash.ncc(in,out);
 
-    // print_2darray(out,8,8);
+    print_2darray(out);
     
-    //print_2darray(hash.MULT_TABLE,8,8);
-    print_2darray(hash.NTT8_TABLE,256,8);
-
-
     
 
     return 0;
 }
 
-void print_2darray(int64_t arr[8][8], int row, int col) {
-    for (size_t i = 0; i < row; i++) {
-        for (size_t j = 0; j < col; j++) {
-            cout << arr[i][j] << " ";
+void print_2darray(int64_t arr[8][8]) {
+    for (size_t i = 0; i < 8; i++) {
+        cout << i << ": ";
+        for (size_t j = 0; j < 8; j++) {
+            cout <<  Util64::Mod_257(arr[i][j]) << " ";
         }
         std::cout << "\n";
     }
@@ -44,3 +42,12 @@ void print_2darray(int64_t arr[8][8], int row, int col) {
 // [50 98 79 124 58 52 215 113]
 // [72 84 98 200 62 158 13 58]
 // [49 200 124 118 104 157 195 198]]
+
+// [1 16 4 64 2 32 8 128]
+// [1 -16 64 4 8 -128 -2 32]
+// [1 16 -4 -64 32 -2 -128 8]
+// [1 -16 -64 -4 128 8 32 2]
+// [1 16 4 64 -2 -32 -8 -128]
+// [1 -16 64 4 -8 128 2 -32]
+// [1 16 -4 -64 -32 2 128 -8]
+// [1 -16 -64 -4 -128 -8 -32 -2]

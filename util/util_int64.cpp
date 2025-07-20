@@ -88,10 +88,12 @@ void Util64::GenNTT8Table(int64_t omega, int64_t q, int64_t table[256][8]){
         for (size_t j = 0; j < 8; j++){
             int64_t vec[8];
             Util64::BitsFromByte(i, vec);
+            table[i][j] = 0;
             for (size_t k = 0; k < 8; k++){
                 table[i][j] = Mod_257(table[i][j] + ncc_mat[j][k]*vec[k]);
             }
         }
+ 
     }
 
 }

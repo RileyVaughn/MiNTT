@@ -7,6 +7,7 @@ import (
 
 	m128_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT128"
 	m64_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT64"
+	"github.com/RileyVaughn/MiNTT/hash/int64/util"
 
 	m128_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT128"
 	m64_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT64"
@@ -31,10 +32,14 @@ func main() {
 	//TestAll()
 	//MeanRuntimeAll()
 
-	//input := [8]byte{1, 2, 3, 4, 5, 6, 7, 8}
+	input := [8]byte{1, 2, 3, 4, 5, 6, 7, 8}
 
-	//fmt.Println(m64_norm_int64.NCC(input))
-	fmt.Println(m64_norm_int64.MULT_TABLE)
+	out := m64_norm_int64.NCC(input)
+	for i := 0; i < 8; i++ {
+		util.Fake_SIMD_Mod(&out[i])
+	}
+	fmt.Println(out)
+	//fmt.Println(m64_norm_int64.NTT8_TABLE)
 
 }
 
