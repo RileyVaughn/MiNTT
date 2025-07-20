@@ -42,16 +42,16 @@ void MiNTT64_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
     Util64::Norm_AddSub(intermed[6], intermed[7]);
 
     Util64::Norm_LShift(intermed[3],4);
-    Util64::Norm_LShift(intermed[3],7);
+    Util64::Norm_LShift(intermed[7],4);
 
     Util64::Norm_AddSub(intermed[0], intermed[2]);
     Util64::Norm_AddSub(intermed[1], intermed[3]);
     Util64::Norm_AddSub(intermed[4], intermed[6]);
     Util64::Norm_AddSub(intermed[5], intermed[7]);
 
-    Util64::Norm_LShift(intermed[3],2);
-    Util64::Norm_LShift(intermed[3],4);
-    Util64::Norm_LShift(intermed[3],6);
+    Util64::Norm_LShift(intermed[5],2);
+    Util64::Norm_LShift(intermed[6],4);
+    Util64::Norm_LShift(intermed[7],6);
 
     Util64::Norm_AddSub(intermed[0], intermed[4]);
     Util64::Norm_AddSub(intermed[1], intermed[5]);
