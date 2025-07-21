@@ -59,3 +59,32 @@ void MiNTT64_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
     Util64::Norm_AddSub(intermed[3], intermed[7]);
 
 }
+
+
+void MiNTT64_norm_int64::ntt_sum(uint8_t input[ndiv8 *m], int64_t out[d][ndiv8][8]){
+
+    for (size_t i = 0; i < m; i++){
+        int64_t x[8][8];
+        ncc(input+(ndiv8*i),x);
+        for (size_t j = 0; j < d; j++){
+            for (size_t k = 0; k < ndiv8; k++){
+                Util64::Norm_AddMult(out[j][k],x[k],A[i][j][k]);
+            }
+        }
+    }
+}
+
+void MiNTT64_norm_int64::change_base(int64_t val[d][ndiv8][8], uint8_t out[OUTPUT_SIZE]){
+
+    for (size_t i = 0; i < d; i++){
+        for (size_t j = 0; j < ndiv8; j++){
+            Util64::Norm_Mod257(val[i][j]);
+            for (size_t k = 0; k < 8; k++){
+                out[i*n+j*8+k] = uint8_t(val[i][j][k]);
+                val[i][j][k] = val[i][j][k] >> 8;
+                out[N+i*ndiv8+j] = out[N+i*ndiv8+j] | uint8_t(val[i][j][k]>>k);
+            }
+        }
+    }
+
+}

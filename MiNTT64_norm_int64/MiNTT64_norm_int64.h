@@ -28,6 +28,7 @@ class MiNTT64_norm_int64 {
     
 
     void ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]);
-
+    void ntt_sum(uint8_t input[ndiv8 *m], int64_t out[d][ndiv8][8]);
+    void change_base(int64_t val[d][ndiv8][8], uint8_t hash[OUTPUT_SIZE]);
 
 };
