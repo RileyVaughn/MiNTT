@@ -2,7 +2,7 @@
 #include "../sizes.h"
 #include "../util/util_int64.h"
 #include <cstdint>
-class MiNTT64_norm_int64 {
+class MiNTT64_SIMD_int64 {
     
     //Everything is public because I am lazy, bad practice
     public:
@@ -19,10 +19,9 @@ class MiNTT64_norm_int64 {
     int64_t NTT8_TABLE[256][8];
     int64_t MULT_TABLE[8][8];
     
-    MiNTT64_norm_int64();
+    MiNTT64_SIMD_int64();
     void Setup();
     void Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]);
-    void PrintKey(std::string filename);
 
     void ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]);
     void ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][ndiv8][8]);
