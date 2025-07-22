@@ -31,15 +31,19 @@ func main() {
 
 	//TestAll()
 	//MeanRuntimeAll()
+	in := GenInput2()
+	out := m64_norm_int64.NTT_SUM(in)
+	//out := m64_norm_int16.MiNTT64(in)
 
-	input := [8]byte{1, 2, 3, 4, 5, 6, 7, 8}
-
-	out := m64_norm_int64.NCC(input)
-	for i := 0; i < 8; i++ {
-		util.Fake_SIMD_Mod(&out[i])
+	for i := 0; i < 12; i++ {
+		for j := 0; j < 8; j++ {
+			for k := 0; k < 8; k++ {
+				out[i][j][k] = util.Mod(out[i][j][k], 257)
+			}
+		}
 	}
+
 	fmt.Println(out)
-	//fmt.Println(m64_norm_int64.NTT8_TABLE)
 
 }
 
@@ -69,6 +73,16 @@ func GenInput() [IN_SIZE]byte {
 		input[i] = byte(rand.Intn(256))
 	}
 	return input
+}
+
+func GenInput2() [IN_SIZE]byte {
+	var input [IN_SIZE]byte
+
+	for i := 0; i < 1728; i++ {
+		input[i] = byte(util.Mod(int64(i), 256))
+	}
+	return input
+
 }
 
 // outputs are in nano-seconds

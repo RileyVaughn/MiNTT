@@ -15,6 +15,10 @@ func NCC(input [ndiv8]byte) [ndiv8][8]int64 {
 	return ncc(input)
 }
 
+func NTT_SUM(input [ndiv8 * m]byte) [d][ndiv8][8]int64 {
+	return ntt_sum(input)
+}
+
 func ncc(input [ndiv8]byte) [ndiv8][8]int64 {
 
 	var intermed [ndiv8][8]int64
