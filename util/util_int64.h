@@ -53,6 +53,27 @@ void Norm_Mod257(int64_t * vec);
 
 // Simulates the SIMD Q_reduce function manually.
 void Norm_Q_reduce(int64_t * vec);
-    
+
+//Adds and subtracts vec1 and vec2 using SIMD, and returns the sum/difference in place resp.
+void SIMD_AddSub(int64_t* vec1, int64_t* vec2);
+
+//Left Shifts each element in vec by shift. Used to efficiently multiply by powers of 2.
+void SIMD_LShift(int64_t* vec, int64_t shift);
+
+//Multiples two vectors element-wise using SIMD instrucitons, returns product
+void SIMD_Mult(int64_t* vec1, int64_t* vec2, int64_t* product);
+
+
+void SIMD_AddMult(int64_t* vec1, int64_t* vec2, int64_t* vec3);
+
+// Efficient SIMD mod of 257 (or any q=2^x+1 if modified).
+// The tradeoff is that the reduced range is not 0 to 256, but rather the range is shifted left by 8.
+// Originally found in the SWIFFT source code <https://github.com/micciancio/SWIFFT>, modified for 64 bit
+void SIMD_Q_reduce(int64_t* vec1);
+
+// Less Efficient SIMD mod, but still efficient mod of 257 (or any q=2^x+1 if modified).
+// Running q_reduce multiple times minimizes the the domain to -1 to 256, the following code removes the -1.
+// Originally found in the SWIFFT source code <https://github.com/micciancio/SWIFFT>, modified for 64 bit
+void SIMD_Mod257(int64_t* vec1);
 
 };

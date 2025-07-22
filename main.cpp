@@ -16,21 +16,6 @@ int main() {
     GenInput(input);
 
     hash.Hash(input,output);
-    // int64_t out[12][8][8];
-    // hash.ntt_sum(input,out);
-    
-    // for (size_t i = 0; i < 12; i++)
-    // {
-    //     for (size_t j = 0; j < 8; j++)
-    //     {
-    //         for (size_t k = 0; k < 8; k++)
-    //         {
-    //             cout << Util64::Mod_257(out[i][j][k]) << " ";
-    //         }
-    //         cout << "| ";
-    //     }
-    // }
-    // cout << endl;
 
     for (size_t i = 0; i < OUTPUT_SIZE; i++)
     {

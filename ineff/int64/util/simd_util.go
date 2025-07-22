@@ -79,8 +79,6 @@ void simd_q_reduce_64(int64_t* vec1) {
     _mm512_storeu_si512((__m512i *)vec1, l_reg);
 }
 
-#include <immintrin.h>
-
 void simd_mod_257_64(int64_t* vec1){
 	const __m512i NEG_ONE = _mm512_set1_epi64(-1);
 	const __m512i NEG_TFS = _mm512_set1_epi64(-257);
