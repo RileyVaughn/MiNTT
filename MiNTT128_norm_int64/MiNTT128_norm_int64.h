@@ -2,12 +2,12 @@
 #include "sizes.h"
 #include "util_int64.h"
 #include <cstdint>
-class MiNTT64_norm_int64 {
+class MiNTT128_norm_int64 {
     
     //Everything is public because I am lazy, bad practice
     public:
 
-    static const int64_t n = 64;
+    static const int64_t n = 128;
     static const int64_t m = INPUT_SIZE/n*8;
     static const int64_t N = OUTPUT_SIZE/9*8; //assumes q=257
     static const int64_t d = N/n;
@@ -19,7 +19,7 @@ class MiNTT64_norm_int64 {
     int64_t NTT8_TABLE[256][8];
     int64_t MULT_TABLE[8][8];
     
-    MiNTT64_norm_int64();
+    MiNTT128_norm_int64();
     void Setup();
     void Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]);
     void PrintKey(std::string filename);

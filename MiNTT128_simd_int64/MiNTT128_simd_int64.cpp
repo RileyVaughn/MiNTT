@@ -101,7 +101,7 @@ void MiNTT64_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
 void MiNTT64_norm_int64::ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][ndiv8][8]){
 
     for (size_t i = 0; i < m; i++){
-        int64_t x[8][8];
+        int64_t x[ndiv8][8];
         ncc(input+(ndiv8*i),x);
         for (size_t j = 0; j < d; j++){
             for (size_t k = 0; k < ndiv8; k++){

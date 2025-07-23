@@ -6,14 +6,14 @@
 #include <iostream>
 #include <fstream>
 
-MiNTT64_norm_int64::MiNTT64_norm_int64(){
+MiNTT128_norm_int64::MiNTT128_norm_int64(){
     Setup();
 }
 
-void MiNTT64_norm_int64::Setup(){
+void MiNTT128_norm_int64::Setup(){
 
     Util64::GenNTT8Table(2,q,NTT8_TABLE);
-    Util64::GenMultTable(42,n,q,MULT_TABLE);
+    Util64::GenMultTable(27,n,q,MULT_TABLE);
 
     int64_t * key = Util64::GenKey(m,n,d,q);
 
@@ -31,15 +31,16 @@ void MiNTT64_norm_int64::Setup(){
 }
 
 
-void MiNTT64_norm_int64::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
+void MiNTT128_norm_int64::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
     int64_t inter[d][ndiv8][8];
+    
     ntt_sum(input,inter);
     change_base(inter,out);
 
 }
 
 
-void MiNTT64_norm_int64::PrintKey(std::string filename){
+void MiNTT128_norm_int64::PrintKey(std::string filename){
 
     std::ofstream file(filename);
     if (!file.is_open()) {
@@ -66,7 +67,7 @@ void MiNTT64_norm_int64::PrintKey(std::string filename){
 }
 
 
-void MiNTT64_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
+void MiNTT128_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
 
     for (size_t i = 0; i < ndiv8; i++){
         Util64::Norm_Mult(NTT8_TABLE[input[i]],MULT_TABLE[i], intermed[i]);
@@ -76,32 +77,66 @@ void MiNTT64_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
     Util64::Norm_AddSub(intermed[2], intermed[3]);
     Util64::Norm_AddSub(intermed[4], intermed[5]);
     Util64::Norm_AddSub(intermed[6], intermed[7]);
+    Util64::Norm_AddSub(intermed[8], intermed[9]);
+    Util64::Norm_AddSub(intermed[10], intermed[11]);
+    Util64::Norm_AddSub(intermed[12], intermed[13]);
+    Util64::Norm_AddSub(intermed[14], intermed[15]);
 
     Util64::Norm_LShift(intermed[3],4);
     Util64::Norm_LShift(intermed[7],4);
+    Util64::Norm_LShift(intermed[11],4);
+    Util64::Norm_LShift(intermed[15],4);
 
     Util64::Norm_AddSub(intermed[0], intermed[2]);
     Util64::Norm_AddSub(intermed[1], intermed[3]);
     Util64::Norm_AddSub(intermed[4], intermed[6]);
     Util64::Norm_AddSub(intermed[5], intermed[7]);
+    Util64::Norm_AddSub(intermed[8], intermed[10]);
+    Util64::Norm_AddSub(intermed[9], intermed[11]);
+    Util64::Norm_AddSub(intermed[12], intermed[14]);
+    Util64::Norm_AddSub(intermed[13], intermed[15]);
 
     Util64::Norm_LShift(intermed[5],2);
     Util64::Norm_LShift(intermed[6],4);
     Util64::Norm_LShift(intermed[7],6);
+    Util64::Norm_LShift(intermed[13],2);
+    Util64::Norm_LShift(intermed[14],4);
+    Util64::Norm_LShift(intermed[15],6);
 
     Util64::Norm_AddSub(intermed[0], intermed[4]);
     Util64::Norm_AddSub(intermed[1], intermed[5]);
     Util64::Norm_AddSub(intermed[2], intermed[6]);
     Util64::Norm_AddSub(intermed[3], intermed[7]);
+    Util64::Norm_AddSub(intermed[8], intermed[12]);
+    Util64::Norm_AddSub(intermed[9], intermed[13]);
+    Util64::Norm_AddSub(intermed[10], intermed[14]);
+    Util64::Norm_AddSub(intermed[11], intermed[15]);
+
+    Util64::Norm_LShift(intermed[9],1);
+    Util64::Norm_LShift(intermed[10],2);
+    Util64::Norm_LShift(intermed[11],3);
+    Util64::Norm_LShift(intermed[12],4);
+    Util64::Norm_LShift(intermed[13],5);
+    Util64::Norm_LShift(intermed[14],6);
+    Util64::Norm_LShift(intermed[15],7);
+
+    Util64::Norm_AddSub(intermed[0], intermed[8]);
+    Util64::Norm_AddSub(intermed[1], intermed[9]);
+    Util64::Norm_AddSub(intermed[2], intermed[10]);
+    Util64::Norm_AddSub(intermed[3], intermed[11]);
+    Util64::Norm_AddSub(intermed[4], intermed[12]);
+    Util64::Norm_AddSub(intermed[5], intermed[13]);
+    Util64::Norm_AddSub(intermed[6], intermed[14]);
+    Util64::Norm_AddSub(intermed[7], intermed[15]);
     
 
 }
 
 
-void MiNTT64_norm_int64::ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][ndiv8][8]){
+void MiNTT128_norm_int64::ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][ndiv8][8]){
 
     for (size_t i = 0; i < m; i++){
-        int64_t x[8][8];
+        int64_t x[ndiv8][8];
         ncc(input+(ndiv8*i),x);
         for (size_t j = 0; j < d; j++){
             for (size_t k = 0; k < ndiv8; k++){
@@ -111,7 +146,7 @@ void MiNTT64_norm_int64::ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][ndiv8
     }
 }
 
-void MiNTT64_norm_int64::change_base(int64_t val[d][ndiv8][8], uint8_t out[OUTPUT_SIZE]){
+void MiNTT128_norm_int64::change_base(int64_t val[d][ndiv8][8], uint8_t out[OUTPUT_SIZE]){
 
     for (size_t i = 0; i < d; i++){
         for (size_t j = 0; j < ndiv8; j++){
