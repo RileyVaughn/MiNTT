@@ -6,9 +6,6 @@
 #include <iostream>
 #include <fstream>
 
-void check(int64_t x[16][8]);
-void Print8x8(int64_t table[8][8]);
-
 MiNTT128_norm_int64::MiNTT128_norm_int64(){
     Setup();
 }
@@ -172,26 +169,3 @@ void MiNTT128_norm_int64::change_base(int64_t val[d][ndiv8][8], uint8_t out[OUTP
 
 }
 
-void check(int64_t x[16][8]){
-
-    for (size_t i = 0; i < 16; i++){
-        for (size_t j = 0; j < 8; j++){
-            std::cout << Util64::Mod_257(x[i][j]) << " ";
-        }
-    }
-    std::cout << std::endl;
-
-}
-
-
-void Print8x8(int64_t table[8][8]) {
-
-    for (size_t i=0;i<8;i++){
-        for (size_t j=0;j<8;j++){
-            std::cout << table[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-
-}
