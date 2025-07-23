@@ -31,7 +31,7 @@ void Gen8NCCMat(int64_t omega, int64_t q, int64_t mat[8][8]);
 void GenNTT8Table(int64_t omega, int64_t q, int64_t table[256][8]);
 
 //This generates the possible Mult values table
-void GenMultTable(int64_t omega, int64_t n, int64_t q, int64_t table[8][8]);
+int64_t * GenMultTable(int64_t omega, int64_t n, int64_t q);
 
 //Generates a random key, and stores it in class variable A
 int64_t * GenKey(int64_t m, int64_t n, int64_t d, int64_t q);
