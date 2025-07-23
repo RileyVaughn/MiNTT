@@ -1,7 +1,7 @@
 
 #include <cstddef>
 #include<string>
-#include "MiNTT64_norm_int64.h"
+#include "MiNTT64_simd_int64.h"
 #include <cstdint>
 #include <iostream>
 #include <fstream>

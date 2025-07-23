@@ -1,21 +1,23 @@
 #include <iostream>
 #include "MiNTT64_norm_int64/MiNTT64_norm_int64.h"
+#include "MiNTT64_simd_int64/MiNTT64_simd_int64.h"
 #include "util/util_int64.h"
 
 using namespace std;
 
-void print_2darray(int64_t arr[8][8]);
+void PrintOut(uint8_t output[OUTPUT_SIZE]);
 void GenInput(uint8_t input[INPUT_SIZE]);
 
 int main() {
 
-    MiNTT64_norm_int64 hash = MiNTT64_norm_int64();
+    // MiNTT64_norm_int64 hash = MiNTT64_norm_int64();
+    MiNTT64_SIMD_int64 hash2 = MiNTT64_SIMD_int64();
 
     uint8_t input[INPUT_SIZE];
     uint8_t output[OUTPUT_SIZE] = {0};
     GenInput(input);
 
-    hash.Hash(input,output);
+    hash2.Hash(input,output);
 
     PrintOut(output);
 

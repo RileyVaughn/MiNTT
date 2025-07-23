@@ -1,13 +1,23 @@
+UTIL = util/util_int64.o
+NORM = MiNTT64_norm_int64/MiNTT64_norm_int64.o
+SIMD = MiNTT64_simd_int64/MiNTT64_simd_int64.o
+
+INCLUDES = -I./util -I./MiNTT64_norm_int64 -I./MiNTT64_simd_int64
+CFLAGS = -mavx2 -mavx512f -mavx512dq -mavx512vl
+
 all: main
 
-main: main.cpp MiNTT64_norm_int64/MiNTT64_norm_int64.o util/util_int64.o
-	g++ main.cpp MiNTT64_norm_int64/MiNTT64_norm_int64.o util/util_int64.o -o main -I./MiNTT64_norm_int64 -I./util
+main: main.cpp $(UTIL) $(NORM) $(SIMD)
+	g++ main.cpp $(UTIL) $(NORM) $(SIMD) -o main $(INCLUDES) $(CFLAGS)
 
-MiNTT64_norm_int64/MiNTT64_norm_int64.o: MiNTT64_norm_int64/MiNTT64_norm_int64.cpp
-	g++ -c MiNTT64_norm_int64/MiNTT64_norm_int64.cpp -o MiNTT64_norm_int64/MiNTT64_norm_int64.o -I./MiNTT64_norm_int64
+$(UTIL): util/util_int64.cpp
+	g++ -c util/util_int64.cpp -o $(UTIL) -I./util $(CFLAGS)
 
-util/util_int64.o: util/util_int64.cpp
-	g++ -c util/util_int64.cpp -o util/util_int64.o -I./util
+$(NORM): MiNTT64_norm_int64/MiNTT64_norm_int64.cpp
+	g++ -c MiNTT64_norm_int64/MiNTT64_norm_int64.cpp -o $(NORM) -I./MiNTT64_norm_int64 $(CFLAGS)
+
+$(SIMD): MiNTT64_simd_int64/MiNTT64_simd_int64.cpp
+	g++ -c MiNTT64_simd_int64/MiNTT64_simd_int64.cpp -o $(SIMD) -I./MiNTT64_simd_int64 -I./util $(CFLAGS)
 
 clean:
-	rm -f main MiNTT64_norm_int64/*.o util/*.o
+	rm -f main $(UTIL) $(NORM) $(SIMD)
