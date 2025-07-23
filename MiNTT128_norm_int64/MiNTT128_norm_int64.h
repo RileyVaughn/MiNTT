@@ -17,7 +17,7 @@ class MiNTT128_norm_int64 {
     
     int64_t A[m][d][ndiv8][8];
     int64_t NTT8_TABLE[256][8];
-    int64_t MULT_TABLE[8][8];
+    int64_t MULT_TABLE[ndiv8][8];
     
     MiNTT128_norm_int64();
     void Setup();

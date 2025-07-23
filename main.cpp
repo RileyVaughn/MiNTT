@@ -7,6 +7,7 @@
 using namespace std;
 
 void PrintOut(uint8_t output[OUTPUT_SIZE]);
+// void Print8x8(int64_t table[8][8]);
 void GenInput(uint8_t input[INPUT_SIZE]);
 
 int main() {
@@ -17,7 +18,7 @@ int main() {
 
     uint8_t input[INPUT_SIZE];
     uint8_t output[OUTPUT_SIZE] = {0};
-
+    
     // GenInput(input);
     // hash.Hash(input,output);
     // PrintOut(output);
@@ -27,11 +28,10 @@ int main() {
     // hash2.Hash(input,output);
     // PrintOut(output);
 
-
-
     GenInput(input);
     hash3.Hash(input,output);
-    PrintOut(output);
+    //PrintOut(output);
+
 
     return 0;
 }
@@ -56,3 +56,16 @@ void PrintOut(uint8_t output[OUTPUT_SIZE]){
     cout << endl;
 
 }
+
+
+// void Print8x8(int64_t table[8][8]) {
+
+//     for (size_t i=0;i<8;i++){
+//         for (size_t j=0;j<8;j++){
+//             cout << table[i][j] << " ";
+//         }
+//         cout << endl;
+//     }
+
+
+// }

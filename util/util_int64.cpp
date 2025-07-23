@@ -100,9 +100,12 @@ void Util64::GenNTT8Table(int64_t omega, int64_t q, int64_t table[256][8]){
 }
 
 
-void Util64::GenMultTable(int64_t omega, int64_t n, int64_t q, int64_t table[8][8]){
+int64_t * Util64::GenMultTable(int64_t omega, int64_t n, int64_t q){
 
-    for (size_t i = 0; i < 8; i++){
+    int64_t * table;
+    table = new int64_t[n];
+
+    for (size_t i = 0; i < n/8; i++){
         for (size_t k = 0; k < 8; k++){
             table[k][i] = IntPow(omega,(Bit_Rev(k,8)*(2*i+1))%(2*n),q);
         }

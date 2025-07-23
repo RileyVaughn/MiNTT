@@ -6,6 +6,9 @@
 #include <iostream>
 #include <fstream>
 
+void check(int64_t x[16][8]);
+void Print8x8(int64_t table[8][8]);
+
 MiNTT128_norm_int64::MiNTT128_norm_int64(){
     Setup();
 }
@@ -13,10 +16,17 @@ MiNTT128_norm_int64::MiNTT128_norm_int64(){
 void MiNTT128_norm_int64::Setup(){
 
     Util64::GenNTT8Table(2,q,NTT8_TABLE);
-    Util64::GenMultTable(27,n,q,MULT_TABLE);
+
+
+    int64_t * mult_table = Util64::GenMultTable(27,n,q);
+    for (size_t i = 0; i < ndiv8; i++){
+        for (size_t j = 0; j < 8; j++){
+            MULT_TABLE[i][j] = mult_table[i*8+j];
+        }
+    }
+    delete[] mult_table;
 
     int64_t * key = Util64::GenKey(m,n,d,q);
-
     for (size_t i = 0; i < m; i++){
        for (size_t j = 0; j < d; j++){
         for (size_t k = 0; k < ndiv8; k++){
@@ -27,8 +37,8 @@ void MiNTT128_norm_int64::Setup(){
        }
     }
     delete[] key;
-
-}
+    
+}   
 
 
 void MiNTT128_norm_int64::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
@@ -71,8 +81,9 @@ void MiNTT128_norm_int64::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
 
     for (size_t i = 0; i < ndiv8; i++){
         Util64::Norm_Mult(NTT8_TABLE[input[i]],MULT_TABLE[i], intermed[i]);
+
     }
-    
+
     Util64::Norm_AddSub(intermed[0], intermed[1]);
     Util64::Norm_AddSub(intermed[2], intermed[3]);
     Util64::Norm_AddSub(intermed[4], intermed[5]);
@@ -158,5 +169,29 @@ void MiNTT128_norm_int64::change_base(int64_t val[d][ndiv8][8], uint8_t out[OUTP
             }
         }
     }
+
+}
+
+void check(int64_t x[16][8]){
+
+    for (size_t i = 0; i < 16; i++){
+        for (size_t j = 0; j < 8; j++){
+            std::cout << Util64::Mod_257(x[i][j]) << " ";
+        }
+    }
+    std::cout << std::endl;
+
+}
+
+
+void Print8x8(int64_t table[8][8]) {
+
+    for (size_t i=0;i<8;i++){
+        for (size_t j=0;j<8;j++){
+            std::cout << table[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+
 
 }

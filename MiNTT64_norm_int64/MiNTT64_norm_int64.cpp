@@ -13,10 +13,16 @@ MiNTT64_norm_int64::MiNTT64_norm_int64(){
 void MiNTT64_norm_int64::Setup(){
 
     Util64::GenNTT8Table(2,q,NTT8_TABLE);
-    Util64::GenMultTable(42,n,q,MULT_TABLE);
+
+    int64_t * mult_table = Util64::GenMultTable(42,n,q);
+    for (size_t i = 0; i < ndiv8; i++){
+        for (size_t j = 0; j < 8; j++){
+            MULT_TABLE[i][j] = mult_table[i*8+j];
+        }
+    }
+    delete[] mult_table;
 
     int64_t * key = Util64::GenKey(m,n,d,q);
-
     for (size_t i = 0; i < m; i++){
        for (size_t j = 0; j < d; j++){
         for (size_t k = 0; k < ndiv8; k++){
