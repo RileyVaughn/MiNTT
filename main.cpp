@@ -10,17 +10,22 @@ void GenInput(uint8_t input[INPUT_SIZE]);
 
 int main() {
 
-    // MiNTT64_norm_int64 hash = MiNTT64_norm_int64();
+    MiNTT64_norm_int64 hash = MiNTT64_norm_int64();
     MiNTT64_SIMD_int64 hash2 = MiNTT64_SIMD_int64();
 
     uint8_t input[INPUT_SIZE];
     uint8_t output[OUTPUT_SIZE] = {0};
+
     GenInput(input);
-
-    hash2.Hash(input,output);
-
+    hash.Hash(input,output);
     PrintOut(output);
 
+    std::fill(std::begin(output), std::end(output), 0);
+    GenInput(input);
+
+    GenInput(input);
+    hash2.Hash(input,output);
+    PrintOut(output);
 
 
     return 0;
