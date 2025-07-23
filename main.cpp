@@ -1,7 +1,7 @@
 #include <iostream>
-#include "MiNTT64_norm_int64/MiNTT64_norm_int64.h"
-#include "MiNTT64_simd_int64/MiNTT64_simd_int64.h"
-#include "util/util_int64.h"
+#include "MiNTT64_norm_int64.h"
+#include "MiNTT64_simd_int64.h"
+#include "util_int64.h"
 
 using namespace std;
 

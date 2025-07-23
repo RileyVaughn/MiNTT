@@ -1,6 +1,6 @@
 #include <cstddef>
-#include "../sizes.h"
-#include "../util/util_int64.h"
+#include "sizes.h"
+#include "util_int64.h"
 #include <cstdint>
 class MiNTT64_SIMD_int64 {
     
