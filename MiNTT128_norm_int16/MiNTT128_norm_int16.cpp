@@ -1,16 +1,16 @@
 
 #include <cstddef>
 #include<string>
-#include "MiNTT64_norm_int16.h"
+#include "MiNTT128_norm_int16.h"
 #include <cstdint>
 #include <iostream>
 #include <fstream>
 
-MiNTT64_norm_int16::MiNTT64_norm_int16(){
+MiNTT128_norm_int16::MiNTT128_norm_int16(){
     Setup();
 }
 
-void MiNTT64_norm_int16::Setup(){
+void MiNTT128_norm_int16::Setup(){
 
     Util16::GenNTT8Table(2,q,NTT8_TABLE);
 
@@ -37,7 +37,7 @@ void MiNTT64_norm_int16::Setup(){
 }
 
 
-void MiNTT64_norm_int16::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
+void MiNTT128_norm_int16::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
     int16_t inter[d][ndiv8][8] = {0};
     ntt_sum(input,inter);
     change_base(inter,out);
@@ -45,7 +45,7 @@ void MiNTT64_norm_int16::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]
 }
 
 
-void MiNTT64_norm_int16::PrintKey(std::string filename){
+void MiNTT128_norm_int16::PrintKey(std::string filename){
 
     std::ofstream file(filename);
     if (!file.is_open()) {
@@ -72,7 +72,7 @@ void MiNTT64_norm_int16::PrintKey(std::string filename){
 }
 
 
-void MiNTT64_norm_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
+void MiNTT128_norm_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
 
     for (size_t i = 0; i < ndiv8; i++){
         Util16::Norm_Mult(NTT8_TABLE[input[i]],MULT_TABLE[i], intermed[i]);
@@ -83,30 +83,58 @@ void MiNTT64_norm_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
     Util16::Norm_AddSub(intermed[2], intermed[3]);
     Util16::Norm_AddSub(intermed[4], intermed[5]);
     Util16::Norm_AddSub(intermed[6], intermed[7]);
+    Util16::Norm_AddSub(intermed[8], intermed[9]);
+    Util16::Norm_AddSub(intermed[10], intermed[11]);
+    Util16::Norm_AddSub(intermed[12], intermed[13]);
+    Util16::Norm_AddSub(intermed[14], intermed[15]);
 
     Util16::Norm_LShift(intermed[3],4);
     Util16::Norm_LShift(intermed[7],4);
-
-    Util16::Norm_Q_reduce(intermed[3]);
-    Util16::Norm_Q_reduce(intermed[7]);
+    Util16::Norm_LShift(intermed[11],4);
+    Util16::Norm_LShift(intermed[15],4);
 
     Util16::Norm_AddSub(intermed[0], intermed[2]);
     Util16::Norm_AddSub(intermed[1], intermed[3]);
     Util16::Norm_AddSub(intermed[4], intermed[6]);
     Util16::Norm_AddSub(intermed[5], intermed[7]);
+    Util16::Norm_AddSub(intermed[8], intermed[10]);
+    Util16::Norm_AddSub(intermed[9], intermed[11]);
+    Util16::Norm_AddSub(intermed[12], intermed[14]);
+    Util16::Norm_AddSub(intermed[13], intermed[15]);
 
     Util16::Norm_LShift(intermed[5],2);
     Util16::Norm_LShift(intermed[6],4);
     Util16::Norm_LShift(intermed[7],6);
-
-    Util16::Norm_Q_reduce(intermed[5]);
-    Util16::Norm_Q_reduce(intermed[6]);
-    Util16::Norm_Q_reduce(intermed[7]);
+    Util16::Norm_LShift(intermed[13],2);
+    Util16::Norm_LShift(intermed[14],4);
+    Util16::Norm_LShift(intermed[15],6);
 
     Util16::Norm_AddSub(intermed[0], intermed[4]);
     Util16::Norm_AddSub(intermed[1], intermed[5]);
     Util16::Norm_AddSub(intermed[2], intermed[6]);
     Util16::Norm_AddSub(intermed[3], intermed[7]);
+    Util16::Norm_AddSub(intermed[8], intermed[12]);
+    Util16::Norm_AddSub(intermed[9], intermed[13]);
+    Util16::Norm_AddSub(intermed[10], intermed[14]);
+    Util16::Norm_AddSub(intermed[11], intermed[15]);
+
+    Util16::Norm_LShift(intermed[9],1);
+    Util16::Norm_LShift(intermed[10],2);
+    Util16::Norm_LShift(intermed[11],3);
+    Util16::Norm_LShift(intermed[12],4);
+    Util16::Norm_LShift(intermed[13],5);
+    Util16::Norm_LShift(intermed[14],6);
+    Util16::Norm_LShift(intermed[15],7);
+
+    Util16::Norm_AddSub(intermed[0], intermed[8]);
+    Util16::Norm_AddSub(intermed[1], intermed[9]);
+    Util16::Norm_AddSub(intermed[2], intermed[10]);
+    Util16::Norm_AddSub(intermed[3], intermed[11]);
+    Util16::Norm_AddSub(intermed[4], intermed[12]);
+    Util16::Norm_AddSub(intermed[5], intermed[13]);
+    Util16::Norm_AddSub(intermed[6], intermed[14]);
+    Util16::Norm_AddSub(intermed[7], intermed[15]);
+    
 
     for(size_t i=0;i < ndiv8;i++){
         Util16::Norm_Center257(intermed[i]);
@@ -115,7 +143,7 @@ void MiNTT64_norm_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
 }
 
 
-void MiNTT64_norm_int16::ntt_sum(uint8_t input[INPUT_SIZE], int16_t out[d][ndiv8][8]){
+void MiNTT128_norm_int16::ntt_sum(uint8_t input[INPUT_SIZE], int16_t out[d][ndiv8][8]){
 
     for (size_t i = 0; i < m; i++){
         int16_t x[ndiv8][8];
@@ -131,7 +159,7 @@ void MiNTT64_norm_int16::ntt_sum(uint8_t input[INPUT_SIZE], int16_t out[d][ndiv8
 
 }
 
-void MiNTT64_norm_int16::change_base(int16_t val[d][ndiv8][8], uint8_t out[OUTPUT_SIZE]){
+void MiNTT128_norm_int16::change_base(int16_t val[d][ndiv8][8], uint8_t out[OUTPUT_SIZE]){
 
     for (size_t i = 0; i < d; i++){
         for (size_t j = 0; j < ndiv8; j++){

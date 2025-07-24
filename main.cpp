@@ -4,6 +4,7 @@
 #include "MiNTT128_norm_int64.h"
 #include "MiNTT128_simd_int64.h"
 #include "MiNTT64_norm_int16.h"
+#include "MiNTT64_simd_int16.h"
 #include "util_int64.h"
 
 using namespace std;
@@ -15,21 +16,22 @@ void GenInput(uint8_t input[INPUT_SIZE]);
 
 int main() {
 
-    MiNTT64_norm_int64 hash = MiNTT64_norm_int64();
+    //MiNTT64_norm_int64 hash = MiNTT64_norm_int64();
     // MiNTT64_SIMD_int64 hash2 = MiNTT64_SIMD_int64();
     // MiNTT128_norm_int64 hash3 = MiNTT128_norm_int64();
     // MiNTT128_SIMD_int64 hash4 = MiNTT128_SIMD_int64();
 
     MiNTT64_norm_int16 hash5 = MiNTT64_norm_int16();
+    MiNTT64_SIMD_int16 hash6 = MiNTT64_SIMD_int16();
 
     uint8_t input[INPUT_SIZE];
     uint8_t output[OUTPUT_SIZE] = {0};
     
-    std::fill(std::begin(output), std::end(output), 0);
-    GenInput(input);
-    hash.Hash(input,output);
-    PrintOut(output);
-    //hash.PrintKey("key1.csv");
+    // std::fill(std::begin(output), std::end(output), 0);
+    // GenInput(input);
+    // hash.Hash(input,output);
+    // PrintOut(output);
+
 
     // std::fill(std::begin(output), std::end(output), 0);
     // GenInput(input);
@@ -50,8 +52,11 @@ int main() {
     GenInput(input);
     hash5.Hash(input,output);
     PrintOut(output);
-    //hash5.PrintKey("key2.csv");
 
+    std::fill(std::begin(output), std::end(output), 0);
+    GenInput(input);
+    hash6.Hash(input,output);
+    PrintOut(output);
 
     return 0;
 }

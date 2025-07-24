@@ -257,13 +257,16 @@ void Util16::SIMD_Mod257(int16_t* vec1){
 }
 
 void Util16::SIMD_Center257(int16_t* vec) {
+
+    const __m128i VAL_128 = _mm_set1_epi16(128);
+    const __m128i VAL_257 = _mm_set1_epi16(257);
+
+    SIMD_Mod257(vec);
+
     __m128i reg = _mm_loadu_si128((__m128i*)vec);
-
-    __m128i threshold = _mm_set1_epi16(128);
-
    
-    __m128i mask = _mm_cmpgt_epi16(reg, threshold);      
-    __m128i subval = _mm_and_si128(mask, _mm_set1_epi16(257)); 
+    __m128i mask = _mm_cmpgt_epi16(reg, VAL_128);
+    __m128i subval = _mm_and_si128(mask, VAL_257); 
     reg = _mm_sub_epi16(reg, subval);                     
 
     _mm_storeu_si128((__m128i*)vec, reg);
