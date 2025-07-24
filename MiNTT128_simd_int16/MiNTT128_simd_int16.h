@@ -2,7 +2,7 @@
 #include "sizes.h"
 #include "util_int16.h"
 #include <cstdint>
-class MiNTT128_norm_int16 {
+class MiNTT128_SIMD_int16 {
     
     //Everything is public because I am lazy, bad practice
     public:
@@ -19,7 +19,7 @@ class MiNTT128_norm_int16 {
     int16_t NTT8_TABLE[256][8];
     int16_t MULT_TABLE[ndiv8][8];
     
-    MiNTT128_norm_int16();
+    MiNTT128_SIMD_int16();
     void Setup();
     void Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]);
     void PrintKey(std::string filename);

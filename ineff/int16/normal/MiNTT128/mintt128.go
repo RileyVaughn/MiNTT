@@ -10,6 +10,13 @@ func MiNTT128(input [ndiv8 * m]byte) [OUT_SIZE]byte {
 
 }
 
+
+func NCC(input [ndiv8]byte) [ndiv8][8]int16 {
+
+	return ncc(input)
+}
+
+
 func ncc(input [ndiv8]byte) [ndiv8][8]int16 {
 
 	var intermed [ndiv8][8]int16

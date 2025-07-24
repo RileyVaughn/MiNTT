@@ -7,6 +7,7 @@ import (
 
 	m128_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT128"
 	m64_norm_int64 "github.com/RileyVaughn/MiNTT/hash/int64/normal/MiNTT64"
+	util16 "github.com/RileyVaughn/MiNTT/hash/int16/util"
 	"github.com/RileyVaughn/MiNTT/hash/int64/util"
 
 	m128_simd_int64 "github.com/RileyVaughn/MiNTT/hash/int64/simd/MiNTT128"
@@ -31,10 +32,21 @@ func main() {
 
 	//TestAll()
 	//MeanRuntimeAll()
-	in := GenInput2()
-	out := m64_norm_int16.MiNTT64(in)
+	//in := GenInput2()
+	//out := m64_norm_int16.MiNTT64(in)
+	//_ = m128_norm_int16.MiNTT64(in)
+	//fmt.Println(out)
 
-	fmt.Println(out)
+	ncc_in := [16]byte{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}
+	ncc_out := m128_norm_int16.NCC(ncc_in)
+
+	for i := 0; i < 16; i++ {
+		for j := 0; j < 8; j++ {
+		ncc_out[i][j] = util16.Mod(ncc_out[i][j],int16(257))
+		}
+	}
+
+	fmt.Println(ncc_out)
 
 }
 
