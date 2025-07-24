@@ -38,7 +38,7 @@ void MiNTT64_SIMD_int64::Setup(){
 
 
 void MiNTT64_SIMD_int64::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
-    int64_t inter[d][ndiv8][8];
+    int64_t inter[d][ndiv8][8] = {0};
     ntt_sum(input,inter);
     change_base(inter,out);
 
