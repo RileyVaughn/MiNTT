@@ -134,10 +134,9 @@ int16_t * Util16::GenKey(int16_t m, int16_t n, int16_t d, int16_t q){
 // Centers val such that |val| < 257/2
 int16_t Util16::Center_257(int16_t val){
     val = Mod_257(val);
-    if (val > 128) { // floor(257/2) = 128 
-        val = val - 257;
-    }
-    return val;
+    return val - ((val > 128)*257);
+
+
 }
 
 void Util16::Norm_AddSub(int16_t * vec1, int16_t * vec2){
@@ -255,4 +254,17 @@ void Util16::SIMD_Mod257(int16_t* vec1){
 	r_reg = _mm_and_si128(r_reg, NEG_TFS);
 	l_reg = _mm_xor_si128(l_reg,r_reg);
 	_mm_storeu_si128((__m128i*)vec1, l_reg);
+}
+
+void Util16::SIMD_Center257(int16_t* vec) {
+    __m128i reg = _mm_loadu_si128((__m128i*)vec);
+
+    __m128i threshold = _mm_set1_epi16(128);
+
+   
+    __m128i mask = _mm_cmpgt_epi16(reg, threshold);      
+    __m128i subval = _mm_and_si128(mask, _mm_set1_epi16(257)); 
+    reg = _mm_sub_epi16(reg, subval);                     
+
+    _mm_storeu_si128((__m128i*)vec, reg);
 }

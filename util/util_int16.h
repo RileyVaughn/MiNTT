@@ -82,4 +82,7 @@ void SIMD_Q_reduce(int16_t* vec1);
 // Originally found in the SWIFFT source code <https://github.com/micciancio/SWIFFT>, modified for 64 bit
 void SIMD_Mod257(int16_t* vec1);
 
+// Centers each aluein vec around 0 [-128 to 128] using SIMD instrucitons.
+void SIMD_Center257(int16_t * vec);
+
 };
