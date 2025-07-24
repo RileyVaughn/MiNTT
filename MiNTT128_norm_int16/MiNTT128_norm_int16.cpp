@@ -93,6 +93,11 @@ void MiNTT128_norm_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
     Util16::Norm_LShift(intermed[11],4);
     Util16::Norm_LShift(intermed[15],4);
 
+    Util16::Norm_Q_reduce(intermed[3]);
+    Util16::Norm_Q_reduce(intermed[7]);
+    Util16::Norm_Q_reduce(intermed[11]);
+    Util16::Norm_Q_reduce(intermed[15]);
+
     Util16::Norm_AddSub(intermed[0], intermed[2]);
     Util16::Norm_AddSub(intermed[1], intermed[3]);
     Util16::Norm_AddSub(intermed[4], intermed[6]);
@@ -104,10 +109,20 @@ void MiNTT128_norm_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
 
     Util16::Norm_LShift(intermed[5],2);
     Util16::Norm_LShift(intermed[6],4);
+    Util16::Norm_Q_reduce(intermed[7]);
     Util16::Norm_LShift(intermed[7],6);
     Util16::Norm_LShift(intermed[13],2);
     Util16::Norm_LShift(intermed[14],4);
+    Util16::Norm_Q_reduce(intermed[7]);
     Util16::Norm_LShift(intermed[15],6);
+
+    Util16::Norm_Q_reduce(intermed[5]);
+    Util16::Norm_Q_reduce(intermed[6]);
+    Util16::Norm_Q_reduce(intermed[7]);
+    Util16::Norm_Q_reduce(intermed[13]);
+    Util16::Norm_Q_reduce(intermed[14]);
+    Util16::Norm_Q_reduce(intermed[15]);
+
 
     Util16::Norm_AddSub(intermed[0], intermed[4]);
     Util16::Norm_AddSub(intermed[1], intermed[5]);
@@ -123,8 +138,12 @@ void MiNTT128_norm_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
     Util16::Norm_LShift(intermed[11],3);
     Util16::Norm_LShift(intermed[12],4);
     Util16::Norm_LShift(intermed[13],5);
+    Util16::Norm_Q_reduce(intermed[14]);
     Util16::Norm_LShift(intermed[14],6);
-    Util16::Norm_LShift(intermed[15],7);
+    Util16::Norm_Q_reduce(intermed[15]);
+    Util16::Norm_LShift(intermed[15],6);
+    Util16::Norm_Q_reduce(intermed[15]);
+    Util16::Norm_LShift(intermed[15],1);
 
     Util16::Norm_AddSub(intermed[0], intermed[8]);
     Util16::Norm_AddSub(intermed[1], intermed[9]);
