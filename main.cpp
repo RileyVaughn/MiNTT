@@ -7,6 +7,8 @@
 #include "MiNTT64_simd_int16.h"
 #include "MiNTT128_norm_int16.h"
 #include "MiNTT128_simd_int16.h"
+#include "MiNTT8_norm_int16.h"
+#include "MiNTT8_simd_int16.h"
 #include "util_int64.h"
 
 using namespace std;
@@ -25,8 +27,11 @@ int main() {
 
     //MiNTT64_norm_int16 hash5 = MiNTT64_norm_int16();
     //MiNTT64_SIMD_int16 hash6 = MiNTT64_SIMD_int16();
-    MiNTT128_norm_int16 hash7 = MiNTT128_norm_int16();
-    MiNTT128_SIMD_int16 hash8 = MiNTT128_SIMD_int16();
+    //MiNTT128_norm_int16 hash7 = MiNTT128_norm_int16();
+    //MiNTT128_SIMD_int16 hash8 = MiNTT128_SIMD_int16();
+
+    MiNTT8_norm_int16 hash9 = MiNTT8_norm_int16();
+    MiNTT8_SIMD_int16 hash10 = MiNTT8_SIMD_int16();
 
     uint8_t input[INPUT_SIZE];
     uint8_t output[OUTPUT_SIZE] = {0};
@@ -62,15 +67,26 @@ int main() {
     // hash6.Hash(input,output);
     // PrintOut(output);
 
+    // std::fill(std::begin(output), std::end(output), 0);
+    // GenInput(input);
+    // hash7.Hash(input,output);
+    // PrintOut(output);
+
+    // std::fill(std::begin(output), std::end(output), 0);
+    // GenInput(input);
+    // hash8.Hash(input,output);
+    // PrintOut(output);
+
     std::fill(std::begin(output), std::end(output), 0);
     GenInput(input);
-    hash7.Hash(input,output);
+    hash9.Hash(input,output);
     PrintOut(output);
 
     std::fill(std::begin(output), std::end(output), 0);
     GenInput(input);
-    hash8.Hash(input,output);
+    hash10.Hash(input,output);
     PrintOut(output);
+
 
     return 0;
 }
