@@ -32,16 +32,7 @@ func main() {
 	//TestAll()
 	//MeanRuntimeAll()
 	in := GenInput2()
-	out := m64_norm_int64.NTT_SUM(in)
-	//out := m64_norm_int16.MiNTT64(in)
-
-	for i := 0; i < 12; i++ {
-		for j := 0; j < 8; j++ {
-			for k := 0; k < 8; k++ {
-				out[i][j][k] = util.Mod(out[i][j][k], 257)
-			}
-		}
-	}
+	out := m64_norm_int16.MiNTT64(in)
 
 	fmt.Println(out)
 

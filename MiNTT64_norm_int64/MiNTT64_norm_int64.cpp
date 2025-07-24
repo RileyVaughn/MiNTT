@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 
+
 MiNTT64_norm_int64::MiNTT64_norm_int64(){
     Setup();
 }
@@ -38,7 +39,7 @@ void MiNTT64_norm_int64::Setup(){
 
 
 void MiNTT64_norm_int64::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
-    int64_t inter[d][ndiv8][8];
+    int64_t inter[d][ndiv8][8] = {0};
     ntt_sum(input,inter);
     change_base(inter,out);
 
@@ -115,6 +116,9 @@ void MiNTT64_norm_int64::ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][ndiv8
             }
         }
     }
+    std::cout << std::endl;
+    std::cout << std::endl;
+
 }
 
 void MiNTT64_norm_int64::change_base(int64_t val[d][ndiv8][8], uint8_t out[OUTPUT_SIZE]){
