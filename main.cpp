@@ -64,8 +64,8 @@ int main() {
     delete(simd64_16);
     delete(norm128_16);
     delete(simd128_16);
-    delete(norm8_16);
-    delete(simd8_16);
+    // delete(norm8_16);
+    // delete(simd8_16);
     return 0;
 }
 
