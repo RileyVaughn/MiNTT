@@ -1,8 +1,9 @@
 #include <cstddef>
 #include "sizes.h"
+#include "MiNTT.h"
 #include "util_int16.h"
 #include <cstdint>
-class MiNTT128_SIMD_int16 {
+class MiNTT128_SIMD_int16 : public MiNTT{
     
     //Everything is public because I am lazy, bad practice
     public:

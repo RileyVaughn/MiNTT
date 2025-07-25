@@ -116,8 +116,6 @@ void MiNTT64_norm_int64::ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][ndiv8
             }
         }
     }
-    std::cout << std::endl;
-    std::cout << std::endl;
 
 }
 
