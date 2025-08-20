@@ -4,10 +4,19 @@
 
 namespace Util64 {
 
+// Efficient mod of 257 
+// The tradeoff is that the reduced range is not 0 to 256, but rather the range is shifted left by 8.
 int64_t Q_reduce(int64_t val);
+
+// Efficient mod of 2^2^4+1 = 65537 
+// The tradeoff is that the reduced range is not 0 to 256, but rather the range is shifted left by 8.
+int64_t QF4_reduce(int64_t val);
 
 // Less Efficient, but still efficient mod of 257 (or any q=2^x+1 if modified).
 int64_t Mod_257(int64_t val);
+
+// Less Efficient, but still efficient mod of 65537
+int64_t Mod_65537(int64_t val);
 
 // Not particulalry efficent: raises Integer b to the power x mod q. 
 // Only used in setup so can be slow.

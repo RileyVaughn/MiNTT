@@ -25,45 +25,45 @@ const int TEST_SIZE = 10000;
 
 int main() {
 
-    MiNTT * norm64_64 = new MiNTT64_norm_int64();
-    MiNTT * simd64_64 = new MiNTT64_SIMD_int64();
-    MiNTT * norm128_64 = new MiNTT128_norm_int64();
-    MiNTT * simd128_64 = new MiNTT128_SIMD_int64();
+    // MiNTT * norm64_64 = new MiNTT64_norm_int64();
+    // MiNTT * simd64_64 = new MiNTT64_SIMD_int64();
+    // MiNTT * norm128_64 = new MiNTT128_norm_int64();
+    // MiNTT * simd128_64 = new MiNTT128_SIMD_int64();
 
-    MiNTT * norm64_16 = new MiNTT64_norm_int16();
-    MiNTT * simd64_16 = new MiNTT64_SIMD_int16();
-    MiNTT * norm128_16 = new MiNTT128_norm_int16();
-    MiNTT * simd128_16 = new MiNTT128_SIMD_int16();
+    // MiNTT * norm64_16 = new MiNTT64_norm_int16();
+    // MiNTT * simd64_16 = new MiNTT64_SIMD_int16();
+    // MiNTT * norm128_16 = new MiNTT128_norm_int16();
+    // MiNTT * simd128_16 = new MiNTT128_SIMD_int16();
 
-    MiNTT * norm8_16 = new MiNTT8_norm_int16();
-    MiNTT * simd8_16 = new MiNTT8_SIMD_int16();
+    // MiNTT * norm8_16 = new MiNTT8_norm_int16();
+    // MiNTT * simd8_16 = new MiNTT8_SIMD_int16();
 
-    cout << "norm64_64: " << MeanRuntime(norm64_64) << endl;
-    cout << "simd64_64: " << MeanRuntime(simd64_64) << endl;
-    cout << "norm128_64: " << MeanRuntime(norm128_64) << endl;
-    cout << "simd128_64: " << MeanRuntime(simd128_64) << endl;
+    // cout << "norm64_64: " << MeanRuntime(norm64_64) << endl;
+    // cout << "simd64_64: " << MeanRuntime(simd64_64) << endl;
+    // cout << "norm128_64: " << MeanRuntime(norm128_64) << endl;
+    // cout << "simd128_64: " << MeanRuntime(simd128_64) << endl;
     
-    cout << "norm64_16: " << MeanRuntime(norm64_16) << endl;
-    cout << "simd64_16: " << MeanRuntime(simd64_16) << endl;
-    cout << "norm128_16: " << MeanRuntime(norm128_16) << endl;
-    cout << "simd128_16: " << MeanRuntime(simd128_16) <<  endl;
+    // cout << "norm64_16: " << MeanRuntime(norm64_16) << endl;
+    // cout << "simd64_16: " << MeanRuntime(simd64_16) << endl;
+    // cout << "norm128_16: " << MeanRuntime(norm128_16) << endl;
+    // cout << "simd128_16: " << MeanRuntime(simd128_16) <<  endl;
 
-    cout << "norm8_16: " << MeanRuntime(norm8_16) << endl;
-    cout << "simd8_16: " << MeanRuntime(simd8_16) << endl;
-
-
+    // cout << "norm8_16: " << MeanRuntime(norm8_16) << endl;
+    // cout << "simd8_16: " << MeanRuntime(simd8_16) << endl;
 
 
 
 
-    delete(norm64_64);
-    delete(simd64_64);
-    delete(norm128_64);
-    delete(simd128_64);
-    delete(norm64_16);
-    delete(simd64_16);
-    delete(norm128_16);
-    delete(simd128_16);
+
+
+    // delete(norm64_64);
+    // delete(simd64_64);
+    // delete(norm128_64);
+    // delete(simd128_64);
+    // delete(norm64_16);
+    // delete(simd64_16);
+    // delete(norm128_16);
+    // delete(simd128_16);
     // delete(norm8_16);
     // delete(simd8_16);
     return 0;

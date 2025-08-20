@@ -10,6 +10,11 @@ int64_t Util64::Q_reduce(int64_t val){
 }
 
 
+int64_t Util64::QF4_reduce(int64_t val){
+    return (val & 65535) - (val >> 16);
+}
+
+
 int64_t Util64::Mod_257(int64_t val) {
 	val = Q_reduce(val);
 	val = Q_reduce(val);
@@ -21,6 +26,15 @@ int64_t Util64::Mod_257(int64_t val) {
 	val = Q_reduce(val);
 
   	return val ^ (((val == -1)*-1) & (-257));
+}
+
+int64_t Util64::Mod_65537(int64_t val) {
+	val = QF4_reduce(val);
+	val = QF4_reduce(val);
+	val = QF4_reduce(val);
+	val = QF4_reduce(val);
+
+  	return val ^ (((val == -1)*-1) & (-65537));
 }
 
 
