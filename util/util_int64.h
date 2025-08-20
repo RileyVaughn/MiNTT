@@ -60,8 +60,14 @@ void Norm_Mult(int64_t * vec1, int64_t * vec2, int64_t * prod);
 // Simulates the SIMD Mod257 function manually.
 void Norm_Mod257(int64_t * vec);
 
+// Simulates the SIMD Mod65537 function manually.
+void Norm_Mod65537(int64_t * vec);
+
 // Simulates the SIMD Q_reduce function manually.
 void Norm_Q_reduce(int64_t * vec);
+
+// Simulates the SIMD QF4_reduce function manually.
+void Norm_QF4_reduce(int64_t * vec);
 
 //Adds and subtracts vec1 and vec2 using SIMD, and returns the sum/difference in place resp.
 void SIMD_AddSub(int64_t* vec1, int64_t* vec2);

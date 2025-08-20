@@ -192,6 +192,19 @@ void Util64::Norm_Q_reduce(int64_t * vec){
        vec[i] = Q_reduce(vec[i]);
     }
 }
+
+void Util64::Norm_Mod65537(int64_t * vec){
+    for (size_t i = 0; i < 8; i++){
+       vec[i] = Mod_65537(vec[i]);
+    }
+}
+
+
+void Util64::Norm_QF4_reduce(int64_t * vec){
+    for (size_t i = 0; i < 8; i++){
+       vec[i] = QF4_reduce(vec[i]);
+    }
+}
     
 
 void Util64::SIMD_AddSub(int64_t* vec1, int64_t* vec2){
