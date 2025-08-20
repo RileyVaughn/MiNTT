@@ -86,9 +86,16 @@ void SIMD_AddMult(int64_t* vec1, int64_t* vec2, int64_t* vec3);
 // Originally found in the SWIFFT source code <https://github.com/micciancio/SWIFFT>, modified for 64 bit
 void SIMD_Q_reduce(int64_t* vec1);
 
+//Efficient SIMD mod of 65537, range is not 0 to 65535 but rather shifted by 16
+void SIMD_QF4_reduce(int64_t* vec1);
+
 // Less Efficient SIMD mod, but still efficient mod of 257 (or any q=2^x+1 if modified).
 // Running q_reduce multiple times minimizes the the domain to -1 to 256, the following code removes the -1.
 // Originally found in the SWIFFT source code <https://github.com/micciancio/SWIFFT>, modified for 64 bit
 void SIMD_Mod257(int64_t* vec1);
 
+// Less Efficient SIMD mod, but still efficient mod of 65537
+void SIMD_Mod65537(int64_t* vec1);
+
 };
+

@@ -264,6 +264,17 @@ void Util64::SIMD_Q_reduce(int64_t* vec1) {
     _mm512_storeu_si512((__m512i *)vec1, l_reg);
 }
 
+void Util64::SIMD_QF4_reduce(int64_t* vec1) {
+    const __m512i TFF = _mm512_set1_epi64(65535);
+
+    __m512i l_reg = _mm512_loadu_si512((__m512i *)vec1);
+    __m512i r_reg = _mm512_srai_epi64(l_reg, 16);
+    l_reg = _mm512_and_si512(l_reg, TFF);
+    l_reg = _mm512_sub_epi64(l_reg, r_reg);
+
+    _mm512_storeu_si512((__m512i *)vec1, l_reg);
+}
+
 
 void Util64::SIMD_Mod257(int64_t* vec1){
 	const __m512i NEG_ONE = _mm512_set1_epi64(-1);
@@ -277,6 +288,23 @@ void Util64::SIMD_Mod257(int64_t* vec1){
 	SIMD_Q_reduce(vec1);
 	SIMD_Q_reduce(vec1);
 	SIMD_Q_reduce(vec1);
+
+	__m512i l_reg = _mm512_loadu_si512((__m512i *)vec1);
+	__mmask32 mask = _mm512_cmpeq_epi64_mask(l_reg,NEG_ONE);
+	__m512i r_reg = _mm512_maskz_mov_epi64(mask, NEG_ONE);
+	r_reg = _mm512_and_si512(r_reg, NEG_TFS);
+	l_reg = _mm512_xor_si512(l_reg,r_reg);
+	_mm512_storeu_si512((__m512i*)vec1, l_reg);
+}
+
+void Util64::SIMD_Mod65537(int64_t* vec1){
+	const __m512i NEG_ONE = _mm512_set1_epi64(-1);
+	const __m512i NEG_TFS = _mm512_set1_epi64(-65537);
+
+	SIMD_QF4_reduce(vec1);
+	SIMD_QF4_reduce(vec1);
+	SIMD_QF4_reduce(vec1);
+	SIMD_QF4_reduce(vec1);
 
 	__m512i l_reg = _mm512_loadu_si512((__m512i *)vec1);
 	__mmask32 mask = _mm512_cmpeq_epi64_mask(l_reg,NEG_ONE);

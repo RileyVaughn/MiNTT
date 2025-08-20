@@ -25,15 +25,6 @@ const int TEST_SIZE = 10000;
 
 int main() {
 
-    for(int i =0; i < TEST_SIZE; i++){
-        int64_t val = int64_t(rand()) << 32 + rand();
-        int a = ((val % 65537) + 65537) % 65537;
-        int b = Util64::Mod_65537(val);
-        if (a != b){
-            cout << val << " " << a << " " << b << endl;
-        }
-    }
-
 
     // MiNTT * norm64_64 = new MiNTT64_norm_int64();
     // MiNTT * simd64_64 = new MiNTT64_SIMD_int64();
