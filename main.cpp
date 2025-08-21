@@ -12,6 +12,9 @@
 #include "MiNTT8_norm_int16.h"
 #include "MiNTT8_simd_int16.h"
 #include "MiNTT128_norm_int64_QF4.h"
+#include "MiNTT128_simd_int64_QF4.h"
+#include "MiNTT64_norm_int64_QF4.h"
+#include "MiNTT64_simd_int64_QF4.h"
 
 #include "util_int64.h"
 
@@ -27,54 +30,63 @@ void GenInputQF4(uint8_t input[INPUT_SIZE]);
 int64_t CheckRuntimeQF4(uint8_t input[INPUT_SIZE], MiNTT * hash);
 int64_t MeanRuntimeQF4(MiNTT * hash);
 
-const int TEST_SIZE = 10;
+const int TEST_SIZE = 100;
 
 
 int main() {
 
 
-    // MiNTT * norm64_64 = new MiNTT64_norm_int64();
-    // MiNTT * simd64_64 = new MiNTT64_SIMD_int64();
-    // MiNTT * norm128_64 = new MiNTT128_norm_int64();
-    // MiNTT * simd128_64 = new MiNTT128_SIMD_int64();
+    MiNTT * norm64_64 = new MiNTT64_norm_int64();
+    MiNTT * simd64_64 = new MiNTT64_SIMD_int64();
+    MiNTT * norm128_64 = new MiNTT128_norm_int64();
+    MiNTT * simd128_64 = new MiNTT128_SIMD_int64();
 
-    // MiNTT * norm64_16 = new MiNTT64_norm_int16();
-    // MiNTT * simd64_16 = new MiNTT64_SIMD_int16();
-    // MiNTT * norm128_16 = new MiNTT128_norm_int16();
-    // MiNTT * simd128_16 = new MiNTT128_SIMD_int16();
+    MiNTT * norm64_16 = new MiNTT64_norm_int16();
+    MiNTT * simd64_16 = new MiNTT64_SIMD_int16();
+    MiNTT * norm128_16 = new MiNTT128_norm_int16();
+    MiNTT * simd128_16 = new MiNTT128_SIMD_int16();
 
-    // MiNTT * norm8_16 = new MiNTT8_norm_int16();
-    // MiNTT * simd8_16 = new MiNTT8_SIMD_int16();
+    MiNTT * norm8_16 = new MiNTT8_norm_int16();
+    MiNTT * simd8_16 = new MiNTT8_SIMD_int16();
 
     MiNTT * norm128_64_QF4 = new MiNTT128_norm_int64_QF4();
+    MiNTT * simd128_64_QF4 = new MiNTT128_SIMD_int64_QF4();
+    MiNTT * norm64_64_QF4 = new MiNTT64_norm_int64_QF4();
+    MiNTT * simd64_64_QF4 = new MiNTT64_SIMD_int64_QF4();
 
-    // cout << "norm64_64: " << MeanRuntime(norm64_64) << endl;
-    // cout << "simd64_64: " << MeanRuntime(simd64_64) << endl;
-    // cout << "norm128_64: " << MeanRuntime(norm128_64) << endl;
-    // cout << "simd128_64: " << MeanRuntime(simd128_64) << endl;
+    cout << "norm64_64: " << MeanRuntime(norm64_64) << endl;
+    cout << "simd64_64: " << MeanRuntime(simd64_64) << endl;
+    cout << "norm128_64: " << MeanRuntime(norm128_64) << endl;
+    cout << "simd128_64: " << MeanRuntime(simd128_64) << endl;
     
-    // cout << "norm64_16: " << MeanRuntime(norm64_16) << endl;
-    // cout << "simd64_16: " << MeanRuntime(simd64_16) << endl;
-    // cout << "norm128_16: " << MeanRuntime(norm128_16) << endl;
-    // cout << "simd128_16: " << MeanRuntime(simd128_16) <<  endl;
+    cout << "norm64_16: " << MeanRuntime(norm64_16) << endl;
+    cout << "simd64_16: " << MeanRuntime(simd64_16) << endl;
+    cout << "norm128_16: " << MeanRuntime(norm128_16) << endl;
+    cout << "simd128_16: " << MeanRuntime(simd128_16) <<  endl;
 
-    // cout << "norm8_16: " << MeanRuntime(norm8_16) << endl;
-    // cout << "simd8_16: " << MeanRuntime(simd8_16) << endl;
+    cout << "norm8_16: " << MeanRuntime(norm8_16) << endl;
+    cout << "simd8_16: " << MeanRuntime(simd8_16) << endl;
 
-    cout << "norm128_64: " << MeanRuntimeQF4(norm128_64_QF4) << endl;
+    cout << "norm128_64_QF4: " << MeanRuntimeQF4(norm128_64_QF4) << endl;
+    cout << "simd128_64_QF4: " << MeanRuntimeQF4(simd128_64_QF4) << endl;
+    cout << "norm64_64_QF4: " << MeanRuntimeQF4(norm64_64_QF4) << endl;
+    cout << "simd64_64_QF4: " << MeanRuntimeQF4(simd64_64_QF4) << endl;
 
 
-    // delete(norm64_64);
-    // delete(simd64_64);
-    // delete(norm128_64);
-    // delete(simd128_64);
-    // delete(norm64_16);
-    // delete(simd64_16);
-    // delete(norm128_16);
-    // delete(simd128_16);
-    // delete(norm8_16);
-    // delete(simd8_16);
+    delete(norm64_64);
+    delete(simd64_64);
+    delete(norm128_64);
+    delete(simd128_64);
+    delete(norm64_16);
+    delete(simd64_16);
+    delete(norm128_16);
+    delete(simd128_16);
+    delete(norm8_16);
+    delete(simd8_16);
     delete(norm128_64_QF4);
+    delete(simd128_64_QF4);
+    delete(norm64_64_QF4);
+    delete(simd64_64_QF4);
     return 0;
 }
 

@@ -3,12 +3,12 @@
 #include "MiNTT.h"
 #include "util_int64.h"
 #include <cstdint>
-class MiNTT128_norm_int64_QF4 : public MiNTT{
+class MiNTT64_SIMD_int64_QF4 : public MiNTT{
     
     //Everything is public because I am lazy, bad practice
     public:
 
-    static const int64_t n = 128;
+    static const int64_t n = 64;
     static const int64_t m = INPUT_SIZE_QF4/n*8;
     static const int64_t N = OUTPUT_SIZE_QF4/17*8; //assumes q=65537
     static const int64_t d = N/n;
@@ -20,7 +20,7 @@ class MiNTT128_norm_int64_QF4 : public MiNTT{
     int64_t NTT8_TABLE[256][8];
     int64_t MULT_TABLE[ndiv8][8];
     
-    MiNTT128_norm_int64_QF4();
+    MiNTT64_SIMD_int64_QF4();
     void Setup();
     void Hash(uint8_t input[INPUT_SIZE_QF4],uint8_t out[OUTPUT_SIZE_QF4]);
     void PrintKey(std::string filename);
