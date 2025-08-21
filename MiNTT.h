@@ -8,7 +8,7 @@ class MiNTT {
 
     public:
 
-    virtual void Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]) = 0;
+    virtual void Hash(uint8_t * input,uint8_t * out) = 0;
 
     virtual ~MiNTT() = default;
 

@@ -2,12 +2,18 @@
 #ifndef SIZES_H
 #define SIZES_H
 
-//Number of bytes in output
-const int OUTPUT_SIZE = 864;
+//Just a convient way to switch between input and output sizes
+const int SCALE_PARAM = 6;
 
-
-// Number of bytes in input
+//Number of bytes in output for mod257 functions
+const int OUTPUT_SIZE = ((128*SCALE_PARAM)*9)/8;
+// Number of bytes in input for mod257 functions
 const int INPUT_SIZE = OUTPUT_SIZE*2;
+
+const int OUTPUT_SIZE_QF4 = ((128*SCALE_PARAM)*17)/8;
+const int INPUT_SIZE_QF4 = OUTPUT_SIZE_QF4*2;
+
+
 
 #endif
 

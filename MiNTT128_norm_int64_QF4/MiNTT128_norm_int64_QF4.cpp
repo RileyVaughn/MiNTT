@@ -1,16 +1,16 @@
 
 #include <cstddef>
 #include<string>
-#include "MiNTT128_norm_int64_qf4.h"
+#include "MiNTT128_norm_int64_QF4.h"
 #include <cstdint>
 #include <iostream>
 #include <fstream>
 
-MiNTT128_norm_int64_qf4::MiNTT128_norm_int64_qf4(){
+MiNTT128_norm_int64_QF4::MiNTT128_norm_int64_QF4(){
     Setup();
 }
 
-void MiNTT128_norm_int64_qf4::Setup(){
+void MiNTT128_norm_int64_QF4::Setup(){
 
     Util64::GenNTT8Table(2,q,NTT8_TABLE);
 
@@ -38,7 +38,7 @@ void MiNTT128_norm_int64_qf4::Setup(){
 }   
 
 
-void MiNTT128_norm_int64_qf4::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
+void MiNTT128_norm_int64_QF4::Hash(uint8_t input[INPUT_SIZE_QF4],uint8_t out[OUTPUT_SIZE_QF4]){
     int64_t inter[d][ndiv8][8] = {0};
     
     ntt_sum(input,inter);
@@ -47,7 +47,7 @@ void MiNTT128_norm_int64_qf4::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_
 }
 
 
-void MiNTT128_norm_int64_qf4::PrintKey(std::string filename){
+void MiNTT128_norm_int64_QF4::PrintKey(std::string filename){
 
     std::ofstream file(filename);
     if (!file.is_open()) {
@@ -74,7 +74,7 @@ void MiNTT128_norm_int64_qf4::PrintKey(std::string filename){
 }
 
 
-void MiNTT128_norm_int64_qf4::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
+void MiNTT128_norm_int64_QF4::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][8]){
 
     for (size_t i = 0; i < ndiv8; i++){
         Util64::Norm_Mult(NTT8_TABLE[input[i]],MULT_TABLE[i], intermed[i]);
@@ -141,7 +141,7 @@ void MiNTT128_norm_int64_qf4::ncc(uint8_t input[ndiv8], int64_t intermed[ndiv8][
 }
 
 
-void MiNTT128_norm_int64_qf4::ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][ndiv8][8]){
+void MiNTT128_norm_int64_QF4::ntt_sum(uint8_t input[INPUT_SIZE_QF4], int64_t out[d][ndiv8][8]){
 
     for (size_t i = 0; i < m; i++){
         int64_t x[ndiv8][8];
@@ -154,15 +154,16 @@ void MiNTT128_norm_int64_qf4::ntt_sum(uint8_t input[INPUT_SIZE], int64_t out[d][
     }
 }
 
-void MiNTT128_norm_int64_qf4::change_base(int64_t val[d][ndiv8][8], uint8_t out[OUTPUT_SIZE]){
-
+void MiNTT128_norm_int64_QF4::change_base(int64_t val[d][ndiv8][8], uint8_t out[OUTPUT_SIZE_QF4]){
     for (size_t i = 0; i < d; i++){
         for (size_t j = 0; j < ndiv8; j++){
-            Util64::Norm_Mod257(val[i][j]);
+            Util64::Norm_Mod65537(val[i][j]);
             for (size_t k = 0; k < 8; k++){
-                out[i*n+j*8+k] = uint8_t(val[i][j][k]);
+                out[2*(i*n+j*8+k)] = uint8_t(val[i][j][k]);
                 val[i][j][k] = val[i][j][k] >> 8;
-                out[N+i*ndiv8+j] = out[N+i*ndiv8+j] || uint8_t(val[i][j][k]>>k);
+                out[2*(i*n+j*8+k)+1] = uint8_t(val[i][j][k]);
+                val[i][j][k] = val[i][j][k] >> 8;
+                out[2*N+i*ndiv8+j] = out[2*N+i*ndiv8+j] || uint8_t(val[i][j][k]>>k);
             }
         }
     }

@@ -11,6 +11,8 @@
 #include "MiNTT128_simd_int16.h"
 #include "MiNTT8_norm_int16.h"
 #include "MiNTT8_simd_int16.h"
+#include "MiNTT128_norm_int64_QF4.h"
+
 #include "util_int64.h"
 
 using namespace std;
@@ -20,7 +22,12 @@ void GenInput(uint8_t input[INPUT_SIZE]);
 int64_t CheckRuntime(uint8_t input[INPUT_SIZE], MiNTT * hash);
 int64_t MeanRuntime(MiNTT * hash);
 
-const int TEST_SIZE = 10000;
+void PrintOutQF4(uint8_t output[OUTPUT_SIZE]);
+void GenInputQF4(uint8_t input[INPUT_SIZE]);
+int64_t CheckRuntimeQF4(uint8_t input[INPUT_SIZE], MiNTT * hash);
+int64_t MeanRuntimeQF4(MiNTT * hash);
+
+const int TEST_SIZE = 10;
 
 
 int main() {
@@ -39,6 +46,8 @@ int main() {
     // MiNTT * norm8_16 = new MiNTT8_norm_int16();
     // MiNTT * simd8_16 = new MiNTT8_SIMD_int16();
 
+    MiNTT * norm128_64_QF4 = new MiNTT128_norm_int64_QF4();
+
     // cout << "norm64_64: " << MeanRuntime(norm64_64) << endl;
     // cout << "simd64_64: " << MeanRuntime(simd64_64) << endl;
     // cout << "norm128_64: " << MeanRuntime(norm128_64) << endl;
@@ -52,9 +61,7 @@ int main() {
     // cout << "norm8_16: " << MeanRuntime(norm8_16) << endl;
     // cout << "simd8_16: " << MeanRuntime(simd8_16) << endl;
 
-
-
-
+    cout << "norm128_64: " << MeanRuntimeQF4(norm128_64_QF4) << endl;
 
 
     // delete(norm64_64);
@@ -67,6 +74,7 @@ int main() {
     // delete(simd128_16);
     // delete(norm8_16);
     // delete(simd8_16);
+    delete(norm128_64_QF4);
     return 0;
 }
 
@@ -75,6 +83,19 @@ int64_t CheckRuntime(uint8_t input[INPUT_SIZE], MiNTT * hash) {
 
     using namespace std::chrono;
     uint8_t output[OUTPUT_SIZE] = {0};
+
+    auto start = high_resolution_clock::now();
+    hash->Hash(input, output);
+    auto end = high_resolution_clock::now();
+
+    return duration_cast<nanoseconds>(end - start).count();
+
+}
+
+int64_t CheckRuntimeQF4(uint8_t input[INPUT_SIZE_QF4], MiNTT * hash) {
+
+    using namespace std::chrono;
+    uint8_t output[OUTPUT_SIZE_QF4] = {0};
 
     auto start = high_resolution_clock::now();
     hash->Hash(input, output);
@@ -101,10 +122,35 @@ int64_t MeanRuntime(MiNTT * hash) {
     return sum/TEST_SIZE;
 }
 
+int64_t MeanRuntimeQF4(MiNTT * hash) {
+
+    //just a seed for random input gen, I init it here so that all funcs have the same input to test from
+    srand(1);
+
+    int64_t sum = 0;
+    uint8_t input[INPUT_SIZE_QF4]; 
+
+    for (size_t i = 0; i < TEST_SIZE; i++)
+    {
+        GenInput(input);
+        sum = sum + CheckRuntimeQF4(input,hash);
+    }
+
+    return sum/TEST_SIZE;
+}
 
 void GenInput(uint8_t input[INPUT_SIZE]){
 
     for (size_t i = 0; i < INPUT_SIZE; i++)
+    {
+        input[i] = rand() % 256;
+    }
+
+}
+
+void GenInputQF4(uint8_t input[INPUT_SIZE_QF4]){
+
+    for (size_t i = 0; i < INPUT_SIZE_QF4; i++)
     {
         input[i] = rand() % 256;
     }
@@ -126,3 +172,16 @@ void PrintOut(uint8_t output[OUTPUT_SIZE]){
 
 }
 
+void PrintOutQF4(uint8_t output[OUTPUT_SIZE_QF4]){
+
+    for (size_t i = 0; i < OUTPUT_SIZE_QF4; i++)
+    {
+        cout << int(output[i]) << " ";
+        if(i%54==53) {
+            cout << endl;
+        }
+
+    }
+    cout << endl << endl;
+
+}
