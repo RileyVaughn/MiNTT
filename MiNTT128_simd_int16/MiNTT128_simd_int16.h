@@ -13,7 +13,9 @@ class MiNTT128_SIMD_int16 : public MiNTT{
     static const int16_t N = OUTPUT_SIZE/9*8; //assumes q=257
     static const int16_t d = N/n;
     static const int16_t q = 257;
-
+    //2nth root of unity
+    static const int64_t omega = 27;
+    
     static const int16_t ndiv8 = n/8;
     
     int16_t A[m][d][ndiv8][8];

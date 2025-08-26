@@ -13,14 +13,15 @@ MiNTT64_norm_int64_QF4::MiNTT64_norm_int64_QF4(){
 
 void MiNTT64_norm_int64_QF4::Setup(){
 
-    Util64::GenNTT8Table(2,q,NTT8_TABLE);
+    Util64::GenNTT8Table(Util64::IntPow(omega,8,q),q,NTT8_TABLE);
 
-    int64_t * mult_table = Util64::GenMultTable(42,n,q);
+
+    int64_t * mult_table = Util64::GenMultTable(omega,n,q);
     for (size_t i = 0; i < ndiv8; i++){
         for (size_t j = 0; j < 8; j++){
             MULT_TABLE[i][j] = mult_table[i*8+j];
         }
-    }
+    } 
     delete[] mult_table;
 
     int64_t * key = Util64::GenKey(m,n,d,q);
@@ -34,8 +35,8 @@ void MiNTT64_norm_int64_QF4::Setup(){
        }
     }
     delete[] key;
-
-}
+    
+}   
 
 
 void MiNTT64_norm_int64_QF4::Hash(uint8_t input[INPUT_SIZE_QF4],uint8_t out[OUTPUT_SIZE_QF4]){

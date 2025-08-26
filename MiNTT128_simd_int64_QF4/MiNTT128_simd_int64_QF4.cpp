@@ -10,17 +10,17 @@ MiNTT128_SIMD_int64_QF4::MiNTT128_SIMD_int64_QF4(){
     Setup();
 }
 
-void MiNTT128_SIMD_int64_QF4::Setup(){
+void MiNTT128_SIMD_int64_QF4::Setup()Setup(){
 
-    Util64::GenNTT8Table(2,q,NTT8_TABLE);
+    Util64::GenNTT8Table(Util64::IntPow(omega,8,q),q,NTT8_TABLE);
 
 
-    int64_t * mult_table = Util64::GenMultTable(27,n,q);
+    int64_t * mult_table = Util64::GenMultTable(omega,n,q);
     for (size_t i = 0; i < ndiv8; i++){
         for (size_t j = 0; j < 8; j++){
             MULT_TABLE[i][j] = mult_table[i*8+j];
         }
-    }
+    } 
     delete[] mult_table;
 
     int64_t * key = Util64::GenKey(m,n,d,q);

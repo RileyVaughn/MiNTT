@@ -13,6 +13,8 @@ class MiNTT64_SIMD_int64_QF4 : public MiNTT{
     static const int64_t N = OUTPUT_SIZE_QF4/17*8; //assumes q=65537
     static const int64_t d = N/n;
     static const int64_t q = 65537;
+    //2nth root of unity
+    static const int64_t omega = 4938;
 
     static const int64_t ndiv8 = n/8;
     

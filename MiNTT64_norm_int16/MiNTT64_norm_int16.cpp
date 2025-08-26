@@ -12,14 +12,15 @@ MiNTT64_norm_int16::MiNTT64_norm_int16(){
 
 void MiNTT64_norm_int16::Setup(){
 
-    Util16::GenNTT8Table(2,q,NTT8_TABLE);
+    Util16::GenNTT8Table(Util16::IntPow(omega,8,q),q,NTT8_TABLE);
 
-    int16_t * mult_table = Util16::GenMultTable(42,n,q);
+
+    int16_t * mult_table = Util16::GenMultTable(omega,n,q);
     for (size_t i = 0; i < ndiv8; i++){
         for (size_t j = 0; j < 8; j++){
             MULT_TABLE[i][j] = mult_table[i*8+j];
         }
-    }
+    } 
     delete[] mult_table;
 
     int16_t * key = Util16::GenKey(m,n,d,q);
@@ -33,8 +34,8 @@ void MiNTT64_norm_int16::Setup(){
        }
     }
     delete[] key;
-
-}
+    
+}   
 
 
 void MiNTT64_norm_int16::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
