@@ -30,7 +30,7 @@ void GenInputQF4(uint8_t input[INPUT_SIZE]);
 int64_t CheckRuntimeQF4(uint8_t input[INPUT_SIZE], MiNTT * hash);
 int64_t MeanRuntimeQF4(MiNTT * hash);
 
-const int TEST_SIZE = 100;
+const int TEST_SIZE = 100000;
 
 
 int main() {
@@ -46,8 +46,8 @@ int main() {
     MiNTT * norm128_16 = new MiNTT128_norm_int16();
     MiNTT * simd128_16 = new MiNTT128_SIMD_int16();
 
-    MiNTT * norm8_16 = new MiNTT8_norm_int16();
-    MiNTT * simd8_16 = new MiNTT8_SIMD_int16();
+    // MiNTT * norm8_16 = new MiNTT8_norm_int16();
+    // MiNTT * simd8_16 = new MiNTT8_SIMD_int16();
 
     MiNTT * norm128_64_QF4 = new MiNTT128_norm_int64_QF4();
     MiNTT * simd128_64_QF4 = new MiNTT128_SIMD_int64_QF4();
@@ -64,8 +64,8 @@ int main() {
     cout << "norm128_16: " << MeanRuntime(norm128_16) << endl;
     cout << "simd128_16: " << MeanRuntime(simd128_16) <<  endl;
 
-    cout << "norm8_16: " << MeanRuntime(norm8_16) << endl;
-    cout << "simd8_16: " << MeanRuntime(simd8_16) << endl;
+    // cout << "norm8_16: " << MeanRuntime(norm8_16) << endl;
+    // cout << "simd8_16: " << MeanRuntime(simd8_16) << endl;
 
     cout << "norm128_64_QF4: " << MeanRuntimeQF4(norm128_64_QF4) << endl;
     cout << "simd128_64_QF4: " << MeanRuntimeQF4(simd128_64_QF4) << endl;
@@ -81,8 +81,8 @@ int main() {
     delete(simd64_16);
     delete(norm128_16);
     delete(simd128_16);
-    delete(norm8_16);
-    delete(simd8_16);
+    // delete(norm8_16);
+    // delete(simd8_16);
     delete(norm128_64_QF4);
     delete(simd128_64_QF4);
     delete(norm64_64_QF4);

@@ -11,7 +11,7 @@ MiNTT64_norm_int64::MiNTT64_norm_int64(){
     Setup();
 }
 
-void MiNTT64_norm_int64::Setup()Setup(){
+void MiNTT64_norm_int64::Setup(){
 
     Util64::GenNTT8Table(Util64::IntPow(omega,8,q),q,NTT8_TABLE);
 

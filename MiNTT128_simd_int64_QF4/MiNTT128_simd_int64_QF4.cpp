@@ -10,7 +10,7 @@ MiNTT128_SIMD_int64_QF4::MiNTT128_SIMD_int64_QF4(){
     Setup();
 }
 
-void MiNTT128_SIMD_int64_QF4::Setup()Setup(){
+void MiNTT128_SIMD_int64_QF4::Setup(){
 
     Util64::GenNTT8Table(Util64::IntPow(omega,8,q),q,NTT8_TABLE);
 
