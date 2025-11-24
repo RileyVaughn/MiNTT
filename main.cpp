@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <x86intrin.h>
 #include <algorithm>
+#include <cmath>
 
 #include "MiNTT64_norm_int64.h"
 #include "MiNTT64_simd_int64.h"
@@ -33,11 +34,15 @@ void GenInputQF4(uint8_t input[INPUT_SIZE]);
 int64_t CheckRuntimeQF4(uint8_t input[INPUT_SIZE], MiNTT * hash);
 int64_t MeanRuntimeQF4(MiNTT * hash);
 
+void MeanSTDRuntime(MiNTT * hash, int64_t & mean, int64_t & std);
+int64_t CalcSTD(int64_t times[INPUT_SIZE], int64_t mean, int64_t & std);
+
+
 uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash);
 int64_t MeanCycles(MiNTT * hash);
 int64_t MedianCycles(MiNTT * hash);
 
-const int TEST_SIZE = 100000;
+const int TEST_SIZE = 1000;
 
 
 int main() {
@@ -46,7 +51,12 @@ int main() {
     MiNTT * norm64_64 = new MiNTT64_norm_int64();
 
 
-    cout << "norm64_64: " << MedianCycles(norm64_64) << endl;
+    int64_t mean = 0;
+    int64_t std = 0;
+    MeanSTDRuntime(norm64_64,mean,std);
+
+
+    cout << "norm64_64: " << mean << " " << std << endl;
     
 
     return 0;
@@ -173,6 +183,28 @@ int64_t MeanRuntimeQF4(MiNTT * hash) {
     return sum/TEST_SIZE;
 }
 
+void MeanSTDRuntime(MiNTT * hash, int64_t & mean, int64_t & std) {
+
+    //just a seed for random input gen, I init it here so that all funcs have the same input to test from
+    srand(1);
+    mean = 0;
+    std = 0;
+
+    uint8_t input[INPUT_SIZE];
+    int64_t times[TEST_SIZE]; 
+
+    for (size_t i = 0; i < TEST_SIZE; i++) {
+        GenInput(input);
+        times[i] = CheckRuntime(input,hash);
+        mean += times[i];
+    }
+    mean /= TEST_SIZE;
+
+    std = CalcSTD(times,mean,std);
+    
+
+}
+
 //////////////////////////// Cycles /////////////////////////////////////////
 
 uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash) {
@@ -227,8 +259,6 @@ int64_t MedianCycles(MiNTT * hash) {
     return times[TEST_SIZE/2];
 }
 
-
-
 //////////////////////////// Input Output /////////////////////////////////////////
 
 void GenInput(uint8_t input[INPUT_SIZE]){
@@ -278,3 +308,17 @@ void PrintOutQF4(uint8_t output[OUTPUT_SIZE_QF4]){
 
 }
 
+//////////////////////////// Math /////////////////////////////////////////
+
+int64_t CalcSTD(int64_t times[INPUT_SIZE], int64_t mean, int64_t & std) {
+
+
+    for (size_t i = 0; i < TEST_SIZE; i++) {
+        int64_t diff = times[i]-mean;
+        std += diff*diff;
+
+    }
+    std = std/TEST_SIZE;
+    std = int64_t(sqrt(std));
+    return std;
+}
