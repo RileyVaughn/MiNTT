@@ -1,6 +1,9 @@
 #include <iostream>
 #include <chrono>
 #include <stdlib.h>
+#include <x86intrin.h>
+#include <algorithm>
+
 #include "MiNTT64_norm_int64.h"
 #include "MiNTT64_simd_int64.h"
 #include "MiNTT128_norm_int64.h"
@@ -30,11 +33,28 @@ void GenInputQF4(uint8_t input[INPUT_SIZE]);
 int64_t CheckRuntimeQF4(uint8_t input[INPUT_SIZE], MiNTT * hash);
 int64_t MeanRuntimeQF4(MiNTT * hash);
 
+uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash);
+int64_t MeanCycles(MiNTT * hash);
+int64_t MedianCycles(MiNTT * hash);
+
 const int TEST_SIZE = 100000;
 
 
 int main() {
 
+    
+    MiNTT * norm64_64 = new MiNTT64_norm_int64();
+
+
+    cout << "norm64_64: " << MedianCycles(norm64_64) << endl;
+    
+
+    return 0;
+}
+
+//////////////////////////////// Runtimes /////////////////////////////////////
+
+void CheckRuntimeMeans(){
 
     MiNTT * norm64_64 = new MiNTT64_norm_int64();
     MiNTT * simd64_64 = new MiNTT64_SIMD_int64();
@@ -87,10 +107,12 @@ int main() {
     delete(simd128_64_QF4);
     delete(norm64_64_QF4);
     delete(simd64_64_QF4);
-    return 0;
+ 
+
 }
 
-// Cheks how long Hash() takes to execute in nanoseconds
+
+// Checks how long Hash() takes to execute in nanoseconds
 int64_t CheckRuntime(uint8_t input[INPUT_SIZE], MiNTT * hash) {
 
     using namespace std::chrono;
@@ -151,6 +173,64 @@ int64_t MeanRuntimeQF4(MiNTT * hash) {
     return sum/TEST_SIZE;
 }
 
+//////////////////////////// Cycles /////////////////////////////////////////
+
+uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash) {
+
+    unsigned aux;
+    uint8_t output[OUTPUT_SIZE] = {0};
+
+    _mm_lfence();
+    uint64_t start = __rdtsc();
+
+    hash->Hash(input, output);
+
+    uint64_t end = __rdtscp(&aux);
+    _mm_lfence();
+
+    return end - start;
+}
+
+int64_t MeanCycles(MiNTT * hash) {
+
+    //just a seed for random input gen, I init it here so that all funcs have the same input to test from
+    srand(1);
+
+    int64_t sum = 0;
+    uint8_t input[INPUT_SIZE]; 
+
+    for (size_t i = 0; i < TEST_SIZE; i++)
+    {
+        GenInput(input);
+        sum = sum + MeasureCycles(input,hash);
+    }
+
+    return sum/TEST_SIZE;
+}
+
+int64_t MedianCycles(MiNTT * hash) {
+
+    //just a seed for random input gen, I init it here so that all funcs have the same input to test from
+    srand(1);
+
+    int64_t times[TEST_SIZE];
+    uint8_t input[INPUT_SIZE]; 
+
+    for (size_t i = 0; i < TEST_SIZE; i++)
+    {
+        GenInput(input);
+        times[i] = MeasureCycles(input,hash);
+    }
+
+    sort(times,times+TEST_SIZE);
+
+    return times[TEST_SIZE/2];
+}
+
+
+
+//////////////////////////// Input Output /////////////////////////////////////////
+
 void GenInput(uint8_t input[INPUT_SIZE]){
 
     for (size_t i = 0; i < INPUT_SIZE; i++)
@@ -197,3 +277,4 @@ void PrintOutQF4(uint8_t output[OUTPUT_SIZE_QF4]){
     cout << endl << endl;
 
 }
+
