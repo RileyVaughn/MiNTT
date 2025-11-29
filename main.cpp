@@ -4,6 +4,7 @@
 #include <x86intrin.h>
 #include <algorithm>
 #include <cmath>
+#include <sys/resource.h>
 
 #include "MiNTT64_norm_int64.h"
 #include "MiNTT64_simd_int64.h"
@@ -37,10 +38,12 @@ int64_t MeanRuntimeQF4(MiNTT * hash);
 void MeanSTDRuntime(MiNTT * hash, int64_t & mean, int64_t & std);
 int64_t CalcSTD(int64_t times[INPUT_SIZE], int64_t mean, int64_t & std);
 
-
 uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash);
 int64_t MeanCycles(MiNTT * hash);
 int64_t MedianCycles(MiNTT * hash);
+
+int64_t CheckMemory(uint8_t input[INPUT_SIZE], MiNTT * hash);
+
 
 const int TEST_SIZE = 1000;
 
@@ -51,13 +54,18 @@ int main() {
     MiNTT * norm64_64 = new MiNTT64_norm_int64();
 
 
-    int64_t mean = 0;
-    int64_t std = 0;
-    MeanSTDRuntime(norm64_64,mean,std);
+    // int64_t mean = 0;
+    // int64_t std = 0;
+    // MeanSTDRuntime(norm64_64,mean,std);
+    int64_t med_cycles = MedianCycles(norm64_64);
+    cout << "norm64_64: " << med_cycles << endl;
 
-
-    cout << "norm64_64: " << mean << " " << std << endl;
+    // cout << "norm64_64: " << mean << " " << std << endl;
     
+    // uint8_t input[INPUT_SIZE];
+    // GenInput(input);
+    // cout << "norm64_64:" << CheckMemory(input,norm64_64)<< endl;
+
 
     return 0;
 }
@@ -258,6 +266,24 @@ int64_t MedianCycles(MiNTT * hash) {
 
     return times[TEST_SIZE/2];
 }
+
+
+//////////////////////////// Memory /////////////////////////////////////////
+
+int64_t CheckMemory(uint8_t input[INPUT_SIZE], MiNTT * hash){
+
+    uint8_t output[OUTPUT_SIZE] = {0};
+    rusage usage_before, usage_after;
+
+    getrusage(RUSAGE_SELF, &usage_before);
+    hash->Hash(input, output);
+    getrusage(RUSAGE_SELF, &usage_after);
+
+    return usage_after.ru_maxrss - usage_before.ru_maxrss;
+
+}
+
+
 
 //////////////////////////// Input Output /////////////////////////////////////////
 
