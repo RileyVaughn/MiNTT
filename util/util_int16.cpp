@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-
+// Values range (255 to -255)
 int16_t Util16::Q_reduce(int16_t val){
 	return (val & 255) - (val >> 8);
 }

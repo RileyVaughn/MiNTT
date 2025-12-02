@@ -70,7 +70,7 @@ void MiNTT8_SIMD_int16::ntt_sum(uint8_t input[INPUT_SIZE], int16_t out[d][8]){
     for (size_t i = 0; i < m; i++){
         for (size_t j = 0; j < d; j++){
                 Util16::SIMD_AddMult(out[j],NTT8_TABLE[input[i]],A[i][j][0]);
-                Util16::SIMD_Mod257(out[j]);
+                Util16::SIMD_Q_reduce(out[j]);
         }
     }
 }

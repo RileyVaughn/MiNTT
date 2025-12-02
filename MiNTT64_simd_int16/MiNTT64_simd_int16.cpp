@@ -125,7 +125,7 @@ void MiNTT64_SIMD_int16::ntt_sum(uint8_t input[INPUT_SIZE], int16_t out[d][ndiv8
         for (size_t j = 0; j < d; j++){
             for (size_t k = 0; k < ndiv8; k++){
                 Util16::SIMD_AddMult(out[j][k],x[k],A[i][j][k]);
-                Util16::SIMD_Mod257(out[j][k]);
+                Util16::SIMD_Q_reduce(out[j][k]);
             }
         }
     }
