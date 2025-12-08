@@ -181,7 +181,7 @@ void MiNTT128_norm_int16::ntt_sum(uint8_t input[INPUT_SIZE], int16_t out[d][ndiv
         for (size_t j = 0; j < d; j++){
             for (size_t k = 0; k < ndiv8; k++){
                 Util16::Norm_AddMult(out[j][k],x[k],A[i][j][k]);
-                Util16::Norm_Mod257(out[j][k]);
+                Util16::Norm_Q_reduce(out[j][k]);
             }
         }
     }
