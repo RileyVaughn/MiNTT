@@ -5,21 +5,26 @@
 #include <algorithm>
 #include <cmath>
 #include <sys/resource.h>
+#include <cryptopp/sha.h>
+#include <cryptopp/hex.h>
+#include <cryptopp/filters.h>
+
+
 
 #include "MiNTT64_norm_int64.h"
-// #include "MiNTT64_simd_int64.h"
-// #include "MiNTT128_norm_int64.h"
-// #include "MiNTT128_simd_int64.h"
-// #include "MiNTT64_norm_int16.h"
-// #include "MiNTT64_simd_int16.h"
-// #include "MiNTT128_norm_int16.h"
-// #include "MiNTT128_simd_int16.h"
-// #include "MiNTT8_norm_int16.h"
-// #include "MiNTT8_simd_int16.h"
-// #include "MiNTT128_norm_int64_QF4.h"
-// #include "MiNTT128_simd_int64_QF4.h"
-// #include "MiNTT64_norm_int64_QF4.h"
-// #include "MiNTT64_simd_int64_QF4.h"
+#include "MiNTT64_simd_int64.h"
+#include "MiNTT128_norm_int64.h"
+#include "MiNTT128_simd_int64.h"
+#include "MiNTT64_norm_int16.h"
+#include "MiNTT64_simd_int16.h"
+#include "MiNTT128_norm_int16.h"
+#include "MiNTT128_simd_int16.h"
+#include "MiNTT8_norm_int16.h"
+#include "MiNTT8_simd_int16.h"
+#include "MiNTT128_norm_int64_QF4.h"
+#include "MiNTT128_simd_int64_QF4.h"
+#include "MiNTT64_norm_int64_QF4.h"
+#include "MiNTT64_simd_int64_QF4.h"
 
 #include "util_int64.h"
 
@@ -51,14 +56,14 @@ const int TEST_SIZE = 1000;
 int main() {
 
     
-    MiNTT * norm64_64 = new MiNTT64_norm_int64();
+    // MiNTT * norm64_64 = new MiNTT64_norm_int64();
 
 
-    // int64_t mean = 0;
-    // int64_t std = 0;
-    // MeanSTDRuntime(norm64_64,mean,std);
-    int64_t med_cycles = MedianCycles(norm64_64);
-    cout << "norm64_64: " << med_cycles << endl;
+    // // int64_t mean = 0;
+    // // int64_t std = 0;
+    // // MeanSTDRuntime(norm64_64,mean,std);
+    // int64_t med_cycles = MedianCycles(norm64_64);
+    // cout << "norm64_64: " << med_cycles << endl;
 
     // cout << "norm64_64: " << mean << " " << std << endl;
     
@@ -66,7 +71,23 @@ int main() {
     // GenInput(input);
     // cout << "norm64_64:" << CheckMemory(input,norm64_64)<< endl;
 
+    std::string input = "Hello World!";
+    std::string hash;
 
+    CryptoPP::SHA256 sha256;
+
+    CryptoPP::StringSource(input, true,
+        new CryptoPP::HashFilter(sha256,
+            new CryptoPP::HexEncoder(
+                new CryptoPP::StringSink(hash)
+            )
+        )
+    );
+
+    std::cout << "SHA-256: " << hash << std::endl;
+
+
+    
     return 0;
 }
 
