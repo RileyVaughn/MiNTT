@@ -1,0 +1,13 @@
+./MiNTT.h:7:7:constexpr MiNTT::MiNTT()	16	static
+./MiNTT.h:13:13:MiNTT::~MiNTT()	16	static
+./MiNTT.h:13:13:virtual MiNTT::~MiNTT()	32	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.cpp:9:1:MiNTT8_SIMD_int16::MiNTT8_SIMD_int16()	48	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.cpp:13:6:void MiNTT8_SIMD_int16::Setup()	80	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.cpp:32:6:virtual void MiNTT8_SIMD_int16::Hash(uint8_t*, uint8_t*)	304	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.cpp:40:6:void MiNTT8_SIMD_int16::PrintKey(std::string)	592	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.cpp:68:6:void MiNTT8_SIMD_int16::ntt_sum(uint8_t*, int16_t (*)[8])	64	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.cpp:78:6:void MiNTT8_SIMD_int16::change_base(int16_t (*)[8], uint8_t*)	64	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.h:6:7:MiNTT8_SIMD_int16::~MiNTT8_SIMD_int16()	32	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.h:6:7:virtual MiNTT8_SIMD_int16::~MiNTT8_SIMD_int16()	32	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.cpp:88:1:void __static_initialization_and_destruction_0(int, int)	32	static
+MiNTT8_simd_int16/MiNTT8_simd_int16.cpp:88:1:cpp)	16	static

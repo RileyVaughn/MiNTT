@@ -61,8 +61,19 @@ const int TEST_SIZE = 100000;
 
 int main() {
 
+    MiNTT * norm64_64 = new MiNTT64_norm_int64();
+
+    int64_t sum = 0;
+    uint8_t input[INPUT_SIZE];
+    uint8_t output[OUTPUT_SIZE] = {0}; 
+
+    GenInput(input);
+    norm64_64->Hash(input,output);
     
-    CheckRuntimeMeanSTD();
+
+
+
+    //CheckRuntimeMeanSTD();
 
 
 
