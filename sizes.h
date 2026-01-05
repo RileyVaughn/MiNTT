@@ -3,7 +3,7 @@
 #define SIZES_H
 
 //Just a convient way to switch between input and output sizes
-const int SCALE_PARAM = 1;
+const int SCALE_PARAM = 8;
 
 //Number of bytes in output for mod257 functions
 const int OUTPUT_SIZE = ((128*SCALE_PARAM)*9)/8;
