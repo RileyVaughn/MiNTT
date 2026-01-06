@@ -12,7 +12,7 @@ def SearchSU(fileName, functions):
     for line in lines:
         for func in functions:
             if func in line:
-                mem_dict[func] = line.split('\t')[1].split('\t')[0]
+                mem_dict[func] = int(line.split('\t')[1].split('\t')[0])
         
     return mem_dict
 
@@ -25,18 +25,54 @@ def CalcMemory(label,diff):
     if "norm" in label:
         norm_utils = ["Norm_AddSub","Norm_Mod257"]
         if "int64" in label:
-            memory_dict = memory_dict | SearchSU("./util/util_int64.su"+, norm_utils)
+            int_type=64
+            memory_dict = memory_dict | SearchSU("./util/util_int64.su", norm_utils)
         else:
-            memory_dict = memory_dict | SearchSU("./util/util_int16.su"+, norm_utils)
+            int_type=16
+            memory_dict = memory_dict | SearchSU("./util/util_int16.su", norm_utils)
     else:
-        simd_utils = ["Norm_AddSub","Norm_Mod257"]
+        simd_utils = ["SIMD_Mod257"]
         if "int64" in label:
-            memory_dict = memory_dict | SearchSU("./util/util_int64.su"+, simd_utils)
+            int_type=64
+            simd_utils.append("SIMD_Q_reduce")
+            memory_dict = memory_dict | SearchSU("./util/util_int64.su", simd_utils)
         else:
-            memory_dict = memory_dict | SearchSU("./util/util_int16.su"+, simd_utils)
+            int_type=16
+            simd_utils.append("SIMD_Center257")
+            memory_dict = memory_dict | SearchSU("./util/util_int16.su", simd_utils)
 
-    
-    print(memory_dict)
+    N= int(diff.split('_')[1])
+    if "MiNTT64" in label:
+        n = 64
+    elif "MiNTT128" in label:
+        n=128
+    else:
+        n=8
+    d=N//n
+    if "QF4" in label:
+        q = 65537
+        m=2*d*17
+    else:
+        q = 257
+        m=2*d*9
+    in_size = n*m//8
+    out_size=in_size//2
+
+    A = m*N*int_type//8
+    NTT8 = 8*256*int_type//8
+    if n==8:
+        mult = 0
+    else:
+        mult = n * int_type//8
+
+    memory_dict["A_table"] = A
+    memory_dict["NTT8_table"] = NTT8
+    memory_dict["Mult_table"] = mult
+    memory_dict["Input_size"] = in_size
+    memory_dict["Output_size"] = out_size
+
+    #print(memory_dict)
+    return sum(memory_dict.values())/1000
 
 
 
@@ -68,6 +104,10 @@ diffs = [
     "N_1024"
 ]
 
-
-
-CalcMemory(labels[0],diffs[0])
+memory_calc = {}
+for label in labels:
+    mem_per_label = []
+    for diff in diffs:
+         mem_per_label.append(CalcMemory(label,diff))
+    memory_calc[label] = mem_per_label
+print(memory_calc)
