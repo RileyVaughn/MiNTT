@@ -1,0 +1,14 @@
+./MiNTT.h:7:7:constexpr MiNTT::MiNTT()	16	static
+./MiNTT.h:13:13:MiNTT::~MiNTT()	16	static
+./MiNTT.h:13:13:virtual MiNTT::~MiNTT()	32	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:9:1:MiNTT128_norm_int16::MiNTT128_norm_int16()	48	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:13:6:void MiNTT128_norm_int16::Setup()	112	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:41:6:virtual void MiNTT128_norm_int16::Hash(uint8_t*, uint8_t*)	1840	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:49:6:void MiNTT128_norm_int16::PrintKey(std::string)	592	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:76:6:void MiNTT128_norm_int16::ncc(uint8_t*, int16_t (*)[8])	64	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:175:6:void MiNTT128_norm_int16::ntt_sum(uint8_t*, int16_t (*)[16][8])	336	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:191:6:void MiNTT128_norm_int16::change_base(int16_t (*)[16][8], uint8_t*)	80	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.h:6:7:MiNTT128_norm_int16::~MiNTT128_norm_int16()	32	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.h:6:7:virtual MiNTT128_norm_int16::~MiNTT128_norm_int16()	32	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:204:1:void __static_initialization_and_destruction_0(int, int)	32	static
+MiNTT128_norm_int16/MiNTT128_norm_int16.cpp:204:1:cpp)	16	static

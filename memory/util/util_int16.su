@@ -1,0 +1,27 @@
+util/util_int16.cpp:8:9:int16_t Util16::Q_reduce(int16_t)	16	static
+util/util_int16.cpp:13:9:int16_t Util16::Mod_257(int16_t)	24	static
+util/util_int16.cpp:21:9:int16_t Util16::IntPow(int16_t, int16_t, int16_t)	16	static
+util/util_int16.cpp:30:9:int16_t Util16::Bit_Rev(int16_t, int16_t)	16	static
+util/util_int16.cpp:39:6:void Util16::addSub(int16_t*, int16_t*)	16	static
+util/util_int16.cpp:46:6:void Util16::BitsFromByte(int16_t, int16_t*)	16	static
+util/util_int16.cpp:55:6:void Util16::Gen8NCCMat(int16_t, int16_t, int16_t (*)[8])	208	static
+util/util_int16.cpp:77:6:void Util16::GenNTT8Table(int16_t, int16_t, int16_t (*)[8])	224	static
+util/util_int16.cpp:97:11:int16_t* Util16::GenMultTable(int16_t, int16_t, int16_t)	80	static
+util/util_int16.cpp:110:11:int16_t* Util16::GenKey(int16_t, int16_t, int16_t, int16_t)	96	static
+util/util_int16.cpp:135:9:int16_t Util16::Center_257(int16_t)	24	static
+util/util_int16.cpp:142:6:void Util16::Norm_AddSub(int16_t*, int16_t*)	48	static
+util/util_int16.cpp:149:6:void Util16::Norm_AddMult(int16_t*, int16_t*, int16_t*)	16	static
+util/util_int16.cpp:156:6:void Util16::Norm_LShift(int16_t*, int16_t)	16	static
+util/util_int16.cpp:163:6:void Util16::Norm_Mult(int16_t*, int16_t*, int16_t*)	16	static
+util/util_int16.cpp:170:6:void Util16::Norm_Mod257(int16_t*)	48	static
+util/util_int16.cpp:177:6:void Util16::Norm_Q_reduce(int16_t*)	48	static
+util/util_int16.cpp:183:6:void Util16::Norm_Center257(int16_t*)	48	static
+util/util_int16.cpp:190:6:void Util16::SIMD_AddSub(int16_t*, int16_t*)	104	static
+util/util_int16.cpp:203:6:void Util16::SIMD_LShift(int16_t*, int16_t)	16	static
+util/util_int16.cpp:211:6:void Util16::SIMD_Mult(int16_t*, int16_t*, int16_t*)	40	static
+util/util_int16.cpp:220:6:void Util16::SIMD_AddMult(int16_t*, int16_t*, int16_t*)	88	static
+util/util_int16.cpp:233:6:void Util16::SIMD_Q_reduce(int16_t*)	120	static
+util/util_int16.cpp:245:6:void Util16::SIMD_Mod257(int16_t*)	272	static
+util/util_int16.cpp:259:6:void Util16::SIMD_Center257(int16_t*)	288	static
+util/util_int16.cpp:273:1:void __static_initialization_and_destruction_0(int, int)	32	static
+util/util_int16.cpp:273:1:cpp)	16	static

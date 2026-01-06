@@ -1,0 +1,13 @@
+./MiNTT.h:7:7:constexpr MiNTT::MiNTT()	16	static
+./MiNTT.h:13:13:MiNTT::~MiNTT()	16	static
+./MiNTT.h:13:13:virtual MiNTT::~MiNTT()	32	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp:9:1:MiNTT64_SIMD_int64_QF4::MiNTT64_SIMD_int64_QF4()	48	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp:13:6:void MiNTT64_SIMD_int64_QF4::Setup()	96	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp:40:6:virtual void MiNTT64_SIMD_int64_QF4::Hash(uint8_t*, uint8_t*)	6192	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp:48:6:void MiNTT64_SIMD_int64_QF4::ncc(uint8_t*, int64_t (*)[8])	64	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp:80:6:void MiNTT64_SIMD_int64_QF4::ntt_sum(uint8_t*, int64_t (*)[8][8])	592	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp:94:6:void MiNTT64_SIMD_int64_QF4::change_base(int64_t (*)[8][8], uint8_t*)	80	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.h:6:7:MiNTT64_SIMD_int64_QF4::~MiNTT64_SIMD_int64_QF4()	32	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.h:6:7:virtual MiNTT64_SIMD_int64_QF4::~MiNTT64_SIMD_int64_QF4()	32	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp:108:1:void __static_initialization_and_destruction_0(int, int)	32	static
+MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp:108:1:cpp)	16	static

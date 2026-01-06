@@ -93,22 +93,22 @@
 /usr/local/include/cryptopp/filters.h:1382:7:void CryptoPP::Source::PumpAll()	32	static
 /usr/local/include/cryptopp/filters.h:1416:7:void CryptoPP::Source::SourceInitialize(bool, const CryptoPP::NameValuePairs&)	48	static
 /usr/local/include/cryptopp/filters.h:1478:2:CryptoPP::StringSource::StringSource(const byte*, size_t, bool, CryptoPP::BufferedTransformation*)	176	static
-main.cpp:62:5:int main()	480	static
+main.cpp:62:5:int main()	3504	static
 main.cpp:85:6:void CheckRuntimeMeans()	128	static
 main.cpp:143:6:void CheckRuntimeMeanSTD()	160	static
-main.cpp:219:9:int64_t CheckRuntime(uint8_t*, MiNTT*)	208	static
-main.cpp:232:9:int64_t CheckRuntimeQF4(uint8_t*, MiNTT*)	336	static
+main.cpp:219:9:int64_t CheckRuntime(uint8_t*, MiNTT*)	1216	static
+main.cpp:232:9:int64_t CheckRuntimeQF4(uint8_t*, MiNTT*)	2240	static
 /usr/local/include/cryptopp/sha.h:64:20:CryptoPP::SHA256::SHA256()	32	static
 main.cpp:245:9:int64_t CheckRuntimeSHA256(uint8_t*)	464	dynamic,bounded
-main.cpp:265:9:int64_t MeanRuntime(MiNTT*)	336	static
-main.cpp:282:9:int64_t MeanRuntimeQF4(MiNTT*)	592	static
-main.cpp:299:9:int64_t MeanRuntimeSHA256()	336	static
-main.cpp:320:6:void MeanSTDRuntime(MiNTT*, int64_t&, int64_t&)	800352	static
-main.cpp:342:6:void MeanSTDRuntimeQF4(MiNTT*, int64_t&, int64_t&)	800608	static
-main.cpp:366:10:uint64_t MeasureCycles(uint8_t*, MiNTT*)	208	static
+main.cpp:265:9:int64_t MeanRuntime(MiNTT*)	2352	static
+main.cpp:282:9:int64_t MeanRuntimeQF4(MiNTT*)	4400	static
+main.cpp:299:9:int64_t MeanRuntimeSHA256()	2352	static
+main.cpp:320:6:void MeanSTDRuntime(MiNTT*, int64_t&, int64_t&)	802368	static
+main.cpp:342:6:void MeanSTDRuntimeQF4(MiNTT*, int64_t&, int64_t&)	804416	static
+main.cpp:366:10:uint64_t MeasureCycles(uint8_t*, MiNTT*)	1216	static
 main.cpp:382:10:uint64_t MeasureCyclesSHA256(uint8_t*)	448	dynamic,bounded
-main.cpp:407:9:int64_t MeanCycles(MiNTT*)	336	static
-main.cpp:424:9:int64_t MedianCycles(MiNTT*)	800336	static
+main.cpp:407:9:int64_t MeanCycles(MiNTT*)	2352	static
+main.cpp:424:9:int64_t MedianCycles(MiNTT*)	802352	static
 main.cpp:446:6:void GenInput(uint8_t*)	48	static
 main.cpp:455:6:void GenInputQF4(uint8_t*)	48	static
 main.cpp:466:6:void PrintOut(uint8_t*)	48	static
