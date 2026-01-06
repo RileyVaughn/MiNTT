@@ -77,7 +77,7 @@ void MiNTT64_SIMD_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
 
     for (size_t i = 0; i < ndiv8; i++){
         Util16::SIMD_Mult(NTT8_TABLE[input[i]],MULT_TABLE[i], intermed[i]);
-        Util16::Norm_Q_reduce(intermed[i]);
+        Util16::SIMD_Q_reduce(intermed[i]);
     }
     
     Util16::SIMD_AddSub(intermed[0], intermed[1]);
@@ -88,8 +88,8 @@ void MiNTT64_SIMD_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
     Util16::SIMD_LShift(intermed[3],4);
     Util16::SIMD_LShift(intermed[7],4);
 
-    Util16::Norm_Q_reduce(intermed[3]);
-    Util16::Norm_Q_reduce(intermed[7]);
+    Util16::SIMD_Q_reduce(intermed[3]);
+    Util16::SIMD_Q_reduce(intermed[7]);
 
     Util16::SIMD_AddSub(intermed[0], intermed[2]);
     Util16::SIMD_AddSub(intermed[1], intermed[3]);
@@ -100,9 +100,9 @@ void MiNTT64_SIMD_int16::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
     Util16::SIMD_LShift(intermed[6],4);
     Util16::SIMD_LShift(intermed[7],6);
 
-    Util16::Norm_Q_reduce(intermed[5]);
-    Util16::Norm_Q_reduce(intermed[6]);
-    Util16::Norm_Q_reduce(intermed[7]);
+    Util16::SIMD_Q_reduce(intermed[5]);
+    Util16::SIMD_Q_reduce(intermed[6]);
+    Util16::SIMD_Q_reduce(intermed[7]);
 
     Util16::SIMD_AddSub(intermed[0], intermed[4]);
     Util16::SIMD_AddSub(intermed[1], intermed[5]);
