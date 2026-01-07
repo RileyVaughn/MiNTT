@@ -212,7 +212,7 @@ void BenchMark_MiNTT128_norm_int64_QF4::PrintBenchMark(){
     cout << "key_combine: " << key_combine_time/total << endl;
     cout << "base_change: " << base_change_time/total << endl;
 
-
+    cout << endl;
 
 
 }

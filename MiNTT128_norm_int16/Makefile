@@ -18,10 +18,7 @@ SRCS := util/util_int64.cpp \
 		MiNTT64_simd_int64_QF4/MiNTT64_simd_int64_QF4.cpp \
 		SWIFFT/SWIFFT.cpp \
 		MiNTT128_norm_int64_QF4/BenchMark_MiNTT128_norm_int64_QF4.cpp \
-		MiNTT128_simd_int64_QF4/BenchMark_MiNTT128_simd_int64_QF4.cpp \
-		MiNTT128_norm_int16/BenchMark_MiNTT128_norm_int16.cpp \
-		MiNTT128_simd_int16/BenchMark_MiNTT128_simd_int16.cpp \
-
+		MiNTT128_simd_int64_QF4/BenchMark_MiNTT128_simd_int64_QF4.cpp
 
 OBJS := $(SRCS:.cpp=.o)
 
