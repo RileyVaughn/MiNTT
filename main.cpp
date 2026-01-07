@@ -25,6 +25,7 @@
 #include "MiNTT128_simd_int64_QF4.h"
 #include "MiNTT64_norm_int64_QF4.h"
 #include "MiNTT64_simd_int64_QF4.h"
+#include "SWIFFT/SWIFFT.h"
 
 #include "util_int64.h"
 
@@ -55,21 +56,26 @@ int64_t MedianCycles(MiNTT * hash);
 uint64_t MeasureCyclesSHA256(uint8_t input[INPUT_SIZE]);
 int64_t MeanRuntimeSHA256();
 
+void GenInputSWIFFT(uint8_t input[128]);
+
 
 const int TEST_SIZE = 100000;
 
 
 int main() {
 
-    MiNTT * norm64_64 = new MiNTT64_norm_int64();
+    SWIFFT * swifft = new SWIFFT();
+    uint8_t input[128] = {0};
+    uint8_t output[66] = {0};
+    GenInputSWIFFT(input);
+    swifft->Hash(input,output);
+    for(size_t i = 0; i < 66; i++){
+        cout << int(output[i]) << " ";
 
-    int64_t sum = 0;
-    uint8_t input[INPUT_SIZE];
-    uint8_t output[OUTPUT_SIZE] = {0}; 
+    }
+    cout << endl;
 
-    GenInput(input);
-    norm64_64->Hash(input,output);
-    
+
 
 
 
@@ -455,6 +461,16 @@ void GenInput(uint8_t input[INPUT_SIZE]){
 void GenInputQF4(uint8_t input[INPUT_SIZE_QF4]){
 
     for (size_t i = 0; i < INPUT_SIZE_QF4; i++)
+    {
+        input[i] = rand() % 256;
+    }
+
+}
+
+// Quick and dirty swifft input gen
+void GenInputSWIFFT(uint8_t input[128]){
+
+    for (size_t i = 0; i < 128; i++)
     {
         input[i] = rand() % 256;
     }
