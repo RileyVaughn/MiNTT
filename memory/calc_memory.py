@@ -1,4 +1,6 @@
 import numpy as np 
+import pandas as pd
+import matplotlib.pyplot as plt
 
 #Searhces for hash and subfucntions memory costs
 def SearchSU(fileName, functions):
@@ -76,6 +78,76 @@ def CalcMemory(label,diff):
 
 
 
+def Plot(memory_df):
+
+    # Separate rows by whether they contain "SIMD"
+    simd_df = memory_df[memory_df.index.str.contains("simd")]
+    normal_df = memory_df[~memory_df.index.str.contains("simd")]
+
+    # print(simd_df)
+    # print(normal_df)
+
+
+    colors = plt.cm.tab20.colors  # enough distinct colors
+
+   
+   #Normal Plot
+    plt.figure(figsize=(10, 5))
+    for i, row_label in enumerate(normal_df.index):
+        clr = colors[i % len(colors)]
+        x = normal_df.columns
+        y = normal_df.loc[row_label]
+
+        plt.plot(
+            x,
+            y,
+            label=row_label,
+            color=clr,
+            linestyle="-",
+            marker='o',
+            lw=1.25,
+            ms=4
+        )
+    # plt.yscale("log")
+    plt.xlabel("Security Parameter (N)")
+    plt.ylabel("Peak Memory Utilization (KB)")
+    plt.title("MiNTT Peak Memory by Parameterization")
+    plt.legend()  
+    plt.savefig("normal_memory.png")
+
+    #SIMD Plot
+    plt.figure(figsize=(10, 5))
+    for i, row_label in enumerate(simd_df.index):
+        clr = colors[i % len(colors)]
+        x = simd_df.columns
+        y = simd_df.loc[row_label]
+
+        plt.plot(
+            x,
+            y,
+            label=row_label,
+            color=clr,
+            linestyle="-",
+            marker='o',
+            lw=1.25,
+            ms=4
+        )
+    # plt.yscale("log")
+    plt.xlabel("Security Parameter (N)")
+    plt.ylabel("Peak Memory Utilization (KB)")
+    plt.title("MiNTT Peak Memory by Parameterization")
+    plt.legend()  
+    plt.savefig("SIMD_memory.png")
+    
+
+
+
+
+
+
+
+
+
 labels = [
     "MiNTT64_norm_int64.su",
     "MiNTT64_simd_int64.su",
@@ -110,4 +182,9 @@ for label in labels:
     for diff in diffs:
          mem_per_label.append(CalcMemory(label,diff))
     memory_calc[label] = mem_per_label
-print(memory_calc)
+
+memory_df = pd.DataFrame.from_dict(memory_calc, orient="index")
+memory_df.columns = ["128", "256", "384", "512", "640", "768", "896", "1024"]
+Plot(memory_df)
+print(memory_df.loc["MiNTT128_norm_int16.su"])
+print(memory_df.loc["MiNTT128_simd_int16.su"])

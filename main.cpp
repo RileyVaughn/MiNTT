@@ -49,14 +49,16 @@ void MeanSTDRuntimeQF4(MiNTT * hash, int64_t & mean, int64_t & std);
 int64_t CalcSTD(int64_t times[INPUT_SIZE], int64_t mean, int64_t & std);
 int64_t CalcSTD_QF4(int64_t times[INPUT_SIZE_QF4], int64_t mean, int64_t & std);
 
-uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash);
-int64_t MeanCycles(MiNTT * hash);
-int64_t MedianCycles(MiNTT * hash);
+// uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash);
+// int64_t MeanCycles(MiNTT * hash);
+// int64_t MedianCycles(MiNTT * hash);
 
-uint64_t MeasureCyclesSHA256(uint8_t input[INPUT_SIZE]);
-int64_t MeanRuntimeSHA256();
+// uint64_t MeasureCyclesSHA256(uint8_t input[INPUT_SIZE]);
+// int64_t MeanRuntimeSHA256();
 
 void GenInputSWIFFT(uint8_t input[128]);
+int64_t CheckRuntimeSWIFFT(uint8_t input[128], SWIFFT * hash);
+int64_t MeanRuntimeSWIFFT(SWIFFT * hash);
 
 
 const int TEST_SIZE = 100000;
@@ -65,15 +67,7 @@ const int TEST_SIZE = 100000;
 int main() {
 
     SWIFFT * swifft = new SWIFFT();
-    uint8_t input[128] = {0};
-    uint8_t output[66] = {0};
-    GenInputSWIFFT(input);
-    swifft->Hash(input,output);
-    for(size_t i = 0; i < 66; i++){
-        cout << int(output[i]) << " ";
-
-    }
-    cout << endl;
+    cout << "SWIFFT " << MeanRuntimeSWIFFT(swifft) << endl; 
 
 
 
@@ -248,22 +242,36 @@ int64_t CheckRuntimeQF4(uint8_t input[INPUT_SIZE_QF4], MiNTT * hash) {
 
 }
 
-int64_t CheckRuntimeSHA256(uint8_t input[INPUT_SIZE]) {
+// int64_t CheckRuntimeSHA256(uint8_t input[INPUT_SIZE]) {
+
+//     using namespace std::chrono;
+
+//     CryptoPP::SHA256 sha256;
+//     CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
+
+//     auto start = high_resolution_clock::now();
+//     CryptoPP::ArraySource( input, INPUT_SIZE, true,
+//         new CryptoPP::HashFilter( sha256,
+//             new CryptoPP::ArraySink(digest, CryptoPP::SHA256::DIGESTSIZE)
+//         )
+//     );
+//     auto end = high_resolution_clock::now();
+    
+//     return duration_cast<nanoseconds>(end - start).count();
+
+// }
+
+int64_t CheckRuntimeSWIFFT(uint8_t input[128], SWIFFT * hash){
 
     using namespace std::chrono;
-
-    CryptoPP::SHA256 sha256;
-    CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
+    uint8_t output[66] = {0};
 
     auto start = high_resolution_clock::now();
-    CryptoPP::ArraySource( input, INPUT_SIZE, true,
-        new CryptoPP::HashFilter( sha256,
-            new CryptoPP::ArraySink(digest, CryptoPP::SHA256::DIGESTSIZE)
-        )
-    );
+    hash->Hash(input, output);
     auto end = high_resolution_clock::now();
-    
+   
     return duration_cast<nanoseconds>(end - start).count();
+
 
 }
 
@@ -280,6 +288,7 @@ int64_t MeanRuntime(MiNTT * hash) {
     {
         GenInput(input);
         sum = sum + CheckRuntime(input,hash);
+        
     }
 
     return sum/TEST_SIZE;
@@ -302,25 +311,46 @@ int64_t MeanRuntimeQF4(MiNTT * hash) {
     return sum/TEST_SIZE;
 }
 
-int64_t MeanRuntimeSHA256(){
+
+
+int64_t MeanRuntimeSWIFFT(SWIFFT * hash){
 
     //just a seed for random input gen, I init it here so that all funcs have the same input to test from
     srand(1);
 
     int64_t sum = 0;
-    uint8_t input[INPUT_SIZE]; 
+    uint8_t input[128]; 
 
     for (size_t i = 0; i < TEST_SIZE; i++)
     {
-        GenInput(input);
-        int64_t runtime = CheckRuntimeSHA256(input);
-        sum = sum + runtime;
-        // cout << int(input[0]) << " " <<runtime << endl;
+        GenInputSWIFFT(input);
+        sum = sum + CheckRuntimeSWIFFT(input,hash);
     }
 
     return sum/TEST_SIZE;
 
 }
+
+
+// int64_t MeanRuntimeSHA256(){
+
+//     //just a seed for random input gen, I init it here so that all funcs have the same input to test from
+//     srand(1);
+
+//     int64_t sum = 0;
+//     uint8_t input[INPUT_SIZE]; 
+
+//     for (size_t i = 0; i < TEST_SIZE; i++)
+//     {
+//         GenInput(input);
+//         int64_t runtime = CheckRuntimeSHA256(input);
+//         sum = sum + runtime;
+//         // cout << int(input[0]) << " " <<runtime << endl;
+//     }
+
+//     return sum/TEST_SIZE;
+
+// }
 
 
 void MeanSTDRuntime(MiNTT * hash, int64_t & mean, int64_t & std) {
@@ -367,84 +397,84 @@ void MeanSTDRuntimeQF4(MiNTT * hash, int64_t & mean, int64_t & std) {
 
 }
 
-//////////////////////////// Cycles /////////////////////////////////////////
+// //////////////////////////// Cycles /////////////////////////////////////////
 
-uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash) {
+// uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash) {
 
-    unsigned aux;
-    uint8_t output[OUTPUT_SIZE] = {0};
+//     unsigned aux;
+//     uint8_t output[OUTPUT_SIZE] = {0};
 
-    _mm_lfence();
-    uint64_t start = __rdtsc();
+//     _mm_lfence();
+//     uint64_t start = __rdtsc();
 
-    hash->Hash(input, output);
+//     hash->Hash(input, output);
 
-    uint64_t end = __rdtscp(&aux);
-    _mm_lfence();
+//     uint64_t end = __rdtscp(&aux);
+//     _mm_lfence();
 
-    return end - start;
-}
+//     return end - start;
+// }
 
-uint64_t MeasureCyclesSHA256(uint8_t input[INPUT_SIZE]) {
+// uint64_t MeasureCyclesSHA256(uint8_t input[INPUT_SIZE]) {
 
-    unsigned aux;
-    CryptoPP::SHA256 sha256;
-    CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
+//     unsigned aux;
+//     CryptoPP::SHA256 sha256;
+//     CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
 
-    _mm_lfence();
-    uint64_t start = __rdtsc();
+//     _mm_lfence();
+//     uint64_t start = __rdtsc();
 
-    CryptoPP::ArraySource(input, INPUT_SIZE, true,
-        new CryptoPP::HashFilter( sha256,
-            new CryptoPP::ArraySink(digest, CryptoPP::SHA256::DIGESTSIZE)
-        )
-    );
-
-
-
-    uint64_t end = __rdtscp(&aux);
-    _mm_lfence();
-
-    return end - start;
-
-}
+//     CryptoPP::ArraySource(input, INPUT_SIZE, true,
+//         new CryptoPP::HashFilter( sha256,
+//             new CryptoPP::ArraySink(digest, CryptoPP::SHA256::DIGESTSIZE)
+//         )
+//     );
 
 
-int64_t MeanCycles(MiNTT * hash) {
 
-    //just a seed for random input gen, I init it here so that all funcs have the same input to test from
-    srand(1);
+//     uint64_t end = __rdtscp(&aux);
+//     _mm_lfence();
 
-    int64_t sum = 0;
-    uint8_t input[INPUT_SIZE]; 
+//     return end - start;
 
-    for (size_t i = 0; i < TEST_SIZE; i++)
-    {
-        GenInput(input);
-        sum = sum + MeasureCycles(input,hash);
-    }
+// }
 
-    return sum/TEST_SIZE;
-}
 
-int64_t MedianCycles(MiNTT * hash) {
+// int64_t MeanCycles(MiNTT * hash) {
 
-    //just a seed for random input gen, I init it here so that all funcs have the same input to test from
-    srand(1);
+//     //just a seed for random input gen, I init it here so that all funcs have the same input to test from
+//     srand(1);
 
-    int64_t times[TEST_SIZE];
-    uint8_t input[INPUT_SIZE]; 
+//     int64_t sum = 0;
+//     uint8_t input[INPUT_SIZE]; 
 
-    for (size_t i = 0; i < TEST_SIZE; i++)
-    {
-        GenInput(input);
-        times[i] = MeasureCycles(input,hash);
-    }
+//     for (size_t i = 0; i < TEST_SIZE; i++)
+//     {
+//         GenInput(input);
+//         sum = sum + MeasureCycles(input,hash);
+//     }
 
-    sort(times,times+TEST_SIZE);
+//     return sum/TEST_SIZE;
+// }
 
-    return times[TEST_SIZE/2];
-}
+// int64_t MedianCycles(MiNTT * hash) {
+
+//     //just a seed for random input gen, I init it here so that all funcs have the same input to test from
+//     srand(1);
+
+//     int64_t times[TEST_SIZE];
+//     uint8_t input[INPUT_SIZE]; 
+
+//     for (size_t i = 0; i < TEST_SIZE; i++)
+//     {
+//         GenInput(input);
+//         times[i] = MeasureCycles(input,hash);
+//     }
+
+//     sort(times,times+TEST_SIZE);
+
+//     return times[TEST_SIZE/2];
+// }
 
 
 //////////////////////////// Input Output /////////////////////////////////////////
