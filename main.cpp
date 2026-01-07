@@ -25,7 +25,9 @@
 #include "MiNTT128_simd_int64_QF4.h"
 #include "MiNTT64_norm_int64_QF4.h"
 #include "MiNTT64_simd_int64_QF4.h"
+
 #include "SWIFFT/SWIFFT.h"
+#include "BenchMark_MiNTT128_norm_int64_QF4.h"
 
 #include "util_int64.h"
 
@@ -66,10 +68,15 @@ const int TEST_SIZE = 100000;
 
 int main() {
 
-    SWIFFT * swifft = new SWIFFT();
-    cout << "SWIFFT " << MeanRuntimeSWIFFT(swifft) << endl; 
+    // SWIFFT * swifft = new SWIFFT();
+    // cout << "SWIFFT " << MeanRuntimeSWIFFT(swifft) << endl; 
 
+    BenchMark_MiNTT128_norm_int64_QF4 * bench_norm128_64_QF4 = new BenchMark_MiNTT128_norm_int64_QF4();
+    uint8_t bench_qf4_input[INPUT_SIZE_QF4];
+    uint8_t bench_qf4_output[OUTPUT_SIZE_QF4];
+    GenInputQF4(bench_qf4_input);
 
+    bench_norm128_64_QF4->Hash(bench_qf4_input,bench_qf4_output);
 
 
 
@@ -564,3 +571,5 @@ int64_t CalcSTD_QF4(int64_t times[INPUT_SIZE_QF4], int64_t mean, int64_t & std) 
     std = int64_t(sqrt(std));
     return std;
 }
+
+//////////////////
