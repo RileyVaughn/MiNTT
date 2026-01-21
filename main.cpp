@@ -75,31 +75,36 @@ const int TEST_SIZE = 100000;
 
 int main() {
 
-    SWIFFT * swifft = new SWIFFT();
-    int64_t mean = 0;
-    int64_t std = 0;
-    MeanSTDRuntimeSWIFFT(swifft,mean,std);
-    cout << "SWIFFT " << mean << " " << std << endl;
+    // SWIFFT * swifft = new SWIFFT();
+    // int64_t mean = 0;
+    // int64_t std = 0;
+    // MeanSTDRuntimeSWIFFT(swifft,mean,std);
+    // cout << "SWIFFT " << mean << " " << std << endl;
 
-    // uint8_t bench_qf4_input[INPUT_SIZE_QF4];
-    // uint8_t bench_qf4_output[OUTPUT_SIZE_QF4];
-    // uint8_t bench_input[INPUT_SIZE];
-    // uint8_t bench_output[OUTPUT_SIZE];
+    uint8_t bench_qf4_input[INPUT_SIZE_QF4];
+    uint8_t bench_qf4_output[OUTPUT_SIZE_QF4];
+    uint8_t bench_input[INPUT_SIZE];
+    uint8_t bench_output[OUTPUT_SIZE];
 
-    // BenchMark_MiNTT128_norm_int64_QF4 * bench_norm128_64_QF4 = new BenchMark_MiNTT128_norm_int64_QF4();
-    // BenchMark_MiNTT128_simd_int64_QF4 * bench_simd128_64_QF4 = new BenchMark_MiNTT128_simd_int64_QF4();
+    BenchMark_MiNTT128_norm_int64_QF4 * bench_norm128_64_QF4 = new BenchMark_MiNTT128_norm_int64_QF4();
+    BenchMark_MiNTT128_simd_int64_QF4 * bench_simd128_64_QF4 = new BenchMark_MiNTT128_simd_int64_QF4();
 
-    // BenchMark_MiNTT128_norm_int16 * bench_norm128_16 = new BenchMark_MiNTT128_norm_int16();
-    // BenchMark_MiNTT128_simd_int16 * bench_simd128_16 = new BenchMark_MiNTT128_simd_int16();
+    BenchMark_MiNTT128_norm_int16 * bench_norm128_16 = new BenchMark_MiNTT128_norm_int16();
+    BenchMark_MiNTT128_simd_int16 * bench_simd128_16 = new BenchMark_MiNTT128_simd_int16();
 
-    // GenInputQF4(bench_qf4_input);
-    // GenInput(bench_input);
+    GenInputQF4(bench_qf4_input);
+    GenInput(bench_input);
 
-    // bench_norm128_64_QF4->Hash(bench_qf4_input,bench_qf4_output);
-    // bench_simd128_64_QF4->Hash(bench_qf4_input,bench_qf4_output);
 
-    // bench_norm128_16->Hash(bench_input,bench_output);
-    // bench_simd128_16->Hash(bench_input,bench_output);
+    cout << "bench_norm128_64_QF4 " << endl;
+    bench_norm128_64_QF4->Hash(bench_qf4_input,bench_qf4_output);
+    cout << "bench_simd128_64_QF4 "<< endl;
+    bench_simd128_64_QF4->Hash(bench_qf4_input,bench_qf4_output);
+
+    cout << "bench_norm128_16 "<< endl; 
+    bench_norm128_16->Hash(bench_input,bench_output);
+    cout << "bench_simd128_16 "<< endl;
+    bench_simd128_16->Hash(bench_input,bench_output);
     
 
 

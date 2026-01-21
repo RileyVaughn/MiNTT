@@ -53,7 +53,6 @@ void BenchMark_MiNTT128_simd_int64_QF4::Hash(uint8_t input[INPUT_SIZE_QF4],uint8
     ntt_sum(input,inter);
     change_base(inter,out);
 
-    PrintBenchMark();
 
 }
 
@@ -190,5 +189,27 @@ void BenchMark_MiNTT128_simd_int64_QF4::PrintBenchMark(){
 
     cout << endl;
 
+
+}
+
+void BenchMark_MiNTT128_simd_int64_QF4::BenchMark(float lookup_table_ratio, float modulo_ratio, float other_ntt_ratio, float key_combine_ratio, float base_change_ratio){
+
+    using namespace std;
+
+    float total = lookup_table_time + modulo_time + other_ntt_time+ key_combine_time + base_change_time;
+
+    // cout << "lookup_table: " << lookup_table_time/total << endl;
+    // cout << "modulo: " << modulo_time/total << endl;
+    // cout << "other_ntt: " << other_ntt_time/total << endl;
+    // cout << "key_combine: " << key_combine_time/total << endl;
+    // cout << "base_change: " << base_change_time/total << endl;
+    // cout << endl;
+
+    lookup_table_ratio = lookup_table_time/totat;
+    modulo_ratio = modulo_time/total;
+    other_ntt_ratio = other_ntt_time/total;
+    key_combine_ratio = key_combine_time/total;
+    base_change_ratio = base_change_time/total;
+    
 
 }
