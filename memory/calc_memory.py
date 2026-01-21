@@ -81,8 +81,8 @@ def CalcMemory(label,diff):
 def Plot(memory_df):
 
     # Separate rows by whether they contain "SIMD"
-    simd_df = memory_df[memory_df.index.str.contains("simd")]
-    normal_df = memory_df[~memory_df.index.str.contains("simd")]
+    simd_df = memory_df[memory_df.index.str.contains("SIMD")]
+    normal_df = memory_df[~memory_df.index.str.contains("SIMD")]
 
     # print(simd_df)
     # print(normal_df)
@@ -187,6 +187,26 @@ for label in labels:
 
 memory_df = pd.DataFrame.from_dict(memory_calc, orient="index")
 memory_df.columns = ["128", "256", "384", "512", "640", "768", "896", "1024"]
+memory_df.index =  [
+ 'n=64 q=257 int64',
+ 'n=64 q=257 int64 SIMD',
+ 'n=128 q=257 int64',
+ 'n=128 q=257 int64 SIMD',
+ 'n=64 q=257 int16',
+ 'n=64 q=257 int16 SIMD',
+ 'n=128 q=257 int16',
+ 'n=128 q=257 int16 SIMD',
+ 'n=8 q=257 int16',
+ 'n=8 q=257 int16 SIMD',
+ 'n=128 q=65537 int64',
+ 'n=128 q=65537 int64 SIMD',
+ 'n=64 q=65537 int64',
+ 'n=64 q=65537 int64 SIMD'
+]
+
+
+
+
 Plot(memory_df)
-print(memory_df.loc["MiNTT128_norm_int16.su"])
-print(memory_df.loc["MiNTT128_simd_int16.su"])
+# print(memory_df.loc["MiNTT128_norm_int16.su"])
+# print(memory_df.loc["MiNTT128_simd_int16.su"])
