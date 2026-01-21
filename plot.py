@@ -46,7 +46,7 @@ def Plot(mean_df,stdev_df):
     plt.title("MiNTT Throughput Rate by Parameterization")
     plt.legend()  
     plt.savefig("normal_throughput.png")
-    plt.savefig("normal_throughput.eps", format="eps")
+    plt.savefig("normal_throughput.pdf", format="pdf")
 
 
 
@@ -81,7 +81,7 @@ def Plot(mean_df,stdev_df):
     plt.title("MiNTT Throughput Rate by Parameterization (SIMD)")
     plt.legend()  
     plt.savefig("SIMD_throughput.png")
-    plt.savefig("SIMD_throughput.eps", format="eps")
+    plt.savefig("SIMD_throughput.pdf", format="pdf")
 
 
 
