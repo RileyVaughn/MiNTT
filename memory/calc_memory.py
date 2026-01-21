@@ -84,9 +84,6 @@ def Plot(memory_df):
     simd_df = memory_df[memory_df.index.str.contains("SIMD")]
     normal_df = memory_df[~memory_df.index.str.contains("SIMD")]
 
-    # print(simd_df)
-    # print(normal_df)
-
 
     colors = plt.cm.tab20.colors  # enough distinct colors
 
@@ -208,5 +205,14 @@ memory_df.index =  [
 
 
 Plot(memory_df)
-# print(memory_df.loc["MiNTT128_norm_int16.su"])
-# print(memory_df.loc["MiNTT128_simd_int16.su"])
+
+
+simd_df = memory_df[memory_df.index.str.contains("SIMD")]
+normal_df = memory_df[~memory_df.index.str.contains("SIMD")]
+
+simd_df.index = simd_df.index.str.replace("SIMD","",regex=False)
+simd_df.index = simd_df.index.str.strip()
+
+
+print(normal_df-simd_df)
+
