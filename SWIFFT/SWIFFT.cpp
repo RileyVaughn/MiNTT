@@ -50,41 +50,41 @@ void SWIFFT::Hash(uint8_t input[INPUT_SIZE],uint8_t out[OUTPUT_SIZE]){
 void SWIFFT::ncc(uint8_t input[ndiv8], int16_t intermed[ndiv8][8]){
 
     for (size_t i = 0; i < ndiv8; i++){
-        Util16::Norm_Mult(NTT8_TABLE[input[i]],MULT_TABLE[i], intermed[i]);
-        Util16::Norm_Q_reduce(intermed[i]);
+        Util16::SIMD_Mult(NTT8_TABLE[input[i]],MULT_TABLE[i], intermed[i]);
+        Util16::SIMD_Q_reduce(intermed[i]);
     }
     
-    Util16::Norm_AddSub(intermed[0], intermed[1]);
-    Util16::Norm_AddSub(intermed[2], intermed[3]);
-    Util16::Norm_AddSub(intermed[4], intermed[5]);
-    Util16::Norm_AddSub(intermed[6], intermed[7]);
+    Util16::SIMD_AddSub(intermed[0], intermed[1]);
+    Util16::SIMD_AddSub(intermed[2], intermed[3]);
+    Util16::SIMD_AddSub(intermed[4], intermed[5]);
+    Util16::SIMD_AddSub(intermed[6], intermed[7]);
 
-    Util16::Norm_LShift(intermed[3],4);
-    Util16::Norm_LShift(intermed[7],4);
+    Util16::SIMD_LShift(intermed[3],4);
+    Util16::SIMD_LShift(intermed[7],4);
 
-    Util16::Norm_Q_reduce(intermed[3]);
-    Util16::Norm_Q_reduce(intermed[7]);
+    Util16::SIMD_Q_reduce(intermed[3]);
+    Util16::SIMD_Q_reduce(intermed[7]);
 
-    Util16::Norm_AddSub(intermed[0], intermed[2]);
-    Util16::Norm_AddSub(intermed[1], intermed[3]);
-    Util16::Norm_AddSub(intermed[4], intermed[6]);
-    Util16::Norm_AddSub(intermed[5], intermed[7]);
+    Util16::SIMD_AddSub(intermed[0], intermed[2]);
+    Util16::SIMD_AddSub(intermed[1], intermed[3]);
+    Util16::SIMD_AddSub(intermed[4], intermed[6]);
+    Util16::SIMD_AddSub(intermed[5], intermed[7]);
 
-    Util16::Norm_LShift(intermed[5],2);
-    Util16::Norm_LShift(intermed[6],4);
-    Util16::Norm_LShift(intermed[7],6);
+    Util16::SIMD_LShift(intermed[5],2);
+    Util16::SIMD_LShift(intermed[6],4);
+    Util16::SIMD_LShift(intermed[7],6);
 
-    Util16::Norm_Q_reduce(intermed[5]);
-    Util16::Norm_Q_reduce(intermed[6]);
-    Util16::Norm_Q_reduce(intermed[7]);
+    Util16::SIMD_Q_reduce(intermed[5]);
+    Util16::SIMD_Q_reduce(intermed[6]);
+    Util16::SIMD_Q_reduce(intermed[7]);
 
-    Util16::Norm_AddSub(intermed[0], intermed[4]);
-    Util16::Norm_AddSub(intermed[1], intermed[5]);
-    Util16::Norm_AddSub(intermed[2], intermed[6]);
-    Util16::Norm_AddSub(intermed[3], intermed[7]);
+    Util16::SIMD_AddSub(intermed[0], intermed[4]);
+    Util16::SIMD_AddSub(intermed[1], intermed[5]);
+    Util16::SIMD_AddSub(intermed[2], intermed[6]);
+    Util16::SIMD_AddSub(intermed[3], intermed[7]);
 
     for(size_t i=0;i < ndiv8;i++){
-        Util16::Norm_Center257(intermed[i]);
+        Util16::SIMD_Center257(intermed[i]);
     }
 
 }
@@ -96,8 +96,8 @@ void SWIFFT::ntt_sum(uint8_t input[INPUT_SIZE], int16_t out[ndiv8][8]){
         int16_t x[ndiv8][8];
         ncc(input+(ndiv8*i),x);
             for (size_t k = 0; k < ndiv8; k++){
-                Util16::Norm_AddMult(out[k],x[k],A[i][k]);
-                Util16::Norm_Q_reduce(out[k]);
+                Util16::SIMD_AddMult(out[k],x[k],A[i][k]);
+                Util16::SIMD_Q_reduce(out[k]);
             }
     }
 
@@ -107,7 +107,7 @@ void SWIFFT::change_base(int16_t val[ndiv8][8], uint8_t out[OUTPUT_SIZE]){
 
    
     for (size_t j = 0; j < ndiv8; j++){
-        Util16::Norm_Mod257(val[j]);
+        Util16::SIMD_Mod257(val[j]);
         for (size_t k = 0; k < 8; k++){
             out[j*8+k] = uint8_t(val[j][k]);
             val[j][k] = val[j][k] >> 8;

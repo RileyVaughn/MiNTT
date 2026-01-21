@@ -46,13 +46,16 @@ void GenInputQF4(uint8_t input[INPUT_SIZE]);
 int64_t CheckRuntimeQF4(uint8_t input[INPUT_SIZE], MiNTT * hash);
 int64_t MeanRuntimeQF4(MiNTT * hash);
 
-int64_t CheckRuntimeSHA256();
+// int64_t CheckRuntimeSHA256();
 
 void CheckRuntimeMeanSTD();
 void MeanSTDRuntime(MiNTT * hash, int64_t & mean, int64_t & std);
 void MeanSTDRuntimeQF4(MiNTT * hash, int64_t & mean, int64_t & std);
 int64_t CalcSTD(int64_t times[INPUT_SIZE], int64_t mean, int64_t & std);
 int64_t CalcSTD_QF4(int64_t times[INPUT_SIZE_QF4], int64_t mean, int64_t & std);
+int64_t CalcSTD_SWIFFT(int64_t times[128], int64_t mean, int64_t & std);
+
+
 
 // uint64_t MeasureCycles(uint8_t input[INPUT_SIZE], MiNTT * hash);
 // int64_t MeanCycles(MiNTT * hash);
@@ -64,6 +67,7 @@ int64_t CalcSTD_QF4(int64_t times[INPUT_SIZE_QF4], int64_t mean, int64_t & std);
 void GenInputSWIFFT(uint8_t input[128]);
 int64_t CheckRuntimeSWIFFT(uint8_t input[128], SWIFFT * hash);
 int64_t MeanRuntimeSWIFFT(SWIFFT * hash);
+void MeanSTDRuntimeSWIFFT(SWIFFT * hash, int64_t & mean, int64_t & std);
 
 
 const int TEST_SIZE = 100000;
@@ -71,8 +75,11 @@ const int TEST_SIZE = 100000;
 
 int main() {
 
-    // SWIFFT * swifft = new SWIFFT();
-    // cout << "SWIFFT " << MeanRuntimeSWIFFT(swifft) << endl; 
+    SWIFFT * swifft = new SWIFFT();
+    int64_t mean = 0;
+    int64_t std = 0;
+    MeanSTDRuntimeSWIFFT(swifft,mean,std);
+    cout << "SWIFFT " << mean << " " << std << endl;
 
     // uint8_t bench_qf4_input[INPUT_SIZE_QF4];
     // uint8_t bench_qf4_output[OUTPUT_SIZE_QF4];
@@ -97,7 +104,7 @@ int main() {
 
 
 
-    CheckRuntimeMeanSTD();
+    //CheckRuntimeMeanSTD();
 
 
 
@@ -394,7 +401,7 @@ void MeanSTDRuntime(MiNTT * hash, int64_t & mean, int64_t & std) {
     }
     mean /= TEST_SIZE;
 
-    std = CalcSTD_QF4(times,mean,std);
+    std = CalcSTD(times,mean,std);
     
 
 }
@@ -416,7 +423,29 @@ void MeanSTDRuntimeQF4(MiNTT * hash, int64_t & mean, int64_t & std) {
     }
     mean /= TEST_SIZE;
 
-    std = CalcSTD(times,mean,std);
+    std = CalcSTD_QF4(times,mean,std);
+    
+
+}
+
+void MeanSTDRuntimeSWIFFT(SWIFFT * hash, int64_t & mean, int64_t & std) {
+
+    //just a seed for random input gen, I init it here so that all funcs have the same input to test from
+    srand(1);
+    mean = 0;
+    std = 0;
+
+    uint8_t input[128];
+    int64_t times[TEST_SIZE]; 
+
+    for (size_t i = 0; i < TEST_SIZE; i++) {
+        GenInputSWIFFT(input);
+        times[i] = CheckRuntimeSWIFFT(input,hash);
+        mean += times[i];
+    }
+    mean /= TEST_SIZE;
+
+    std = CalcSTD_SWIFFT(times,mean,std);
     
 
 }
@@ -589,4 +618,18 @@ int64_t CalcSTD_QF4(int64_t times[INPUT_SIZE_QF4], int64_t mean, int64_t & std) 
     return std;
 }
 
+
+
+int64_t CalcSTD_SWIFFT(int64_t times[128], int64_t mean, int64_t & std) {
+
+
+    for (size_t i = 0; i < TEST_SIZE; i++) {
+        int64_t diff = times[i]-mean;
+        std += diff*diff;
+
+    }
+    std = std/TEST_SIZE;
+    std = int64_t(sqrt(std));
+    return std;
+}
 //////////////////
