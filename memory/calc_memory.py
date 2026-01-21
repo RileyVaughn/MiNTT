@@ -114,6 +114,7 @@ def Plot(memory_df):
     plt.title("MiNTT Peak Memory by Parameterization")
     plt.legend()  
     plt.savefig("normal_memory.png")
+    plt.savefig("normal_memory.pdf", format="pdf")
 
     #SIMD Plot
     plt.figure(figsize=(10, 5))
@@ -138,6 +139,7 @@ def Plot(memory_df):
     plt.title("MiNTT Peak Memory by Parameterization")
     plt.legend()  
     plt.savefig("SIMD_memory.png")
+    plt.savefig("SIMD_memory.pdf", format="pdf")
     
 
 
