@@ -1,0 +1,8 @@
+SWIFFT/SWIFFT.cpp:9:1:SWIFFT::SWIFFT()	32	static
+SWIFFT/SWIFFT.cpp:13:6:void SWIFFT::Setup()	128	static
+SWIFFT/SWIFFT.cpp:41:6:void SWIFFT::Hash(uint8_t*, uint8_t*)	176	static
+SWIFFT/SWIFFT.cpp:50:6:void SWIFFT::ncc(uint8_t*, int16_t (*)[8])	64	static
+SWIFFT/SWIFFT.cpp:93:6:void SWIFFT::ntt_sum(uint8_t*, int16_t (*)[8])	192	static
+SWIFFT/SWIFFT.cpp:106:6:void SWIFFT::change_base(int16_t (*)[8], uint8_t*)	64	static
+SWIFFT/SWIFFT.cpp:118:1:void __static_initialization_and_destruction_0(int, int)	32	static
+SWIFFT/SWIFFT.cpp:118:1:cpp)	16	static

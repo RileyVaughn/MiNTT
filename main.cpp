@@ -66,7 +66,7 @@ int64_t CheckRuntimeSWIFFT(uint8_t input[128], SWIFFT * hash);
 int64_t MeanRuntimeSWIFFT(SWIFFT * hash);
 
 
-const int TEST_SIZE = 1000000;
+const int TEST_SIZE = 100000;
 
 
 int main() {
