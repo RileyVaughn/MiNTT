@@ -215,7 +215,7 @@ void BenchMark_MiNTT128_norm_int64_QF4::PrintBenchMark(){
 
 }
 
-void BenchMark_MiNTT128_norm_int64_QF4::BenchMark(float lookup_table_ratio, float modulo_ratio, float other_ntt_ratio, float key_combine_ratio, float base_change_ratio){
+void BenchMark_MiNTT128_norm_int64_QF4::BenchMark(float & lookup_table_ratio, float & modulo_ratio, float & other_ntt_ratio, float & key_combine_ratio, float & base_change_ratio){
 
     using namespace std;
 
@@ -228,7 +228,7 @@ void BenchMark_MiNTT128_norm_int64_QF4::BenchMark(float lookup_table_ratio, floa
     // cout << "base_change: " << base_change_time/total << endl;
     // cout << endl;
 
-    lookup_table_ratio = lookup_table_time/totat;
+    lookup_table_ratio = lookup_table_time/total;
     modulo_ratio = modulo_time/total;
     other_ntt_ratio = other_ntt_time/total;
     key_combine_ratio = key_combine_time/total;

@@ -41,6 +41,6 @@ class BenchMark_MiNTT128_norm_int64_QF4 : public MiNTT{
     void change_base(int64_t val[d][ndiv8][8], uint8_t hash[OUTPUT_SIZE_QF4]);
 
     void PrintBenchMark();
-    void BenchMark(float lookup_table_ratio, float modulo_ratio, float other_ntt_ratio, float key_combine_ratio, float base_change_ratio);
+    void BenchMark(float & lookup_table_ratio, float & modulo_ratio, float & other_ntt_ratio, float & key_combine_ratio, float & base_change_ratio);
 };
 

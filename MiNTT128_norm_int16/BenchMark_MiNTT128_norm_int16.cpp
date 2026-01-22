@@ -303,24 +303,24 @@ void BenchMark_MiNTT128_norm_int16::change_base(int16_t val[d][ndiv8][8], uint8_
 
 }
 
-void BenchMark_MiNTT128_norm_int16::BenchMark(float lookup_table_ratio, float modulo_ratio, float other_ntt_ratio, float key_combine_ratio, float base_change_ratio){
+void BenchMark_MiNTT128_norm_int16::BenchMark(float & lookup_table_ratio, float & modulo_ratio, float & other_ntt_ratio, float & key_combine_ratio, float & base_change_ratio){
 
     using namespace std;
 
     float total = lookup_table_time + modulo_time + other_ntt_time+ key_combine_time + base_change_time;
-
+    
     // cout << "lookup_table: " << lookup_table_time/total << endl;
     // cout << "modulo: " << modulo_time/total << endl;
     // cout << "other_ntt: " << other_ntt_time/total << endl;
     // cout << "key_combine: " << key_combine_time/total << endl;
     // cout << "base_change: " << base_change_time/total << endl;
     // cout << endl;
-
-    lookup_table_ratio = lookup_table_time/totat;
+    
+    lookup_table_ratio = lookup_table_time/total;
     modulo_ratio = modulo_time/total;
     other_ntt_ratio = other_ntt_time/total;
     key_combine_ratio = key_combine_time/total;
     base_change_ratio = base_change_time/total;
     
-
+    
 }

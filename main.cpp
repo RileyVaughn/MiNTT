@@ -69,6 +69,9 @@ int64_t CheckRuntimeSWIFFT(uint8_t input[128], SWIFFT * hash);
 int64_t MeanRuntimeSWIFFT(SWIFFT * hash);
 void MeanSTDRuntimeSWIFFT(SWIFFT * hash, int64_t & mean, int64_t & std);
 
+void MeanMicro(MiNTT * hash);
+void MeanMicroQF4(MiNTT * hash);
+
 
 const int TEST_SIZE = 100000;
 
@@ -92,19 +95,11 @@ int main() {
     BenchMark_MiNTT128_norm_int16 * bench_norm128_16 = new BenchMark_MiNTT128_norm_int16();
     BenchMark_MiNTT128_simd_int16 * bench_simd128_16 = new BenchMark_MiNTT128_simd_int16();
 
-    GenInputQF4(bench_qf4_input);
-    GenInput(bench_input);
+   MeanMicroQF4(bench_norm128_64_QF4);
+   MeanMicroQF4(bench_simd128_64_QF4);
+   MeanMicro(bench_norm128_16);
+   MeanMicro(bench_simd128_16);
 
-
-    cout << "bench_norm128_64_QF4 " << endl;
-    bench_norm128_64_QF4->Hash(bench_qf4_input,bench_qf4_output);
-    cout << "bench_simd128_64_QF4 "<< endl;
-    bench_simd128_64_QF4->Hash(bench_qf4_input,bench_qf4_output);
-
-    cout << "bench_norm128_16 "<< endl; 
-    bench_norm128_16->Hash(bench_input,bench_output);
-    cout << "bench_simd128_16 "<< endl;
-    bench_simd128_16->Hash(bench_input,bench_output);
     
 
 
@@ -453,6 +448,74 @@ void MeanSTDRuntimeSWIFFT(SWIFFT * hash, int64_t & mean, int64_t & std) {
     std = CalcSTD_SWIFFT(times,mean,std);
     
 
+}
+
+////////////////////////// Microbenchmarking /////////////////////////
+
+void MeanMicro(MiNTT * hash){
+
+    srand(1);
+
+    uint8_t input[INPUT_SIZE];
+    uint8_t output[OUTPUT_SIZE];
+
+    float lookup_table_ratio, modulo_ratio, other_ntt_ratio, key_combine_ratio, base_change_ratio;
+    double lookup_table_mean= 0, modulo_mean= 0, other_ntt_mean= 0, key_combine_mean= 0, base_change_mean = 0;
+
+
+    for (size_t i = 0; i < TEST_SIZE; i++) {
+        
+        GenInput(input);
+        hash->Hash(input,output);
+        
+        hash->BenchMark(lookup_table_ratio, modulo_ratio, other_ntt_ratio, key_combine_ratio, base_change_ratio);
+        //cout << key_combine_ratio << endl;
+        lookup_table_mean += lookup_table_ratio;
+        modulo_mean += modulo_ratio;
+        other_ntt_mean += other_ntt_ratio;
+        key_combine_mean += key_combine_ratio;
+        base_change_mean += base_change_ratio;
+        
+
+    }
+    
+    cout << "lookup_table: " << lookup_table_mean/TEST_SIZE << endl;
+    cout << "modulo: " << modulo_mean/TEST_SIZE << endl;
+    cout << "other_ntt: " << other_ntt_mean/TEST_SIZE << endl;
+    cout << "key_combine: " << key_combine_mean/TEST_SIZE << endl;
+    cout << "base_change: " << base_change_mean/TEST_SIZE << endl;
+    cout << endl;
+}
+
+void MeanMicroQF4(MiNTT * hash){
+
+    srand(1);
+
+    uint8_t input[INPUT_SIZE_QF4];
+    uint8_t output[OUTPUT_SIZE_QF4];
+
+    float lookup_table_ratio, modulo_ratio, other_ntt_ratio, key_combine_ratio, base_change_ratio;
+    double lookup_table_mean= 0, modulo_mean= 0, other_ntt_mean= 0, key_combine_mean= 0, base_change_mean = 0;
+
+
+    for (size_t i = 0; i < TEST_SIZE; i++) {
+        GenInputQF4(input);
+        hash->Hash(input,output);
+        hash->BenchMark(lookup_table_ratio, modulo_ratio, other_ntt_ratio, key_combine_ratio, base_change_ratio);
+        lookup_table_mean += lookup_table_ratio;
+        modulo_mean += modulo_ratio;
+        other_ntt_mean += other_ntt_ratio;
+        key_combine_mean += key_combine_ratio;
+        base_change_mean += base_change_ratio;
+
+    }
+    
+    cout << "lookup_table: " << lookup_table_mean/TEST_SIZE << endl;
+    cout << "modulo: " << modulo_mean/TEST_SIZE << endl;
+    cout << "other_ntt: " << other_ntt_mean/TEST_SIZE << endl;
+    cout << "key_combine: " << key_combine_mean/TEST_SIZE << endl;
+    cout << "base_change: " << base_change_mean/TEST_SIZE << endl;
+    cout << endl;
 }
 
 // //////////////////////////// Cycles /////////////////////////////////////////

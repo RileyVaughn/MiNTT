@@ -12,6 +12,11 @@ class MiNTT {
 
     virtual ~MiNTT() = default;
 
+    virtual void BenchMark(float & lookup_table_ratio, float & modulo_ratio, float & other_ntt_ratio, float & key_combine_ratio, float & base_change_ratio) {
+
+        return;
+    }
+
 };
 
 #endif

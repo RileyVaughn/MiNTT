@@ -38,6 +38,6 @@ class BenchMark_MiNTT128_norm_int16 : public MiNTT{
     void ntt_sum(uint8_t input[INPUT_SIZE], int16_t out[d][ndiv8][8]);
     void change_base(int16_t val[d][ndiv8][8], uint8_t hash[OUTPUT_SIZE]);
 
-    void BenchMark_MiNTT128_norm_int16::BenchMark(float lookup_table_ratio, float modulo_ratio, float other_ntt_ratio, float key_combine_ratio, float base_change_ratio);
+    void BenchMark(float & lookup_table_ratio, float & modulo_ratio, float & other_ntt_ratio, float & key_combine_ratio, float & base_change_ratio);
 
 };
